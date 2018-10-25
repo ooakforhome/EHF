@@ -35,12 +35,7 @@ loadImage(){
       this.setState({
         images: res.data[0].filename
       })
-    ).then(info =>{
-      API.updateProduct(this.props.match.params.id, {
-        images: this.state.images
-      })
-        .then(res => window.location.reload())
-    })
+    )
 }
 
  onChanges(e){

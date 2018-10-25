@@ -57,6 +57,7 @@
     "redux-thunk": "^2.3.0",
     "sass": "^1.14.1",
     "sass-loader": "^7.1.0",
+    "sharp": "^0.21.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.1",

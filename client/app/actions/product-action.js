@@ -1,5 +1,27 @@
-import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU } from './types';
+import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, SEARCH_PRODUCT } from './types';
 import axios from 'axios';
+import _ from 'lodash';
+
+export const searchProducts = (...criteria) => dispatch =>
+  SearchProductsProxy(...criteria)
+    .then((products = []) =>
+      dispatch({ type: SEARCH_PRODUCT, payload: products})
+);
+
+const SearchProductsProxy = (criteria, offset, limit) => {
+  const product = ("/api/allproducts", (_.omit(criteria, 'sort'), criteria.sort, offset, limit));
+  if(!product || !product.then){
+    return new Promise(()=>{});
+  }
+  return product;
+};
+
+const refreshSearch = (dispatch, getState) => {
+  const { products: { offset, limit }} = getState();
+  const criteria = getState().form.filters.values;
+
+  dispatch(searchProducts({Product_Name: '', ...criteria }, offset, limit))
+}
 
 export const searchSku = (sku) => dispatch => {
   axios.get(`/api/products?SKU=${sku}`)
@@ -68,4 +90,4 @@ export const updateProduct = (id, data) => dispatch => {
         payload: product
       })
     )
-}
+};

@@ -15,7 +15,8 @@ router.route("/api/product/:_id")
 
 router.route("/api/products/:Category_type")
   .get(productCtrl.getCategory);
-router.route("/api/products/:")
+
+router.route("/api/allproducts")
   .get(productCtrl.renderSearch);
 
 
