@@ -1,0 +1,302 @@
+/* -----ImageUpload----- */
+.form_class {
+  padding: 5px;
+  display: inline-block;
+  width:300px;
+}
+.fLeft {
+  float: left;
+  margin: 5px 0 0 0;
+  padding: 0px;
+}
+
+
+/* -----Categories----- */
+ul {
+  list-style-type: none;
+  float: left;
+}
+
+.cat-nav {
+  border-bottom: 3px black solid;
+  display: inline-block;
+  position: inherit;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
+}
+
+.topnav {
+  display:block;
+  height: 30px;
+}
+
+.navlist:hover {
+  color: rgba(0, 0, 0, .5);
+  cursor: pointer;
+}
+/* -----Products----- */
+.innerBody {
+    width: 300px;
+    margin: 10px 1%;
+    float: left;
+    border: 1px solid black;
+    height: 460px;
+    padding: 10px;
+    box-shadow: 5px 5px 5px gray;
+    font-size: .8em;
+}
+
+.edit_box {
+    width: 100%;
+    border-top: 1px solid gray;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.products_box {
+  clear: both;
+}
+
+.item_size {
+  font-size: .9em;
+}
+
+.item_img {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 5px;
+}
+
+.item_img_box {
+  width: 150px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.item_img_box img {
+  height:150px;
+}
+/* -----NewProduct----- */
+.spdFormContainer {
+  width:830px;
+  height:100%;
+  margin:auto;
+}
+.spdFormInnerContainer {
+  width:800px;
+  height:100%;
+  display:inline-block;
+  margin:auto;
+  box-shadow: 3px 3px 3px 3px gray;
+}
+
+.img_div {
+  width: 90%;
+  padding: 10px;
+}
+
+.img_size {
+  width: 150px;
+  height: 150px;
+  margin: 0 50%;
+}
+
+.input_box {
+  width:250px;
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+}
+.input_box_small {
+  width: 100px;
+  display: inline-block;
+  padding: 5px;
+  margin-left: 20px;
+}
+.input_box_max {
+  width: 100%;
+  padding: 5px 10px 5px 5px;
+  margin: 5px;
+  display:block;
+}
+.size_box {
+  width: 398px;
+  margin: auto;
+  float: left;
+  padding: 5px;
+}
+.formHR {
+  width: 90%;
+  margin: auto;
+  border: 1px solid black;
+}
+.other_box {
+  display: block;
+  margin: 5px;
+  border: 1px dotted black;
+}
+
+.spdForm {
+  display:block;
+  clear: both;
+}
+
+.formsize {
+  width:100%;
+  float:left;
+  clear: both;
+  display:block
+}
+
+.feature {
+  width:90%;
+  padding: 5px;
+}
+ .form_radio {
+   margin: 5px;
+ }
+/* -----EditProduct----- */
+.productEditBox {
+  width: 100%;
+}
+.editText {
+  margin: 0px;
+}
+.edit_submit {
+  margin: 10px 0px 10px 5px;
+  clear: both;
+}
+
+.edit_xlg {
+  width: 48%;
+  margin: 5px;
+  float:left;
+}
+.editInput_xlg {
+  width: 100%;
+}
+.editInput_sm {
+  width: 100%
+}
+.edit_lg {
+  width: 50%;
+  float: left;
+}
+.edit_md {
+  width: 25%;
+  padding: 5px 10px;
+  float:left;
+}
+
+.edit_sm {
+  width: 30%;
+  padding: 5px 5px;
+  float:left;
+}
+
+
+/* -----ProductsBox----- */
+.item_dele_button{
+  float: right;
+}
+/* -----Product----- */
+.detail_container {
+  background-color: lightblue;
+  float:left;
+  box-shadow: 5px 5px 5px;
+  max-width: 1060px;
+  margin: 5px 0 20px 0;
+}
+.hr_abc{
+  width: 100%;
+  color: black;
+}
+.detail_box {
+  width:50%;
+  padding: 10px;
+  float: left;
+  background-color: lightblue;
+}
+.detail_image {
+  width: 100%;
+  max-width: 500px;
+  min-width: 300px;
+}
+.detail_item_info_box h1 {
+  font-size: 3rem;
+  margin: 0px;
+}
+.detail_item_info_box h2 {
+  font-size: 2rem;
+}
+
+
+@media only screen and (max-width: 640px){
+  .innerBody {
+    width: 50%;
+    min-width: 300px;
+    margin-left: 25%;
+  }
+  .edit_md {
+    width: 25%;
+    padding: 5px 10px;
+    float:left;
+  }
+  .edit_lg {
+    width: 100%;
+    float: left;
+  }
+  .edit_sm {
+    width: 30%;
+    padding: 5px 5px;
+    float:left;
+  }
+}
+@media only screen and (max-width: 690px) {
+  .detail_box {
+    width:100%;
+    padding: 10px;
+    float: left;
+  }
+}
+@media only screen and (max-width: 970px){
+  .innerBody {
+    width: 45%;
+    min-width: 300px;
+  }
+}
+@media only screen and (min-width: 1080px) {
+  .detail_container {
+    width:66%;
+  }
+  .productEditBox {
+    width: 33%;
+    padding: 10px;
+    float: left;
+  }
+  .productEditBox h2{
+    margin: 0px;
+  }
+  .edit_xlg {
+    max-width: 500px;
+    width: 100%;
+    margin: 5px;
+  }
+  .editInput_xlg {
+    width: 100%;
+  }
+  .edit_lg {
+    width: 100%;
+    float: left;
+  }
+  .edit_md {
+    width: 50%;
+    padding: 5px 10px;
+    float:left;
+  }
+  .edit_sm {
+    width: 33%;
+    padding: 5px 5px;
+    float:left;
+  }
+}
