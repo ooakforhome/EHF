@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { searchProducts, searchSku } from '../../actions/product-action';
+import { fetchProducts, searchSku } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
@@ -56,7 +56,7 @@ class ProductsAll extends Component {
     e.preventDefault();
       this.setState({
         limit: 10,
-        offset: (this.state.offset+=1)
+        offset: this.state.offset+=1
       })
       this.updates();
       console.log(this.state.offset);

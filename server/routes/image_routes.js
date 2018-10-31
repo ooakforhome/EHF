@@ -12,7 +12,6 @@ const Schema = mongoose.Schema;
 const Product = require("../models/Product_model");
 const router = require("express").Router();
 const axios = require("axios");
-const sharp = require('sharp');
 
 const mongoURI = "mongodb://localhost/EHF";
 const conn = mongoose.createConnection(mongoURI);
@@ -58,11 +57,9 @@ router.post('/api/upload/', upload, (req, res) => {
   console.log(req.file)
   console.log("<<=======================>>");
   console.log(req.file.filename)
-<<<<<<< HEAD
+
   let newProductModel = new Product({images: req.file.id});
-=======
-  let newProductModel = new ProductModel({images: req.file.id});
->>>>>>> 2443cf92847029bcc8050d34e7c94b30cecf51c5
+
   newProductModel.save()
     .then(data => {console.log("image ID saved")})
 
@@ -119,7 +116,7 @@ router.get('/api/imagesm/:filename', (req, res) =>{
       // Read output to browser
       var transformer = sharp()
         .resize(300)
-        .on('info');
+        .on('info', function(info) { });
       const readstream = gfs.createReadStream(file.filename);
       readstream.pipe(transformer).pipe(res);
       } else {
@@ -152,9 +149,7 @@ router.get('/api/imagesm/:filename', (req, res) =>{
     })
   });
 
-<<<<<<< HEAD
-// Show image by metadata
-=======
+
   // convert small image by sharp
   router.get('/api/imagesm/:filename', (req, res) =>{
     gfs.files.findOne({filename: req.params.filename}, (err, file) => {
@@ -180,7 +175,6 @@ router.get('/api/imagesm/:filename', (req, res) =>{
   });
 
 
->>>>>>> 2443cf92847029bcc8050d34e7c94b30cecf51c5
   router.get('/api/images/:metadata', (req, res) =>{
       console.log(req.params.metadata);
     gfs.files.findOne({metadata: req.params.metadata}, (err, file) => {

@@ -8,7 +8,7 @@ export const ProductsBox = ({
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
-          <img src={(`${process.env.Node}/api/image/undefined`)? `http://localhost:3080/api/imagesm/${images}` : "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"} alt={Product_Name}/>
+          <img src={`http://localhost:3080/api/imagesm/${images}`} alt={Product_Name}/>
         </div>
         </div>
       <div><p>Category: <strong>{Category_type}</strong></p></div>
