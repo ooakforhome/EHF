@@ -1,186 +1,131 @@
-import _ from 'lodash';
-import { hashHistory } from 'react-router';
-import {
-  SET_AGE_RANGE,
-  SET_YEARS_ACTIVE_RANGE,
-  SEARCH_ARTISTS,
-  FIND_ARTIST,
-  RESET_ARTIST,
-  CREATE_ERROR,
-  CLEAR_ERROR,
-  DESELECT_ARTIST,
-  SELECT_ARTIST,
-  RESET_SELECTION
-} from './types';
+const path = require('path');
+const crypto = require('crypto');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const express = require('express');
+const bodyParser = require('body-parser');
+// const router = require('express').Router();
+const axios = require('axios');
+const mongodb = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-import GetAgeRange from '../../database/queries/GetAgeRange';
-import GetYearsActiveRange from '../../database/queries/GetYearsActiveRange';
-import SearchArtists from '../../database/queries/SearchArtists';
-import FindArtist from '../../database/queries/FindArtist';
-import CreateArtist from '../../database/queries/CreateArtist';
-import EditArtist from '../../database/queries/EditArtist';
-import DeleteArtist from '../../database/queries/DeleteArtist';
-import SetRetired from '../../database/queries/SetRetired';
-import SetNotRetired from '../../database/queries/SetNotRetired';
+const config = require('../../../config/config');
+const mongoURI = config.db;
+// const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.createConnection(mongoURI);
 
-export const resetArtist = () => {
-  return { type: RESET_ARTIST };
-};
-
-export const clearError = () => {
-  return { type: CLEAR_ERROR };
-};
-
-export const selectArtist = id => {
-  return { type: SELECT_ARTIST, payload: id };
-};
-
-export const deselectArtist = id => {
-  return { type: DESELECT_ARTIST, payload: id };
-};
-
-export const setRetired = ids => (dispatch, getState) =>
-  SetRetiredProxy(ids.map(id => id.toString()))
-    .then(() => dispatch({ type: RESET_SELECTION }))
-    .then(() => refreshSearch(dispatch, getState));
-
-export const setNotRetired = ids => (dispatch, getState) =>
-  SetNotRetiredProxy(ids.map(id => id.toString()))
-    .then(() => dispatch({ type: RESET_SELECTION }))
-    .then(() => refreshSearch(dispatch, getState));
-
-export const setAgeRange = () => dispatch =>
-  GetAgeRangeProxy()
-    .then(result =>
-      dispatch({ type: SET_AGE_RANGE, payload: result })
-    );
-
-export const setYearsActiveRange = () => dispatch =>
-  GetYearsActiveRangeProxy()
-    .then(result =>
-      dispatch({ type: SET_YEARS_ACTIVE_RANGE, payload: result })
-    );
-
-export const searchArtists = (...criteria) => dispatch =>
-  SearchArtistsProxy(...criteria)
-    .then((result = []) =>
-      dispatch({ type: SEARCH_ARTISTS, payload: result })
-    );
-
-export const findArtist = id => dispatch =>
-  FindArtistProxy(id)
-    .then(artist =>
-      dispatch({ type: FIND_ARTIST, payload: artist })
-    );
-
-export const createArtist = props => dispatch =>
-  CreateArtistProxy(props)
-    .then(artist => {
-      hashHistory.push(`artists/${artist.id}`);
-    })
-    .catch(error => {
-      console.log(error);
-      dispatch({ type: CREATE_ERROR, payload: error });
-    });
-
-export const editArtist = (id, props) => dispatch =>
-  EditArtistProxy(id, props)
-    .then(() => hashHistory.push(`artists/${id}`))
-    .catch(error => {
-      console.log(error);
-      dispatch({ type: CREATE_ERROR, payload: error });
-    });
-
-export const deleteArtist = (id) => dispatch =>
-  DeleteArtistProxy(id)
-    .then(() => hashHistory.push('/'))
-    .catch(error => {
-      console.log(error);
-      dispatch({ type: CREATE_ERROR, payload: error });
-    });
+const client = mongodb.MongoClient;
 
 
-//
-// Faux Proxies
+let gfs;
 
-const GetAgeRangeProxy = (...args) => {
-  const result = GetAgeRange(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
+conn.once('open', ()=> {
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads');
+})
+
+const storage = multer.diskStorage({
+  destination: mongoURI,
+  filename: function (req, file, callback) {
+    //..
   }
-  return result;
-};
+});
 
-const GetYearsActiveRangeProxy = (...args) => {
-  const result = GetYearsActiveRange(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+const upload = multer({ storage }).single('file');
 
-const SearchArtistsProxy = (criteria, offset, limit) => {
-  const result = SearchArtists(_.omit(criteria, 'sort'), criteria.sort, offset, limit);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+module.exports = (app) => {
 
-const FindArtistProxy = (...args) => {
-  const result = FindArtist(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+// Upload images
+app.post('/api/upload', upload, (req, res)=>{
+    console.log("<<=======================>>");
+    console.log(req.file)
+    console.log("<<=======================>>");
+    console.log(req.file.filename)
+    return res.json({upload: req.file.filename})
+});
 
-const CreateArtistProxy = (...args) => {
-  const result = CreateArtist(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+// Delete image files and chunks
+app.delete('/filesdele/:id', (req, res) => {
+  gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
+    if (err) {
+      return res.status(404).json({ err: err });
+    }
+    return res.json({delete: "successful"})
+    // res.redirect('/');
+  });
+});
 
-const EditArtistProxy = (...args) => {
-  const result = EditArtist(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+// Get single image
+app.get('/api/image/:filename', (req, res) =>{
+  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+    if(!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No files exist'
+      });
+    }
+    // Check if image
+    if(file.contentType === 'image/png' || file.contentType === 'image/jpeg' || file.contentType === 'image/gif'){
+      // Read output to browser
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+      } else {
+      res.status(404).json({
+        err: 'Not an image'
+      })
+    }
+  })
+});
 
-const DeleteArtistProxy = (...args) => {
-  const result = DeleteArtist(...args);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+// Get all files
+app.get('/api/afiles', (req, res) =>{
+  gfs.files.find().toArray((err, files)=>{
+    // Check if files
+    if(!files || files.length === 0) {
+      return res.status(404).json({
+        err: 'No files exist'
+      });
+    }
+    //Files exist
+    return res.json(files);
+  });
+});
 
-const SetRetiredProxy = (_ids) => {
-  const result = SetRetired(_ids);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
 
-const SetNotRetiredProxy = (_ids) => {
-  const result = SetNotRetired(_ids);
-  if (!result || !result.then) {
-    return new Promise(() => {});
-  }
-  return result;
-};
+// delete one by ID
+// working
+app.delete('/api/findinfo/:objid', (req, res)=>{
+  gfs.files.deleteOne({_id: new mongodb.ObjectID(req.params.objid)}, (err, file) => {
+    return res.json(file);
+  })
+});
 
-//
-// Helpers
+// Find one by ID
+//workding
+app.get('/api/findinfo/:objid', (req, res)=>{
+  gfs.files.findOne({_id: new mongodb.ObjectID(req.params.objid)}, (err, file) => {
+    console.log("<================== some info ========================>")
+    return res.json(file);
+  })
+});
 
-const refreshSearch = (dispatch, getState) => {
-  const { artists: { offset, limit } } = getState();
-  const criteria = getState().form.filters.values;
+// Delete a file
+app.delete('/api/delete/:filename', (req, res) =>{
+  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+    if(!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No files exist'
+      });
+    } else {
+      gfs.files.deleteOne({filename: req.params.filename}, (info) => {
+        console.log("deteled")
+        console.log(res.json({info: "delete complete"}))
+      })
+    }
+  })
+});
 
-  dispatch(searchArtists({ name: '', ...criteria }, offset, limit));
-};
+
+
+}; //end module

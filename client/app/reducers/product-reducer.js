@@ -1,8 +1,10 @@
-import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU } from '../actions/types'
+import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, SEARCH_PRODUCT } from '../actions/types'
 
 const initialState = {
   products: [],
-  product: {}
+  product: {},
+  offset: 0,
+  limit: 20
 };
 
 export default function(state = initialState, action){

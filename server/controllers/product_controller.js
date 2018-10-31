@@ -1,6 +1,41 @@
 const Product = require ('../models/Product_model');
 
+const buildQuery = (criteria) => {
+  const query = {};
+
+  if (criteria.Product_Name) {
+    query.$text = { $search: criteria.Product_Name };
+  }
+
+  if (criteria.Product_Weight) {
+    query.Product_Weight = {
+      $gte: criteria.Product_Weight.min,
+      $lte: criteria.Product_Weight.max
+    };
+  }
+
+  if (criteria.Product_Shipping_Weight) {
+    query.Product_Shipping_Weight = {
+      $gte: criteria.Product_Shipping_Weight.min,
+      $lte: criteria.Product_Shipping_Weight.max
+    };
+  }
+
+  return query;
+};
+
 module.exports = {
+        //render search
+      renderSearch: function(criteria, sortProperty, offset = 0, limit = 12){
+
+        Product.find(buildQuery(criteria))
+          .sort({ [sortProperty]: 1 })
+          .skip(offset)
+          .limit(limit)
+          .then(data => res.json(data))
+
+    },
+
         // find all
         getProducts: function(req, res) {
           var pageOptions = {

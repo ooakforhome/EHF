@@ -104,11 +104,7 @@ SimpleAdding(4);
 
 //-------------question----------------------
 function TimeConvert(num) {
-  var hours = Math.floor(num/60);
 
-  var min = num % 60;
-
-  return hours + ':' + min;
 }
 
 TimeConvert(readline());

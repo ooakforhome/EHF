@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchProducts, searchSku } from '../../actions/product-action';
+import { searchProducts, searchSku } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
