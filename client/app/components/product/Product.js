@@ -61,12 +61,12 @@ loadImage(){
    let formData = new FormData();
    formData.append("file", this.state.file);
 
-   fetch('/api/uploadFile', {
+   fetch('/api/upload', {
      method: 'POST',
      body: formData
    }).then(res => res.json())
       .then(data => {
-        if(data.success){
+        if(data){
           alert('Upload Successfully!!')
           this.loadImage();
         } else {

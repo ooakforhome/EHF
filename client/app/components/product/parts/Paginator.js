@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import {fetchProducts} from '../../../actions/product-action';
 
 class Paginator extends Component {
   back() {
-    const { offset, limit, form: { filters: { values } } } = this.props;
+    const { offset, limit } = this.props;
 
     if (offset === 0 ) { return; }
 
@@ -12,9 +12,8 @@ class Paginator extends Component {
   }
 
   advance() {
-    const { offset, limit, count, form: { filters: { values } } } = this.props;
+    const { offset, limit} = this.props;
 
-    if ((offset + limit) > count) { return; }
 
     this.props.searchArtists(values, offset + 10, limit);
   }
@@ -30,9 +29,8 @@ class Paginator extends Component {
   }
 
   right() {
-    const { offset, limit, count } = this.props;
+    const { offset, limit } = this.props;
 
-    const end = ((offset + limit) >= count) ? true : false;
 
     return (
       <li className={end ? 'disabled' : ''}>
@@ -57,10 +55,8 @@ class Paginator extends Component {
   }
 }
 
-const mapStateToProps = ({ artists, form }) => {
-  const { limit, offset, count } = artists;
+const mapStateToProps = state => ({
+  newproducts: state.newproducts.products,
+});
 
-  return { limit, offset, count, form};
-};
-
-export default connect(mapStateToProps, actions)(Paginator);
+export default connect(mapStateToProps, fetchProducts)(Paginator);

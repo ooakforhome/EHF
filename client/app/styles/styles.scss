@@ -10,6 +10,9 @@
   padding: 0px;
 }
 
+/* --------filter box ------------ */
+.filterboxSize { width: 300px; float: left; border: 1px solid black; display: block;}
+
 
 /* -----Categories----- */
 ul {
@@ -75,6 +78,16 @@ ul {
 
 .item_img_box img {
   height:150px;
+}
+
+
+.floatleftblock {
+  float: left;
+  width: 100%;
+  button, p {
+    float: left;
+    width: 100px;
+  }
 }
 /* -----NewProduct----- */
 .spdFormContainer {

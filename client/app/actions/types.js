@@ -4,3 +4,4 @@ export const NEW_PRODUCT = 'NEW_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 export const SEARCH_SKU = 'SEARCH_SKU';
+export const RENDER_PRODUCTS = 'RENDER_PRODUCTS';

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createProduct } from '../../actions/product-action';
 import { Field, reduxForm } from "redux-form";
 import API from "./api-product";
+import { ImageUpload } from './parts/ImageUpload';
 // import { Link } from "react-router-dom";
 
 
@@ -25,6 +26,32 @@ class NewProduct extends Component {
     );
   }
 
+  _handleImageChange(e){
+    e.preventDefault();
+      this.setState({
+        file: e.target.files[0]
+      });
+  }
+
+  _handleSubmit(e){
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("file", this.state.file);
+
+    fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    }).then(res => res.json())
+       .then(data => {
+         if(data){
+           alert('Upload Successfully!!')
+         } else {
+           alert('Upload failed')
+         }
+       })
+
+  };
+
   render(){
     const { handleSubmit } = this.props;
 
@@ -37,7 +64,10 @@ class NewProduct extends Component {
 
         </div>
         <hr />
-
+        <ImageUpload
+          _handleSubmit = {this.props._handleSubmit.bind(this)}
+          _handleImageChange = {this.props._handleImageChange.bind(this)}
+        />
         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
           <div>
             <p>Category Type</p>

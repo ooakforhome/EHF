@@ -11,13 +11,16 @@ import { Link } from 'react-router-dom';
 class ProductsAll extends Component {
   constructor(props) {
     super(props);
-    this.state = {limit: 10};
-
+    this.state = {
+      limit: 10,
+      offset: 0
+    };
+    this.handleChange=this.handleChange.bind(this);
   }
 
-//mount Redux data info.
+// mount Redux data info.
   componentWillMount() {
-    this.props.fetchProducts(this.state.limit);
+    this.props.fetchProducts({limit: this.state.limit, offset: this.state.offset});
   }
 
 
@@ -37,22 +40,46 @@ class ProductsAll extends Component {
 
   // Categories link
   handleClickthenav(e){
-  e.preventDefault();
-  const theName = e.target.id.split(' ').join(' ');
-  console.log(theName)
-  window.location = `/products/by/${e.target.id}`;
-  }
+    e.preventDefault();
+    const theName = e.target.id.split(' ').join(' ');
+    console.log(theName)
+    window.location = `/products/by/${e.target.id}`;
+  };
 
-  // onChangeText(e){
-  //   this.setState({
-  //     SKU: e.target.value
-  //   })
-  // }
-  //
-  // handleSubmit(e){
-  //   e.preventDefault();
-  //   this.props.searchSku(this.target.value)
-  // }
+  // Limit per page
+  handleChange(e){
+    e.preventDefault();
+      this.props.fetchProducts({limit: e.target.value});
+  };
+
+  nexthandleChange(e){
+    e.preventDefault();
+      this.setState({
+        limit: 10,
+        offset: (this.state.offset+=1)
+      })
+      this.updates();
+      console.log(this.state.offset);
+  };
+
+  prevhandleChange(e){
+    e.preventDefault();
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
+      } else {
+      this.setState({
+        limit: 10,
+        offset: this.state.offset-=1
+      })
+    }
+    this.updates();
+      console.log(this.state.offset);
+  };
+
+  updates(){
+    this.props.fetchProducts({limit: this.state.limit, offset: this.state.offset});
+  };
+
 
   render() {
     if(!this.props.newproducts){
@@ -71,6 +98,8 @@ class ProductsAll extends Component {
       </div>
     )
 
+
+
     return(
       <div>
         <div className="category_nav">
@@ -86,10 +115,19 @@ class ProductsAll extends Component {
             <button onClick={this.handleChange} name="limit" value="20">20</button>
             <button onClick={this.handleChange} name="limit" value="30">30</button>
 
-
+            <div className ="floatleftblock">
+              <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+              <p>current page{this.state.offset}</p>
+              <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
+            </div>
 
           <div>
             <ProductList products = {this.props.newproducts}/>
+          </div>
+          <div className ="floatleftblock">
+            <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+            <p>current page{this.state.offset}</p>
+            <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
           </div>
         </div>
       </div>
@@ -104,10 +142,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { fetchProducts, searchSku })(ProductsAll);
-
-
-//------------
-// <form onSubmit={this.handleSubmit.bind(this)}>
-//   <input className="sku" type="text" value={this.props.SKU} onChange={this.onChangeText.bind(this)} />
-//   <input className="search_submit" type="submit" name="submit" />
-// </form>

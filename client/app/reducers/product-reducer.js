@@ -8,9 +8,15 @@ const initialState = {
 export default function(state = initialState, action){
   switch(action.type){
     case SEARCH_SKU:
-      return { state, product: action.payload };
+      return {
+        state,
+        product: action.payload
+      };
     case FETCH_PRODUCTS:
-      return { ...state, products: action.payload };
+      return {
+        ...state,
+        products: action.payload
+      };
     case FETCH_CATEGORY:
       return {
         ...state,

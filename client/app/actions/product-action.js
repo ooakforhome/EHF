@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU } from './types';
+import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, RENDER_PRODUCTS } from './types';
 import axios from 'axios';
 
 export const searchSku = (sku) => dispatch => {
@@ -12,9 +12,20 @@ export const searchSku = (sku) => dispatch => {
     );
 };
 
+export const renderProducts = (limit, offset) => dispatch => {
+  axios.get(`/api/allproducts`)
+  .then( res => res.data )
+  .then( products =>
+    dispatch({
+      type: RENDER_PRODUCTS,
+      payload: products
+    })
+  );
+};
 
-export const fetchProducts = (limit) => dispatch => {
-  axios.get(`/api/products?limit=${limit}`)
+
+export const fetchProducts = ({limit, offset}) => dispatch => {
+  axios.get(`/api/products?limit=${limit}&offset=${offset}`)
   .then( res => res.data )
   .then( products =>
     dispatch({

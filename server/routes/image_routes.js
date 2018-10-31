@@ -1,14 +1,15 @@
 const path = require('path');
+// const express = require("express");
+// const bodyParser = require("body-parser");
+
 const crypto = require('crypto');
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
-const express = require("express");
-const bodyParser = require("body-parser");
-
+const sharp = require('sharp');
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ProductModel("../../models/Product_model")
+const Product = require("../models/Product_model");
 const router = require("express").Router();
 const axios = require("axios");
 
@@ -57,9 +58,9 @@ router.post('/api/upload/', upload, (req, res) => {
   console.log(req.file)
   console.log("<<=======================>>");
   console.log(req.file.filename)
-  // let newProductModel = new ProductModel({images: req.file.id});
-  // newProductModel.save()
-  //   .then(data => {console.log("image ID saved")})
+  let newProductModel = new Product({images: req.file.id});
+  newProductModel.save()
+    .then(data => {console.log("image ID saved")})
 
   return res.json({upload: req.file.filename})
   // axios.put('/api/products' + id, {"images" : res.req.file.id});
@@ -101,6 +102,30 @@ router.get('/api/findinfo/:id', (req, res, next)=>{
   })
 });
 
+// convert small image by sharp
+router.get('/api/imagesm/:filename', (req, res) =>{
+  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+    if(!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No files exist'
+      });
+    }
+    // Check if image
+    if(file.contentType === 'image/png' || file.contentType === 'image/jpeg' || file.contentType === 'image/gif'){
+      // Read output to browser
+      var transformer = sharp()
+        .resize(300)
+        .on('info');
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(transformer).pipe(res);
+      } else {
+      res.status(404).json({
+        err: 'Not an image'
+      })
+    }
+  })
+});
+
 // @route GET /image/:filename
 // @desc Display image
   router.get('/api/image/:filename', (req, res, next) =>{
@@ -123,6 +148,7 @@ router.get('/api/findinfo/:id', (req, res, next)=>{
     })
   });
 
+// Show image by metadata
   router.get('/api/images/:metadata', (req, res) =>{
       console.log(req.params.metadata);
     gfs.files.findOne({metadata: req.params.metadata}, (err, file) => {
