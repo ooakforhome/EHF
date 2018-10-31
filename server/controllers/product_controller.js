@@ -1,41 +1,12 @@
 const Product = require ('../models/Product_model');
 
-const buildQuery = (criteria) => {
-  const query = {};
-
-  if (criteria.Product_Name) {
-    query.$text = { $search: criteria.Product_Name };
-  }
-
-  if (criteria.Product_Weight) {
-    query.Product_Weight = {
-      $gte: criteria.Product_Weight.min,
-      $lte: criteria.Product_Weight.max
-    };
-  }
-
-  if (criteria.Product_Shipping_Weight) {
-    query.Product_Shipping_Weight = {
-      $gte: criteria.Product_Shipping_Weight.min,
-      $lte: criteria.Product_Shipping_Weight.max
-    };
-  }
-
-  return query;
-};
-
 module.exports = {
-        //render search
-      renderSearch: function(criteria, sortProperty, offset = 0, limit = 12){
-
-        Product.find(buildQuery(criteria))
-          .sort({ [sortProperty]: 1 })
-          .skip(offset)
-          .limit(limit)
-          .then(data => res.json(data))
-
-    },
-
+    //     searchProduct: function(req, res){
+    //       Product
+    //         .find({Product_Name: req.query.Product_Name})
+    //         .then(product => res.json(product))
+    //         .catch(err => res.status(422).json(err))
+    // },
         // find all
         getProducts: function(req, res) {
           var pageOptions = {
@@ -84,27 +55,3 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     }
 };
-
-
-
-        // render params
-    //     renderPerPage: function(req, res){
-    //       var limit = req.params.page || 12;
-    //       var page = req.params.page || 1;
-    //       var count = 0;
-    //
-    //     Product
-    //       .find()
-    //       .skip((limit * page) - limit)
-    //       .limit(limit)
-    //       .exec(function(err, products){
-    //         Product.count().exec(function(err, count){
-    //           if(err) return next(err)
-    //           res.render('./products/all', {
-    //             products: products,
-    //             current: page,
-    //             pages: Math.ceil(count / limit)
-    //           })
-    //         })
-    //       })
-    // },
