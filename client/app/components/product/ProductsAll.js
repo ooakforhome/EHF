@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchProducts, searchSku } from '../../actions/product-action';
+import { fetchProducts, searchSku, searchProduct } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
@@ -98,7 +98,10 @@ class ProductsAll extends Component {
       </div>
     )
 
+    searchOnSubmit(e){
+      e.preventDefault();
 
+    }
 
     return(
       <div>
@@ -141,4 +144,4 @@ const mapStateToProps = state => ({
   newproduct: state.newproducts.product,
 });
 
-export default connect(mapStateToProps, { fetchProducts, searchSku })(ProductsAll);
+export default connect(mapStateToProps, { fetchProducts, searchSku, searchProduct })(ProductsAll);

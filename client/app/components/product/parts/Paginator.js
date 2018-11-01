@@ -1,62 +1,44 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {fetchProducts} from '../../../actions/product-action';
+import React, { Component } from "react";
 
 class Paginator extends Component {
-  back() {
-    const { offset, limit } = this.props;
 
-    if (offset === 0 ) { return; }
+  nexthandleChange(e){
+    e.preventDefault();
+      this.setState({
+        limit: 10,
+        offset: this.state.offset+=1
+      })
+      this.updates();
+      console.log(this.state.offset);
+  };
 
-    this.props.searchArtists(values, offset - 10, limit);
-  }
+  prevhandleChange(e){
+    e.preventDefault();
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
+      } else {
+      this.setState({
+        limit: 10,
+        offset: this.state.offset-=1
+      })
+    }
+    this.updates();
+      console.log(this.state.offset);
+  };
 
-  advance() {
-    const { offset, limit} = this.props;
+  updates(){
+    this.props.fetchProducts({limit: this.state.limit, offset: this.state.offset});
+  };
 
-
-    this.props.searchArtists(values, offset + 10, limit);
-  }
-
-  left() {
-    return (
-      <li className={this.props.offset === 0 ? 'disabled' : ''}>
-        <a onClick={this.back.bind(this)}>
-          <i className="material-icons">chevron_left</i>
-        </a>
-      </li>
-    );
-  }
-
-  right() {
-    const { offset, limit } = this.props;
-
-
-    return (
-      <li className={end ? 'disabled' : ''}>
-        <a onClick={this.advance.bind(this)}>
-          <i className="material-icons">chevron_right</i>
-        </a>
-      </li>
-    );
-  }
-
-  render() {
-    return (
-      <div className="center-align">
-        <ul className="pagination">
-          {this.left()}
-          <li><a>Page {this.props.offset / 10 + 1}</a></li>
-          {this.right()}
-        </ul>
-        {this.props.count} Records Found
+  render(){
+    return(
+      <div className ="floatleftblock">
+        <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+        <p>current page{this.state.offset}</p>
+        <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => ({
-  newproducts: state.newproducts.products,
-});
-
-export default connect(mapStateToProps, fetchProducts)(Paginator);
+export default Paginator

@@ -14,6 +14,11 @@ export default function(state = initialState, action){
         state,
         product: action.payload
       };
+    case SEARCH_PRODUCT:
+      return {
+        state,
+        product: action.payload
+      };
     case FETCH_PRODUCTS:
       return {
         ...state,
