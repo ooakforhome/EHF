@@ -98,10 +98,7 @@ class ProductsAll extends Component {
       </div>
     )
 
-    searchOnSubmit(e){
-      e.preventDefault();
 
-    }
 
     return(
       <div>
