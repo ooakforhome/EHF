@@ -4,11 +4,11 @@ export const ProductsBox = ({
   _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleDelete
   }) => (
 
-  <div className="item_container">
+  <div className="item_container" >
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
-          <img src={`http://localhost:3080/api/imagesm/${images}`} alt={Product_Name}/>
+          <img src={`/api/imagesm/${images}`} alt={Product_Name}/>
         </div>
         </div>
       <div><p>Category: <strong>{Category_type}</strong></p></div>

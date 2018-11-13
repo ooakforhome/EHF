@@ -1,24 +1,33 @@
 const Product = require ('../models/Product_model');
 
 module.exports = {
-  // render params
-  renderPerPage : function(criteria, sortProperty, offset = 0, limit =3){
-    const query = Product.find(buildQuery(criteria))
+  // Category Filter
+  renderPerPage : function(req, res){
+    let criteria;
+    let sortProperty = req.query.sortProperty;
+    let offset = parseInt(req.query.offset);
+    let limit = parseInt(req.query.limit);
+
+    const productName = req.query.Product_Name;
+
+    const query = Product
+      .find({Category_type: req.query.category_type})
       .sort({ [sortProperty]: 1 })
       .skip(offset)
       .limit(limit);
 
-    return Promise.all([query, Product.find(buildQuery(criteria)).count()])
+      return Promise.all([query, Product.find({Category_type: req.query.category_type}).count()])
       .then((results) => {
-        console.log ({
+        return res.json({
          all: results[0],
          count: results[1],
          offset: offset,
          limit: limit
         });
       });
-    }
+  }
 };
+
 
 const buildQuery = (criteria) => {
   const query = {};
@@ -27,12 +36,10 @@ const buildQuery = (criteria) => {
     query.$text = { $search: criteria.Product_Name };
   }
 
-  if (criteria.Product_Weight) {
-    query.Product_Weight = {
-      $gte: criteria.Product_Weight.min,
-      $lte: criteria.Product_Weight.max
-    };
+  if (criteria.Category_type) {
+    {Category_type : req.query.Category_type}
   }
+
 
   if (criteria.Product_Shipping_Weight) {
     query.Product_Shipping_Weight = {

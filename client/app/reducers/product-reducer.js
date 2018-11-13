@@ -1,10 +1,8 @@
-import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, SEARCH_PRODUCT } from '../actions/types'
+import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, SEARCH_PRODUCT, RENDER_PRODUCTS } from '../actions/types'
 
 const initialState = {
   products: [],
-  product: {},
-  offset: 0,
-  limit: 20
+  product: {}
 };
 
 export default function(state = initialState, action){
@@ -19,6 +17,11 @@ export default function(state = initialState, action){
         state,
         product: action.payload
       };
+    case RENDER_PRODUCTS:
+     return {
+       state,
+       products: action.payload
+     }
     case FETCH_PRODUCTS:
       return {
         ...state,

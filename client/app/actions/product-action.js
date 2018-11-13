@@ -22,8 +22,8 @@ export const searchSku = (sku) => dispatch => {
     );
 };
 
-export const renderProducts = (limit, offset) => dispatch => {
-  axios.get(`/api/allproducts`)
+export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
+  axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
   .then( res => res.data )
   .then( products =>
     dispatch({

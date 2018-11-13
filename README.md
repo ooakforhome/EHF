@@ -31,3 +31,9 @@ Development (Webpack dev server) mode:
 ```shell
 npm run start:dev
 ```
+
+
+mongoexport --host localhost:27017 --db EHF --collection products --type csv --out C:/Users/David/Desktop/products.csv
+mongoexport --db EHF_SITE --collection products --type json --out C:/Users/David/Desktop/products_site.json
+
+mongoexport --username  --password "pass" --collection contacts --db marketing --out mdb1-examplenet.json
