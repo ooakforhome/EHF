@@ -21,8 +21,8 @@ const App = () =>
   <Router>
     <div>
         <Route exact path="/" component = { Home } />
-        <Route path="/products/all" component = { ProductsAll } />
-        <Route path="/products/by/:Category_type" component = { ProductsByCategory } />
+        <Route path="/products" component = { ProductsAll } />
+        <Route path="/products/by/category" component = { ProductsByCategory } />
         <Route exact path="/product/:id" component = { Product } />
         <Route exact path="/newproduct" component = { NewProduct } />
     </div>

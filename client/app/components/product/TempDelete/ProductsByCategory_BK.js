@@ -10,19 +10,21 @@ class ProductsByCategory extends Component {
   constructor(props) {
   super(props)
   this.state = {
-    catproducts: [],
     limit: 10,
     offset: 0,
-    Category_type: ""
+    Category_type: "Bath+Hardwares"
   }
 }
+
 
   componentDidMount(){
     this.props.renderPerPage({
       limit: this.state.limit,
       offset: this.state.offset,
-      Category_type: this.props.match.params.Category_type.split('%20').join(' ')})
+      Category_type: this.state.Category_type
+    });
   }
+
 
   handleClick(e){
       e.preventDefault();
@@ -41,27 +43,29 @@ class ProductsByCategory extends Component {
   // Categories link
   handleClickthenav(e){
   e.preventDefault();
-  const theName = e.target.id.split(' ').join('%20');
+  const theName = e.target.id.split(' ').join('+');
   console.log(theName)
   window.location = '/products/by/'+theName;
   }
 
   render() {
-    if(!this.state.catproducts){
+    if(!this.props.newproducts){
       return "waiting for data";
     }
-
-    const ProductList = ({items}) => (
+      console.log(this.props.Category_type);
+      console.log(this.props.newproducts);
+    const ProductList = ({products}) => (
       <div>
-        {items.map((item, i) =>
+        {products.map((product, i) =>
           <ProductsBox key={i}
-                  {...item}
+                  {...product}
                   handleClick={this.handleClick.bind(this)}
                   handleDelete={this.handleDelete.bind(this)}
                   />
         )}
       </div>
     )
+
 
     return(
       <div>
@@ -81,7 +85,7 @@ class ProductsByCategory extends Component {
 }
 
 const mapStateToProps = state => ({
-  newproducts: state.newproducts.products,
+  newproducts: state.newproducts.products
 });
 
 export default connect(mapStateToProps, { renderPerPage })(ProductsByCategory);

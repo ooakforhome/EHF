@@ -24,7 +24,7 @@ export const searchSku = (sku) => dispatch => {
 
 export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
   axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
-  .then( res => res.data )
+  .then( res => res.data.all )
   .then( products =>
     dispatch({
       type: RENDER_PRODUCTS,
@@ -32,7 +32,6 @@ export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
     })
   );
 };
-
 
 export const fetchProducts = ({limit, offset}) => dispatch => {
   axios.get(`/api/products?limit=${limit}&offset=${offset}`)
@@ -46,16 +45,16 @@ export const fetchProducts = ({limit, offset}) => dispatch => {
 };
 
 
-export const fetchCategory = (category) => dispatch => {
-  axios.get('/api/products/' + category)
-  .then( res => res.data )
-  .then( products =>
-    dispatch({
-      type: FETCH_CATEGORY,
-      payload: products
-    })
-  );
-};
+// export const fetchCategory = ({category}) => dispatch => {
+//   axios.get(`/api/allproducts/search?category=${category}`)
+//   .then( res => res.data )
+//   .then( products =>
+//     dispatch({
+//       type: FETCH_CATEGORY,
+//       payload: products
+//     })
+//   );
+// };
 
 export const fetchOne = id => dispatch => {
   axios.get('/api/product/' + id)

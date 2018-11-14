@@ -24,7 +24,7 @@ class Home extends Component {
 			<div className='fp_container'>
 				<div className='login_block'>
 					<div className="front_button">
-						<Link to="/products/all">
+						<Link to="/products">
 							<img alt="front product" src={this.state.products} />
 							<button>PRODUCTS</button>
 						</Link>

@@ -7,8 +7,23 @@ module.exports = {
             .then(product => res.json(product))
             .catch(err => res.status(422).json(err))
     },
-        // find all
+        // find all limit10
         getProducts: function(req, res) {
+          var pageOptions = {
+            offset: parseInt(req.query.offset),
+            limit: parseInt(req.query.limit)
+          }
+
+          Product
+            .find()
+            .sort({Category_type:1})
+            .limit(pageOptions.limit)
+            .skip(pageOptions.limit*pageOptions.offset)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        // find all
+        getProductsAll: function(req, res) {
           var pageOptions = {
             offset: parseInt(req.query.offset),
             limit: parseInt(req.query.limit)

@@ -11,12 +11,17 @@ module.exports = {
     const productName = req.query.Product_Name;
 
     const query = Product
-      .find({Category_type: req.query.Category_type})
+    .find({$or: [
+        {Category_type: req.query.Category_type},
+        {Product_Name: req.query.Product_Name},
+        {Product_Weight: req.query.Product_Weight}
+        ]
+      })
       .sort({ [sortProperty]: 1 })
       .skip(offset)
       .limit(limit);
 
-      return Promise.all([query, Product.find({Category_type: req.query.Category_type}).count()])
+      return Promise.all([query, Product.find({Category_type: req.query.category_type}).count()])
       .then((results) => {
         return res.json({
          all: results[0],

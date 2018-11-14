@@ -12,6 +12,14 @@ class ProductsByCategory extends Component {
   }
 }
 
+// To Do Begin ==============================================
+
+  // add redux in this page to load all products
+
+  // pagination to all related pages
+
+// To Do End ================================================
+
   componentDidMount(){
     this.loadData();
   }

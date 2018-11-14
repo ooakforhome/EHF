@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchProducts, searchSku, searchProduct } from '../../actions/product-action';
+import { fetchProducts, renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
@@ -13,7 +13,8 @@ class ProductsAll extends Component {
     super(props);
     this.state = {
       limit: 10,
-      offset: 0
+      offset: 0,
+      Category_type: "ALL"
     };
     this.handleChange=this.handleChange.bind(this);
   }
@@ -23,16 +24,12 @@ class ProductsAll extends Component {
     this.props.fetchProducts({limit: this.state.limit, offset: this.state.offset});
   }
 
-
   handleClick(e){
       e.preventDefault();
         window.location =`/product/${e.target.value}`;
   }
 
   handleDelete(e){
-    console.log("-----------------------");
-    console.log(e.target.value);
-    console.log("-----------------------");
     e.preventDefault();
     API.deleteProduct(e.target.value)
       window.location.reload();
@@ -41,9 +38,15 @@ class ProductsAll extends Component {
   // Categories link
   handleClickthenav(e){
     e.preventDefault();
-    const theName = e.target.id.split(' ').join(' ');
-    console.log(theName)
-    window.location = `/products/by/${e.target.id}`;
+    const theName = e.target.id.split(' ').join('+'); // query need + in between space
+    this.setState({
+      Category_type: e.target.id
+    })
+    this.props.renderPerPage({
+      limit: this.state.limit,
+      offset: this.state.offset,
+      Category_type: theName
+    })
   };
 
   // Limit per page
@@ -59,7 +62,6 @@ class ProductsAll extends Component {
         offset: this.state.offset+=1
       })
       this.updates();
-      console.log(this.state.offset);
   };
 
   prevhandleChange(e){
@@ -73,7 +75,6 @@ class ProductsAll extends Component {
       })
     }
     this.updates();
-      console.log(this.state.offset);
   };
 
   updates(){
@@ -106,7 +107,7 @@ class ProductsAll extends Component {
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
         <div className="products_box">
-          <h1>Products ALL</h1>
+          <h1>{this.state.Category_type}</h1>
           <Link to="/newproduct">
             <button>ADD PRODUCT</button>
           </Link>
@@ -141,4 +142,4 @@ const mapStateToProps = state => ({
   newproduct: state.newproducts.product,
 });
 
-export default connect(mapStateToProps, { fetchProducts, searchSku, searchProduct })(ProductsAll);
+export default connect(mapStateToProps, { fetchProducts, renderPerPage, searchSku, searchProduct })(ProductsAll);

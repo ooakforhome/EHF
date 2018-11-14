@@ -104,7 +104,7 @@ loadImage(){
       <div className="detailPage">
         <div className="item_container" style={{visibility: 'visible'}}>
           <div className="backNav">
-              <Link to="/products/all">
+              <Link to="/products">
                 <button className="backButton">BACK TO PRODUCTS PAGE</button>
               </Link>
           </div>
