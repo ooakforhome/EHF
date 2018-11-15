@@ -6,3 +6,4 @@ export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 export const SEARCH_SKU = 'SEARCH_SKU';
 export const RENDER_PRODUCTS = 'RENDER_PRODUCTS';
 export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
+export const RENDER_COUNT = 'RENDER_COUNT';

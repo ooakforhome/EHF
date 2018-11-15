@@ -1,17 +1,17 @@
-import { RENDER_PRODUCTS } from '../actions/types';
+import { RENDER_COUNT } from '../actions/types';
 
 const initState = {
-  all: [],
-  offset: 0,
-  limit: 12
+  products: [],
+  product: {}
 };
 
-export default ( state = initState, action) => {
+export default function(state = initState, action){
   switch (action.type){
-    case RENDER_PRODUCTS:
-      return {
-        ...state,
-        all: action.payload};
+    case RENDER_COUNT:
+     return {
+       state,
+       products: action.payload
+     }
     default:
       return state;
   }

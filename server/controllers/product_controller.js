@@ -1,12 +1,6 @@
 const Product = require ('../models/Product_model');
 
 module.exports = {
-        searchProduct: function(req, res){
-          Product
-            .find({Product_Name: req.query.Product_Name})
-            .then(product => res.json(product))
-            .catch(err => res.status(422).json(err))
-    },
         // find all limit10
         getProducts: function(req, res) {
           var pageOptions = {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { renderCount, renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
+import { renderCount, fetchProducts, renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
@@ -17,6 +17,7 @@ class ProductsAll extends Component {
       count: 0,
       Category_type: "Accent Furnitures"
     };
+    this.handleChange=this.handleChange.bind(this);
   }
 
 // mount Redux data info.
@@ -53,40 +54,27 @@ class ProductsAll extends Component {
   // Categories link
   handleClickthenav(e){
     e.preventDefault();
-    const {limit, offset} = this.state;
     const theName = e.target.id.split(' ').join('+'); // query need + in between space
     this.setState({
-      limit: 10,
-      offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderPerPage({limit: limit, offset: offset, Category_type:theName})
-    this.props.renderCount({Category_type:theName})
+    this.loadDatas();
   };
 
+  // Limit per page
+  handleChange(e){
+    e.preventDefault();
+      this.props.renderPerPage({limit: e.target.value});
+  };
 
-nexthandleChange(){
-    const offsetpage = this.props.rendercount/10;
-    const offsetleft = this.props.rendercount%10 >= 1? 1 : 0;
-    const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
-    const {limit, offset} = this.state;
-    let theName = this.state.Category_type.split(' ').join('+');
-    // console.log("offsetpage:==> " + Math.floor(offsetpage) + " ;" + "offsetleft:==> " + offsetleft + " ; " + "totalOffset:==> " + totalOffset+ " ;" )
-
-    if(this.state.offset >= totalOffset){
-      this.setState({
-        limit: 10,
-        offset: totalOffset,
-        Category_type: this.state.Category_type
-      })
-    } else {
+  nexthandleChange(e){
+    e.preventDefault();
       this.setState({
         limit: 10,
         offset: this.state.offset+=1
       })
-    }
-    this.updates();
-};
+      this.updates();
+  };
 
   prevhandleChange(e){
     e.preventDefault();
@@ -141,6 +129,10 @@ nexthandleChange(){
           <Link to="/newproduct">
             <button>ADD PRODUCT</button>
           </Link>
+            <button onClick={this.handleChange} name="limit" value="">ALL</button>
+            <button onClick={this.handleChange} name="limit" value="10">10</button>
+            <button onClick={this.handleChange} name="limit" value="20">20</button>
+            <button onClick={this.handleChange} name="limit" value="30">30</button>
 
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
@@ -170,4 +162,32 @@ const mapStateToProps = state => ({
   rendercount: state.rendercount.products,
 });
 
-export default connect(mapStateToProps, { renderCount, renderPerPage, searchSku, searchProduct })(ProductsAll);
+export default connect(mapStateToProps, { renderCount, fetchProducts, renderPerPage, searchSku, searchProduct })(ProductsAll);
+
+
+// nexthandleChange(){
+//     const offsetpage = this.state.itemsInfo.count/10;
+//     const offsetleft = this.state.itemsInfo.count%10 >= 1? 1 : 0;
+//     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
+//     const {limit, offset} = this.state;
+//     let theName = this.state.Category_type.split(' ').join('+');
+//     // console.log("offsetpage:==> " + Math.floor(offsetpage) + " ;" + "offsetleft:==> " + offsetleft + " ; " + "totalOffset:==> " + totalOffset+ " ;" )
+//
+//     if(this.state.offset >= totalOffset){
+//       this.setState({
+//         limit: 10,
+//         offset: totalOffset,
+//         Category_type: this.state.Category_type
+//       })
+//     } else {
+//       this.setState({
+//         limit: 10,
+//         offset: this.state.offset+=1
+//       })
+//     }
+//     axios.get(`/api/allproducts/search?limit=${limit}&offset${offset}&Category_type=${theName}`).then(item => {
+//       this.setState({
+//         itemsInfo: item.data
+//       })
+//     });
+// };
