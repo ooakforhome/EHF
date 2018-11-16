@@ -20,7 +20,7 @@ class ProductsAll extends Component {
   }
 
 // mount Redux data info.
-  componentWillMount() {
+  componentDidMount() {
     this.loadDatas();
   }
 
@@ -64,6 +64,7 @@ class ProductsAll extends Component {
     this.props.renderCount({Category_type:theName})
   };
 
+//////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
     const offsetpage = this.props.rendercount/10;
@@ -87,6 +88,16 @@ nexthandleChange(){
     }
     this.updates();
 };
+/////////////////////////////////////////////////////////////////////////
+
+  // nexthandleChange(e){
+  //   e.preventDefault();
+  //     this.setState({
+  //       limit: 10,
+  //       offset: this.state.offset+=1
+  //     });
+  //     this.updates();
+  // };
 
   prevhandleChange(e){
     e.preventDefault();
