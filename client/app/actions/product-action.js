@@ -33,6 +33,16 @@ export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
   );
 };
 
+export const renderCount = ({token}) => dispatch => {
+  axios.get(`/api/products?token=${token}`)
+  .then( res => res.data )
+  .then( products =>
+    dispatch({
+      type: RENDER_COUNT,
+      payload: products
+    })
+  );
+};
 
 // export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
 //   axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
@@ -45,16 +55,16 @@ export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
 //   );
 // };
 
-export const renderCount = ({limit, offset, Category_type}) => dispatch => {
-  axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
-  .then( res => res.data.count )
-  .then( products =>
-    dispatch({
-      type: RENDER_COUNT,
-      payload: products
-    })
-  );
-};
+// export const renderCount = ({limit, offset, Category_type}) => dispatch => {
+//   axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
+//   .then( res => res.data.count )
+//   .then( products =>
+//     dispatch({
+//       type: RENDER_COUNT,
+//       payload: products
+//     })
+//   );
+// };
 
 
 export const fetchProducts = ({limit, offset}) => dispatch => {

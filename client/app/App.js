@@ -5,7 +5,7 @@ import './styles/styles.scss';
 
 // Home page Link
 import Home from './components/core/Home';
-import Login from './components/core/Login'
+import Login from './components/core/Login';
 
 // component show products pages
 import ProductsAll from './components/product/ProductsAll';
@@ -21,8 +21,8 @@ import NewProduct from './components/product/NewProduct';
 const App = () =>
   <Router>
     <div>
-        <Route exact path="/" component = { Home } />
-        <Route path="/products" component = { ProductsAll } />
+        <Route exact path="/" component = { Login } />
+        <Route path="/products/:token" component = { ProductsAll } />
         <Route path="/products/by/category" component = { ProductsByCategory } />
         <Route exact path="/product/:id" component = { Product } />
         <Route exact path="/newproduct" component = { NewProduct } />
