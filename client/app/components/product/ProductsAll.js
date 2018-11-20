@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { renderCount, renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
+import { renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from './Categories';
 import API from './api-product';
@@ -32,11 +32,6 @@ class ProductsAll extends Component {
       offset: offset,
       Category_type: theName
     });
-    this.props.renderCount({
-      Category_type: theName,
-      limit: limit,
-      offset: offset
-    });
   }
 
   handleClick(e){
@@ -61,18 +56,17 @@ class ProductsAll extends Component {
       Category_type: e.target.id
     })
     this.props.renderPerPage({limit: limit, offset: offset, Category_type:theName})
-    this.props.renderCount({Category_type:theName})
   };
 
 //////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
-    const offsetpage = this.props.rendercount/10;
-    const offsetleft = this.props.rendercount%10 >= 1? 1 : 0;
+    const offsetpage = this.props.newproducts.count/10;
+    const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
-    // console.log("offsetpage:==> " + Math.floor(offsetpage) + " ;" + "offsetleft:==> " + offsetleft + " ; " + "totalOffset:==> " + totalOffset+ " ;" )
+
 
     if(this.state.offset >= totalOffset){
       this.setState({
@@ -119,13 +113,14 @@ nexthandleChange(){
 
 
   render() {
-    if(!this.props.newproducts){
+    if(!this.props.newproducts.all){
       return "waiting for data";
     }
-    console.log("===========newproducts==================")
-    console.log(this.props.newproducts)
-    console.log("===========newproducts==================")
-    console.log(this.props.rendercount)
+    console.log("===========newproducts all==================")
+    console.log(this.props.newproducts.all)
+    console.log("===========newproducts count==================")
+    console.log(this.props.newproducts.count)
+
 
     const ProductList = ({products}) => (
       <div>
@@ -148,7 +143,6 @@ nexthandleChange(){
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-          <h1>{this.props.rendercount}</h1>
           <Link to="/newproduct">
             <button>ADD PRODUCT</button>
           </Link>
@@ -156,12 +150,12 @@ nexthandleChange(){
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
               <p>current page{this.state.offset}</p>
-              <p>Total: {this.props.rendercount}</p>
+              <p>Total: {this.props.newproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
 
           <div>
-            <ProductList products = {this.props.newproducts}/>
+            <ProductList products = {this.props.newproducts.all}/>
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
@@ -178,7 +172,6 @@ nexthandleChange(){
 const mapStateToProps = state => ({
   newproducts: state.newproducts.products,
   newproduct: state.newproducts.product,
-  rendercount: state.rendercount.products,
 });
 
-export default connect(mapStateToProps, { renderCount, renderPerPage, searchSku, searchProduct })(ProductsAll);
+export default connect(mapStateToProps, { renderPerPage, searchSku, searchProduct })(ProductsAll);

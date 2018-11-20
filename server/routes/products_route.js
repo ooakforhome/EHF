@@ -2,6 +2,7 @@ const express = require('express');
 const productCtrl = require('../controllers/product_controller');
 const productPag = require('../controllers/product_paginator');
 
+
 const router = express.Router();
 
 // API routes
