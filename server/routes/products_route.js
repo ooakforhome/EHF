@@ -2,6 +2,7 @@ const express = require('express');
 const productCtrl = require('../controllers/product_controller');
 const basicProductCtrl = require('../controllers/basic_product_contrl');
 const memberProductCtrl = require('../controllers/member_product_contrl');
+const adminProductCtrl = require('../controllers/admin_product_contrl');
 const productPag = require('../controllers/product_paginator');
 
 
@@ -37,5 +38,12 @@ router.route("/api/member/products")
 
 router.route("/api/member/product/:_id")
   .get(memberProductCtrl.getProductByIdMember);
+
+// Admin API routes
+router.route("/api/admin/products")
+  .get(adminProductCtrl.getProductsAdmin);
+
+router.route("/api/admin/product/:_id")
+  .get(adminProductCtrl.getProductByIdAdmin);
 
 module.exports = router;

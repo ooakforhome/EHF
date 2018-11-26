@@ -32,6 +32,8 @@ const App = () =>
         <Route exact path="/product/:id" component = { BasicProduct } />
         <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
         <Route exact path="/auth/product/:id" component = { MemberProduct } />
+        <Route exact path="/admin/products/:token" component = { MemberProductsAll } />
+        <Route exact path="/admin/product/:id" component = { MemberProduct } />
         <Route exact path="/newproduct" component = { NewProduct } />
     </div>
   </Router>;

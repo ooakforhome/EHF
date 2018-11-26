@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { renderMember } from '../../actions/member-action';
+import { renderAdmin } from '../../actions/member-action';
 import { ProductsBox } from '../componentParts/ProductsBox';
 import Categories from '../componentParts/Categories';
 // import API from './api-product';
@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 //SPD to Products
-class MemberProducts extends Component {
+class AdminProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,7 +52,7 @@ class MemberProducts extends Component {
   loadDatas(){
     const {limit, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderMember({
+    this.props.renderAdmin({
       limit: limit,
       offset: offset,
       Category_type: theName
@@ -61,14 +61,14 @@ class MemberProducts extends Component {
 
   handleClick(e){
       e.preventDefault();
-        window.location =`/auth/product/${e.target.value}`;
+        window.location =`/admin/product/${e.target.value}`;
   }
 
-  // handleDelete(e){
-  //   e.preventDefault();
-  //   API.deleteProduct(e.target.value)
-  //     window.location.reload();
-  // }
+  handleDelete(e){
+    e.preventDefault();
+    API.deleteProduct(e.target.value)
+      window.location.reload();
+  }
 
   // Categories link
   handleClickthenav(e){
@@ -79,14 +79,14 @@ class MemberProducts extends Component {
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
+    this.props.renderAdmin({limit: 10, offset: 0, Category_type:theName})
   };
 
 //////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
-    const offsetpage = this.props.newproducts.count/10;
-    const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
+    const offsetpage = this.props.adminproducts.count/10;
+    const offsetleft = this.props.adminproducts.count%10 >= 1? 1 : 0;
     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
@@ -104,7 +104,7 @@ nexthandleChange(){
         offset: this.state.offset+=1
       })
     }
-    this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
+    this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
 };
 
 
@@ -123,12 +123,12 @@ nexthandleChange(){
 
   updates(){
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+    this.props.renderAdmin({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
 
   render() {
-    if(!this.props.newproducts.all){
+    if(!this.props.adminproducts.all){
       return "waiting for data";
     }
 
@@ -139,6 +139,7 @@ nexthandleChange(){
           <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
+                  handleDelete={this.handleDelete.bind(this)}
                   />
         )}
       </div>
@@ -160,12 +161,12 @@ nexthandleChange(){
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
               <p>current page{this.state.offset}</p>
-              <p>Total: {this.props.newproducts.count}</p>
+              <p>Total: {this.props.adminproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
 
           <div>
-            <ProductList products = {this.props.newproducts.all}/>
+            <ProductList products = {this.props.adminproducts.all}/>
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
@@ -180,8 +181,7 @@ nexthandleChange(){
 
 
 const mapStateToProps = state => ({
-  newproducts: state.memberproducts.products,
-  newproduct: state.memberproducts.product,
+  adminproducts: state.adminproducts.products,
 });
 
-export default connect(mapStateToProps, { renderMember })(MemberProducts);
+export default connect(mapStateToProps, { renderAdmin })(AdminProducts);

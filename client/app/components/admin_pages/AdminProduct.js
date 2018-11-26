@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import API from './api-product';
 
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 // Page and parts import
-import { fetchOneMember } from '../../actions/member-action';
-import { MemberDetailBox } from './parts/MemberDetailBox';
+import { fetchOneAdmin } from '../../actions/admin-action';
+import { AdminDetailBox } from './parts/AdminDetailBox';
+import EditProduct from './EditProduct';
 
-class MemberProduct extends Component {
+class AdminProduct extends Component {
   constructor(props){
     super(props)
         this.state = {
@@ -19,12 +21,12 @@ class MemberProduct extends Component {
  }
 
  componentWillMount() {
-   this.props.fetchOneMember(this.props.match.params.id);
+   this.props.fetchOneAdmin(this.props.match.params.id);
    this.checkValidation();
  }
 
  componentDidMount(){
-   this.props.fetchOneMember(this.props.match.params.id)
+   this.props.fetchOneAdmin(this.props.match.params.id)
  }
 
  checkValidation(){
@@ -51,7 +53,7 @@ class MemberProduct extends Component {
 
 backToProductsPageOnClick(e){
   e.preventDefault();
-  window.location =`/auth/products/${this.state.token}`;
+  window.location =`/admin/products/${this.state.token}`;
 }
 
 loadImage(){
@@ -96,6 +98,32 @@ loadImage(){
 
  };
 
+ submitEdit(e){
+   e.preventDefault()
+   API.updateProduct(this.props.match.params.id, {
+     Product_Name: this.state.Product_Name,
+     SKU: this.state.SKU,
+     Materials: this.state.Materials,
+     Color: this.state.Color,
+     Packing_Carton_Width: this.state.Packing_Carton_Width,
+     Packing_Carton_Height: this.state.Packing_Carton_Height,
+     Packing_Carton_Depth: this.state.Packing_Carton_Depth,
+     Actual_Product_Width: this.state.Actual_Product_Width,
+     Actual_Product_Height: this.state.Actual_Product_Height,
+     Actual_Product_Length: this.state.Actual_Product_Length,
+     Feature_1: this.state.Feature_1,
+     Feature_2: this.state.Feature_2,
+     Feature_3: this.state.Feature_3,
+     Feature_4: this.state.Feature_4,
+     Feature_5: this.state.Feature_5,
+     Feature_6: this.state.Feature_6,
+     Feature_7: this.state.Feature_7,
+     Feature_8: this.state.Feature_8,
+     Feature_9: this.state.Feature_9
+   })
+     .then(res => window.location.reload())
+ }
+
   render(){
 
     return (
@@ -105,7 +133,15 @@ loadImage(){
             <button onClick={this.backToProductsPageOnClick.bind(this)} className="backButton">BACK TO PRODUCTS PAGE</button>
           </div>
           <div className="detailPage">
-            <MemberDetailBox item={this.props.memberproduct}/>
+            <AdminDetailBox item={this.props.adminproduct}/>
+          </div>
+          <div className="updateBlock">
+            <EditProduct
+             submitEdit = {this.submitEdit}
+             onChanges = {this.onChanges}
+             _handleSubmit = {this._handleSubmit}
+             _handleImageChange = {this._handleImageChange}
+             />
           </div>
         </div>
       </div>
@@ -114,7 +150,7 @@ loadImage(){
   }
 
   const mapStateToProps = state => ({
-    memberproduct: state.memberproducts.product
+    adminproduct: state.adminproducts.product
   });
 
-export default connect(mapStateToProps, { fetchOneMember } ) (MemberProduct);
+export default connect(mapStateToProps, { fetchOneAdmin } ) (AdminProduct);

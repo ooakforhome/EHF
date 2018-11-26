@@ -8,6 +8,10 @@ export const FETCH_ONE_BASIC = 'FETCH_ONE_BASIC';
 export const RENDER_MEMBER = 'RENDER_MEMBER';
 export const FETCH_ONE_MEMBER = 'FETCH_ONE_MEMBER';
 
+// admin-action
+export const RENDER_ADMIN = 'RENDER_ADMIN';
+export const FETCH_ONE_ADMIN = 'FETCH_ONE_ADMIN';
+
 // product-action
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_ONE = 'FETCH_ONE';
