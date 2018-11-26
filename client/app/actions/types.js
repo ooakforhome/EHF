@@ -1,3 +1,14 @@
+
+
+// basic-action
+export const RENDER_BASIC = 'RENDER_BASIC';
+export const FETCH_ONE_BASIC = 'FETCH_ONE_BASIC';
+
+// member-action
+export const RENDER_MEMBER = 'RENDER_MEMBER';
+export const FETCH_ONE_MEMBER = 'FETCH_ONE_MEMBER';
+
+// product-action
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_ONE = 'FETCH_ONE';
 export const NEW_PRODUCT = 'NEW_PRODUCT';
@@ -6,4 +17,3 @@ export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 export const SEARCH_SKU = 'SEARCH_SKU';
 export const RENDER_PRODUCTS = 'RENDER_PRODUCTS';
 export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
-export const RENDER_COUNT = 'RENDER_COUNT';

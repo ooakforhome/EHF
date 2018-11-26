@@ -17,7 +17,7 @@ module.exports = {
       .then((results) => {
         return res.json({
          all: results[0],
-         count: results[1], 
+         count: results[1],
          offset: offset,
          limit: limit
         });

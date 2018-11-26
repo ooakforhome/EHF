@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
-import { ProductsBox } from './parts/ProductsBox';
-import Categories from './Categories';
-import API from './api-product';
+import { connect } from "react-redux";
+import { renderBasic } from '../../actions/basic-action';
+import { ProductsBox } from '../componentParts/ProductsBox';
+import Categories from '../componentParts/Categories';
+import API from './api-basic';
 import { Link } from 'react-router-dom';
-import { setInStorage, getFromStorage } from '../utils/storage';
+// import { setInStorage, getFromStorage } from '../utils/storage';
 
-//SPD to Products
-class ProductsAll extends Component {
+class BasicProductsAll extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,54 +21,13 @@ class ProductsAll extends Component {
 
 // mount Redux data info.
   componentWillMount() {
-    this.checkValidation();
+    this.loadDatas();
   }
-
-// show data only user is validated
-  // checkToken(){
-  //   const token = this.props.match.params.token;
-  //   axios.get(`/api/verify?token=${token}`)
-  //     .then( res => {
-  //       console.log(res)
-  //       if(res.data.success === true){
-  //         this.loadDatas();
-  //         this.setState({
-  //           token: this.props.match.params.token
-  //         })
-  //       } else {
-  //         window.location =`/`;
-  //       }
-  //     })
-  // }
-
-  checkValidation(){
-    const obj = getFromStorage('the_main_app');
-    if (obj && obj.token) {
-      const { token } = obj;
-      // Verify token
-      fetch('/api/verify?token=' + token)
-        .then(res => res.json())
-        .then(json => {
-          if (json.success) {
-            this.setState({
-              token,
-              isLoading: false
-            });
-            this.loadDatas();
-          } else {
-            window.location =`/`;
-          }
-        });
-    } else {
-        window.location =`/`;
-    }
-  }
-
 
   loadDatas(){
     const {limit, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderPerPage({
+    this.props.renderBasic({
       limit: limit,
       offset: offset,
       Category_type: theName
@@ -96,14 +54,14 @@ class ProductsAll extends Component {
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderPerPage({limit: 10, offset: 0, Category_type:theName})
+    this.props.renderBasic({limit: 10, offset: 0, Category_type:theName})
   };
 
 //////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
-    const offsetpage = this.props.newproducts.count/10;
-    const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
+    const offsetpage = this.props.basicproducts.count/10;
+    const offsetleft = this.props.basicproducts.count%10 >= 1? 1 : 0;
     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
@@ -121,7 +79,7 @@ nexthandleChange(){
         offset: this.state.offset+=1
       })
     }
-    this.props.renderPerPage({limit: limit, offset: offset, Category_type:theName})
+    this.props.renderBasic({limit: limit, offset: offset, Category_type:theName})
 };
 
 
@@ -140,19 +98,16 @@ nexthandleChange(){
 
   updates(){
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderPerPage({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+    this.props.renderBasic({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
 
-  render() {
-    if(!this.props.newproducts.all){
+  render(){
+    if(!this.props.basicproducts.all){
       return "waiting for data";
     }
-    console.log("===========newproducts all==================")
-    console.log(this.props.newproducts.all)
-    console.log("===========newproducts count==================")
-    console.log(this.props.newproducts.count)
-
+    // console.log("===========newproducts all==================")
+    // console.log(this.props.basicproducts.all)
 
     const ProductList = ({products}) => (
       <div>
@@ -165,8 +120,6 @@ nexthandleChange(){
         )}
       </div>
     )
-
-
 
     return(
       <div>
@@ -182,12 +135,12 @@ nexthandleChange(){
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
               <p>current page{this.state.offset}</p>
-              <p>Total: {this.props.newproducts.count}</p>
+              <p>Total: {this.props.basicproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
 
           <div>
-            <ProductList products = {this.props.newproducts.all}/>
+            <ProductList products = {this.props.basicproducts.all}/>
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
@@ -196,14 +149,13 @@ nexthandleChange(){
           </div>
         </div>
       </div>
-    );
+    )
   }
+
 }
 
-
 const mapStateToProps = state => ({
-  newproducts: state.newproducts.products,
-  newproduct: state.newproducts.product,
+  basicproducts: state.basicproducts.products
 });
 
-export default connect(mapStateToProps, { renderPerPage, searchSku, searchProduct })(ProductsAll);
+export default connect(mapStateToProps, { renderBasic })(BasicProductsAll);

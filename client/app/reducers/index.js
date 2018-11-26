@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from "redux-form";
 import productReducer from './product-reducer';
-import renderCount from './render-reducer';
+import basicReducer from './basic-reducer';
+import memberReducer from './member-reducer';
 
 const rootReducer = combineReducers({
   newproducts: productReducer,
-  rendercount: renderCount,
+  memberproducts: memberReducer,
+  basicproducts: basicReducer,
   form: formReducer,
 });
 

@@ -18,7 +18,7 @@ module.exports = {
       })
       .next(err)
   },
-  
+
   addUser: function(req, res, next){
     const { body } = req;
     const { password } = body;
@@ -157,15 +157,21 @@ module.exports = {
    UserSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
      if (err) {
        console.log(err);
-       console.log( "==============Error================" );
-       console.log(res.json("false: Error: Server error"));
+       return res.send({
+         success: false,
+         message: 'Error: Server error'
+       });
      }
      if (sessions.length != 1) {
-       console.log( "==============Error================" );
-       console.log(res.json("false: Error: Invalid"));
+       return res.send({
+         success: false,
+         message: 'Error: Invalid'
+       });
      } else {
-       console.log( "==============True================" );
-       console.log(res.json("True: Account varified"));
+       return res.send({
+         success: true,
+         message: 'Good'
+       });
      }
    })
   }

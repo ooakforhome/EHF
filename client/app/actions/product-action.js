@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, RENDER_PRODUCTS, SEARCH_PRODUCT, RENDER_COUNT } from './types';
+import { FETCH_PRODUCTS, FETCH_ONE, NEW_PRODUCT, UPDATE_PRODUCT, FETCH_CATEGORY, SEARCH_SKU, RENDER_PRODUCTS, SEARCH_PRODUCT } from './types';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -33,38 +33,8 @@ export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
   );
 };
 
-export const renderCount = ({token}) => dispatch => {
-  axios.get(`/api/products?token=${token}`)
-  .then( res => res.data )
-  .then( products =>
-    dispatch({
-      type: RENDER_COUNT,
-      payload: products
-    })
-  );
-};
 
-// export const renderPerPage = ({limit, offset, Category_type}) => dispatch => {
-//   axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
-//   .then( res => res.data.all )
-//   .then( products =>
-//     dispatch({
-//       type: RENDER_PRODUCTS,
-//       payload: products
-//     })
-//   );
-// };
 
-// export const renderCount = ({limit, offset, Category_type}) => dispatch => {
-//   axios.get(`/api/allproducts/search?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
-//   .then( res => res.data.count )
-//   .then( products =>
-//     dispatch({
-//       type: RENDER_COUNT,
-//       payload: products
-//     })
-//   );
-// };
 
 
 export const fetchProducts = ({limit, offset}) => dispatch => {

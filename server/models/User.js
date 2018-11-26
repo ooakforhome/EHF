@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const Product = require('./Product_model');
 
 const UserSchema = new mongoose.Schema({
-
+  username: { type: String },
   email: {
     type: String,
     trim: true,

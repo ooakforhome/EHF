@@ -16,15 +16,22 @@ import NewProduct from './components/product/NewProduct';
 // import SignupForm from './components/passport/sign-up';
 // import Login from './components/passport/login-form';
 
+// Basic Pages
+import BasicProductsAll from './components/basic_pages/BasicProductsAll';
+import BasicProduct from './components/basic_pages/BasicProduct';
 
+// Member Pages
+import MemberProductsAll from './components/member_pages/MemberProducts';
+import MemberProduct from './components/member_pages/MemberProduct';
 
 const App = () =>
   <Router>
     <div>
         <Route exact path="/" component = { Login } />
-        <Route path="/products/:token" component = { ProductsAll } />
-        <Route path="/products/by/category" component = { ProductsByCategory } />
-        <Route exact path="/product/:id" component = { Product } />
+        <Route exact path="/products" component = { BasicProductsAll } />
+        <Route exact path="/product/:id" component = { BasicProduct } />
+        <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
+        <Route exact path="/auth/product/:id" component = { MemberProduct } />
         <Route exact path="/newproduct" component = { NewProduct } />
     </div>
   </Router>;

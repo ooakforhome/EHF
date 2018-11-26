@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
-import { ProductsBox } from './parts/ProductsBox';
-import Categories from './Categories';
-import API from './api-product';
+import { renderMember } from '../../actions/member-action';
+import { ProductsBox } from '../componentParts/ProductsBox';
+import Categories from '../componentParts/Categories';
+// import API from './api-product';
 import { Link } from 'react-router-dom';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 //SPD to Products
-class ProductsAll extends Component {
+class MemberProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,23 +24,6 @@ class ProductsAll extends Component {
   componentWillMount() {
     this.checkValidation();
   }
-
-// show data only user is validated
-  // checkToken(){
-  //   const token = this.props.match.params.token;
-  //   axios.get(`/api/verify?token=${token}`)
-  //     .then( res => {
-  //       console.log(res)
-  //       if(res.data.success === true){
-  //         this.loadDatas();
-  //         this.setState({
-  //           token: this.props.match.params.token
-  //         })
-  //       } else {
-  //         window.location =`/`;
-  //       }
-  //     })
-  // }
 
   checkValidation(){
     const obj = getFromStorage('the_main_app');
@@ -69,7 +52,7 @@ class ProductsAll extends Component {
   loadDatas(){
     const {limit, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderPerPage({
+    this.props.renderMember({
       limit: limit,
       offset: offset,
       Category_type: theName
@@ -78,14 +61,14 @@ class ProductsAll extends Component {
 
   handleClick(e){
       e.preventDefault();
-        window.location =`/product/${e.target.value}`;
+        window.location =`/auth/product/${e.target.value}`;
   }
 
-  handleDelete(e){
-    e.preventDefault();
-    API.deleteProduct(e.target.value)
-      window.location.reload();
-  }
+  // handleDelete(e){
+  //   e.preventDefault();
+  //   API.deleteProduct(e.target.value)
+  //     window.location.reload();
+  // }
 
   // Categories link
   handleClickthenav(e){
@@ -96,7 +79,7 @@ class ProductsAll extends Component {
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderPerPage({limit: 10, offset: 0, Category_type:theName})
+    this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
   };
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,7 +104,7 @@ nexthandleChange(){
         offset: this.state.offset+=1
       })
     }
-    this.props.renderPerPage({limit: limit, offset: offset, Category_type:theName})
+    this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
 };
 
 
@@ -140,7 +123,7 @@ nexthandleChange(){
 
   updates(){
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderPerPage({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+    this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
 
@@ -148,10 +131,6 @@ nexthandleChange(){
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
-    console.log("===========newproducts all==================")
-    console.log(this.props.newproducts.all)
-    console.log("===========newproducts count==================")
-    console.log(this.props.newproducts.count)
 
 
     const ProductList = ({products}) => (
@@ -160,7 +139,6 @@ nexthandleChange(){
           <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
-                  handleDelete={this.handleDelete.bind(this)}
                   />
         )}
       </div>
@@ -202,8 +180,8 @@ nexthandleChange(){
 
 
 const mapStateToProps = state => ({
-  newproducts: state.newproducts.products,
-  newproduct: state.newproducts.product,
+  newproducts: state.memberproducts.products,
+  newproduct: state.memberproducts.product,
 });
 
-export default connect(mapStateToProps, { renderPerPage, searchSku, searchProduct })(ProductsAll);
+export default connect(mapStateToProps, { renderMember })(MemberProducts);

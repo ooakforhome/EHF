@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import API from './api-product';
-// import './product.css';
+
+import { setInStorage, getFromStorage } from '../utils/storage';
 
 // Page and parts import
 import { fetchOne } from '../../actions/product-action';
@@ -14,7 +15,8 @@ class Product extends Component {
     super(props)
         this.state = {
         product: [],
-        images: ''
+        images: '',
+        token:'',
       }
       this._handleImageChange = this._handleImageChange.bind(this);
       this._handleSubmit = this._handleSubmit.bind(this);
@@ -22,12 +24,43 @@ class Product extends Component {
 
  componentWillMount() {
    this.props.fetchOne(this.props.match.params.id);
+   this.checkValidation();
  }
 
  componentDidMount(){
    this.props.fetchOne(this.props.match.params.id)
  }
 
+ checkValidation(){
+   const obj = getFromStorage('the_main_app');
+   if (obj && obj.token) {
+     const { token } = obj;
+     // Verify token
+     fetch('/api/verify?token=' + token)
+       .then(res => res.json())
+       .then(json => {
+         if (json.success) {
+           this.setState({
+             token,
+             isLoading: false
+           });
+         } else {
+           this.setState({
+             isLoading: false,
+           });
+         }
+       });
+   } else {
+     this.setState({
+       isLoading: false,
+     });
+   }
+ }
+
+backToProductsPageOnClick(e){
+  e.preventDefault();
+  window.location =`/products/${this.state.token}`;
+}
 
 loadImage(){
   API.loadLastImg()
@@ -104,9 +137,7 @@ loadImage(){
       <div className="detailPage">
         <div className="item_container" style={{visibility: 'visible'}}>
           <div className="backNav">
-              <Link to="/products">
-                <button className="backButton">BACK TO PRODUCTS PAGE</button>
-              </Link>
+            <button onClick={this.backToProductsPageOnClick.bind(this)} className="backButton">BACK TO PRODUCTS PAGE</button>
           </div>
           <div className="detailPage">
             <DetailBox item={this.props.newproduct}/>

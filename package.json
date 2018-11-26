@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack -p --progress --profile --colors && node server",
-    "start:dev": "node server",
+    "dev": "node server",
     "test": "NODE_ENV=test nodemon --exec 'mocha --recursive -R min'"
   },
   "engines": {
