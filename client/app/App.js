@@ -27,7 +27,7 @@ import MemberProduct from './components/member_pages/MemberProduct';
 const App = () =>
   <Router>
     <div>
-        <Route exact path="/" component = { Login } />
+        <Route exact path="/" component = { Home } />
         <Route exact path="/products" component = { BasicProductsAll } />
         <Route exact path="/product/:id" component = { BasicProduct } />
         <Route exact path="/auth/products/:token" component = { MemberProductsAll } />

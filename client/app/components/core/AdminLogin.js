@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
-class Login extends Component {
+class AdminLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +23,7 @@ class Login extends Component {
       if (obj && obj.token) {
         const { token } = obj;
         // Verify token
-        fetch('/api/verify?token=' + token)
+        fetch('/api/admin/verify?token=' + token)
           .then(res => res.json())
           .then(json => {
             if (json.success) {
@@ -31,7 +31,7 @@ class Login extends Component {
                 token,
                 isLoading: false
               });
-              window.location =`/auth/products/${this.state.token}`;
+              window.location =`/admin/products/${this.state.token}`;
             } else {
               this.setState({
                 isLoading: false,
@@ -74,7 +74,7 @@ class Login extends Component {
         isLoading: true,
       });
       // Post request to backend
-      fetch('/api/signup', {
+      fetch('/api/admin/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ class Login extends Component {
         isLoading: true,
       });
       // Post request to backend
-      fetch('/api/signin', {
+      fetch('/api/admin/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ class Login extends Component {
         if (obj && obj.token) {
           const { token } = obj;
           // Verify token
-          fetch('/api/logout?token=' + token)
+          fetch('/api/admin/logout?token=' + token)
             .then(res => res.json())
             .then(json => {
               if (json.success) {
@@ -242,4 +242,4 @@ class Login extends Component {
 
 } // end HOME
 
-export default Login;
+export default AdminLogin;
