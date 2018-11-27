@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const AdminSessionSchema = new mongoose.Schema({
-  userId: {
+  adminId: {
     type: String,
     default: ''
   },

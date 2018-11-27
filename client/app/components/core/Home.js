@@ -1,5 +1,6 @@
 import React, { Component}  from 'react';
 import { Route, Link } from 'react-router-dom';
+
 // import './core.css';
 
 import axios from 'axios';
@@ -22,6 +23,14 @@ class Home extends Component {
 	render(){
   	return(
 			<div className='fp_container'>
+				<div className="login_container fRight">
+					<Link to="/user_login" className="fLeft">
+						<p>USER LOGIN</p>
+					</Link>
+					<Link to="/admin_login" className="fLeft">
+						<p>ADMIN LOGIN</p>
+					</Link>
+				</div>
 				<div className='login_block'>
 					<div className="front_button">
 						<Link to="/products">

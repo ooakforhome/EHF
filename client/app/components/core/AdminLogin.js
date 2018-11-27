@@ -133,7 +133,7 @@ class AdminLogin extends Component {
               signInEmail: '',
               token: json.token,
             })
-            window.location =`/auth/products/${this.state.token}`;
+            window.location =`/admin/products/${this.state.token}`;
           } else {
             this.setState({
               signInError: json.message,
@@ -233,10 +233,10 @@ class AdminLogin extends Component {
           );
         }
         return (
-          <div>
+          <>
             <p>You already login</p>
             <button onClick={this.logout.bind(this)}> CLICK TO LOGOUT </button>
-          </div>
+          </>
         );
       }
 

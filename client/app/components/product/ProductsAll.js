@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { renderAdmin } from '../../actions/admin-action';
-import { ProductsBox } from '../componentParts/ProductsBox';
-import Categories from '../componentParts/Categories';
-// import API from './api-product';
+import { renderPerPage, searchSku, searchProduct } from '../../actions/product-action';
+import { ProductsBox } from './parts/ProductsBox';
+import Categories from './Categories';
+import API from './api-product';
 import { Link } from 'react-router-dom';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 //SPD to Products
-class AdminProducts extends Component {
+class ProductsAll extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,12 +25,29 @@ class AdminProducts extends Component {
     this.checkValidation();
   }
 
+// show data only user is validated
+  // checkToken(){
+  //   const token = this.props.match.params.token;
+  //   axios.get(`/api/verify?token=${token}`)
+  //     .then( res => {
+  //       console.log(res)
+  //       if(res.data.success === true){
+  //         this.loadDatas();
+  //         this.setState({
+  //           token: this.props.match.params.token
+  //         })
+  //       } else {
+  //         window.location =`/`;
+  //       }
+  //     })
+  // }
+
   checkValidation(){
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
       const { token } = obj;
       // Verify token
-      fetch('/api/admin/verify?token=' + token)
+      fetch('/api/verify?token=' + token)
         .then(res => res.json())
         .then(json => {
           if (json.success) {
@@ -52,7 +69,7 @@ class AdminProducts extends Component {
   loadDatas(){
     const {limit, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderAdmin({
+    this.props.renderPerPage({
       limit: limit,
       offset: offset,
       Category_type: theName
@@ -61,7 +78,7 @@ class AdminProducts extends Component {
 
   handleClick(e){
       e.preventDefault();
-        window.location =`/admin/product/${e.target.value}`;
+        window.location =`/product/${e.target.value}`;
   }
 
   handleDelete(e){
@@ -79,14 +96,14 @@ class AdminProducts extends Component {
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderAdmin({limit: 10, offset: 0, Category_type:theName})
+    this.props.renderPerPage({limit: 10, offset: 0, Category_type:theName})
   };
 
 //////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
-    const offsetpage = this.props.adminproducts.count/10;
-    const offsetleft = this.props.adminproducts.count%10 >= 1? 1 : 0;
+    const offsetpage = this.props.newproducts.count/10;
+    const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
@@ -104,7 +121,7 @@ nexthandleChange(){
         offset: this.state.offset+=1
       })
     }
-    this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
+    this.props.renderPerPage({limit: limit, offset: offset, Category_type:theName})
 };
 
 
@@ -123,14 +140,18 @@ nexthandleChange(){
 
   updates(){
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
-    this.props.renderAdmin({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+    this.props.renderPerPage({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
 
   render() {
-    if(!this.props.adminproducts.all){
+    if(!this.props.newproducts.all){
       return "waiting for data";
     }
+    console.log("===========newproducts all==================")
+    console.log(this.props.newproducts.all)
+    console.log("===========newproducts count==================")
+    console.log(this.props.newproducts.count)
 
 
     const ProductList = ({products}) => (
@@ -161,12 +182,12 @@ nexthandleChange(){
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
               <p>current page{this.state.offset}</p>
-              <p>Total: {this.props.adminproducts.count}</p>
+              <p>Total: {this.props.newproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
 
           <div>
-            <ProductList products = {this.props.adminproducts.all}/>
+            <ProductList products = {this.props.newproducts.all}/>
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
@@ -181,7 +202,8 @@ nexthandleChange(){
 
 
 const mapStateToProps = state => ({
-  adminproducts: state.adminproducts.products,
+  newproducts: state.newproducts.products,
+  newproduct: state.newproducts.product,
 });
 
-export default connect(mapStateToProps, { renderAdmin })(AdminProducts);
+export default connect(mapStateToProps, { renderPerPage, searchSku, searchProduct })(ProductsAll);

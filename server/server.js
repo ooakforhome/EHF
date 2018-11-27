@@ -17,6 +17,7 @@ const port  = process.env.PORT || 3080;
 const productRoutes = require('./routes/products_route');
 const imageRoutes = require('./routes/image_routes');
 const userRoutes = require('./routes/user_route');
+const adminRoutes = require('./routes/admin_route');
 
 // Configuration
 // ================================================================================================
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use('/', productRoutes);
 app.use('/', imageRoutes);
 app.use('/', userRoutes);
+app.use('/', adminRoutes);
 
 if (isDev) {
   const compiler = webpack(webpackConfig);

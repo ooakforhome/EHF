@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import API from './api-product';
 
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 // Page and parts import
-import { fetchOneAdmin } from '../../actions/admin-action';
-import { AdminDetailBox } from './parts/AdminDetailBox';
-import EditProduct from './parts/EditProduct';
+import { fetchOne } from '../../actions/product-action';
+import EditProduct from './EditProduct';
+import { DetailBox } from './parts/DetailBox';
 
-class AdminProduct extends Component {
+class Product extends Component {
   constructor(props){
     super(props)
         this.state = {
@@ -18,15 +18,17 @@ class AdminProduct extends Component {
         images: '',
         token:'',
       }
+      this._handleImageChange = this._handleImageChange.bind(this);
+      this._handleSubmit = this._handleSubmit.bind(this);
  }
 
  componentWillMount() {
-   this.props.fetchOneAdmin(this.props.match.params.id);
+   this.props.fetchOne(this.props.match.params.id);
    this.checkValidation();
  }
 
  componentDidMount(){
-   this.props.fetchOneAdmin(this.props.match.params.id)
+   this.props.fetchOne(this.props.match.params.id)
  }
 
  checkValidation(){
@@ -34,7 +36,7 @@ class AdminProduct extends Component {
    if (obj && obj.token) {
      const { token } = obj;
      // Verify token
-     fetch('/api/admin/verify?token=' + token)
+     fetch('/api/verify?token=' + token)
        .then(res => res.json())
        .then(json => {
          if (json.success) {
@@ -43,17 +45,21 @@ class AdminProduct extends Component {
              isLoading: false
            });
          } else {
-           window.location =`/`;
+           this.setState({
+             isLoading: false,
+           });
          }
        });
    } else {
-     window.location =`/`;
+     this.setState({
+       isLoading: false,
+     });
    }
  }
 
 backToProductsPageOnClick(e){
   e.preventDefault();
-  window.location =`/admin/products/${this.state.token}`;
+  window.location =`/products/${this.state.token}`;
 }
 
 loadImage(){
@@ -98,31 +104,32 @@ loadImage(){
 
  };
 
- submitEdit(e){
-   e.preventDefault()
-   API.updateProduct(this.props.match.params.id, {
-     Product_Name: this.state.Product_Name,
-     SKU: this.state.SKU,
-     Materials: this.state.Materials,
-     Color: this.state.Color,
-     Packing_Carton_Width: this.state.Packing_Carton_Width,
-     Packing_Carton_Height: this.state.Packing_Carton_Height,
-     Packing_Carton_Depth: this.state.Packing_Carton_Depth,
-     Actual_Product_Width: this.state.Actual_Product_Width,
-     Actual_Product_Height: this.state.Actual_Product_Height,
-     Actual_Product_Length: this.state.Actual_Product_Length,
-     Feature_1: this.state.Feature_1,
-     Feature_2: this.state.Feature_2,
-     Feature_3: this.state.Feature_3,
-     Feature_4: this.state.Feature_4,
-     Feature_5: this.state.Feature_5,
-     Feature_6: this.state.Feature_6,
-     Feature_7: this.state.Feature_7,
-     Feature_8: this.state.Feature_8,
-     Feature_9: this.state.Feature_9
-   })
-     .then(res => window.location.reload())
- }
+  submitEdit(e){
+    e.preventDefault()
+    API.updateProduct(this.props.match.params.id, {
+      Product_Name: this.state.Product_Name,
+      SKU: this.state.SKU,
+      Materials: this.state.Materials,
+      Color: this.state.Color,
+      Packing_Carton_Width: this.state.Packing_Carton_Width,
+      Packing_Carton_Height: this.state.Packing_Carton_Height,
+      Packing_Carton_Depth: this.state.Packing_Carton_Depth,
+      Actual_Product_Width: this.state.Actual_Product_Width,
+      Actual_Product_Height: this.state.Actual_Product_Height,
+      Actual_Product_Length: this.state.Actual_Product_Length,
+      Feature_1: this.state.Feature_1,
+      Feature_2: this.state.Feature_2,
+      Feature_3: this.state.Feature_3,
+      Feature_4: this.state.Feature_4,
+      Feature_5: this.state.Feature_5,
+      Feature_6: this.state.Feature_6,
+      Feature_7: this.state.Feature_7,
+      Feature_8: this.state.Feature_8,
+      Feature_9: this.state.Feature_9
+    })
+      .then(res => window.location.reload())
+  }
+
 
   render(){
 
@@ -133,7 +140,7 @@ loadImage(){
             <button onClick={this.backToProductsPageOnClick.bind(this)} className="backButton">BACK TO PRODUCTS PAGE</button>
           </div>
           <div className="detailPage">
-            <AdminDetailBox item={this.props.adminproduct}/>
+            <DetailBox item={this.props.newproduct}/>
           </div>
           <div className="updateBlock">
             <EditProduct
@@ -150,7 +157,7 @@ loadImage(){
   }
 
   const mapStateToProps = state => ({
-    adminproduct: state.adminproducts.product
+    newproduct: state.newproducts.product
   });
 
-export default connect(mapStateToProps, { fetchOneAdmin } ) (AdminProduct);
+export default connect(mapStateToProps, { fetchOne } ) (Product);

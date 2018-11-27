@@ -6,13 +6,13 @@ const router = express.Router();
 
 // API routes
 router.route(`/api/admin/findall`)
-  .get(adminCtrl.findAllUsers);
+  .get(adminCtrl.findAllAdmins);
 
 router.route(`/api/admin/findoneadmin`)
-  .get(adminCtrl.findSingleUsers);
+  .get(adminCtrl.findSingleAdmin);
 
 router.route(`/api/admin/signup`)
-  .post(adminCtrl.addUser);
+  .post(adminCtrl.addAdmin);
 
 router.route(`/api/admin/signin`)
   .post(adminCtrl.adminLogin);

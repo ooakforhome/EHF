@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageUpload } from './parts/ImageUpload';
+import { ImageUpload } from './ImageUpload';
 
 
 class EditProduct extends Component{

@@ -11,7 +11,7 @@ module.exports = {
       })
   },
 
-  findSingleAdmins: function(req, res, next){
+  findSingleAdmin: function(req, res, next){
     Admin.findById({_id: req.query._id, root: Admin})
       .then(data => {
         console.log(res.json(data));
@@ -53,11 +53,11 @@ module.exports = {
          message: 'Error: Account already exist.'
        });
      }
-     // Save the new user
+     // Save the new admin
      const newAdmin = new Admin();
      newAdmin.email = email;
      newAdmin.password = newAdmin.generateHash(password);
-     newAdmin.save((err, user) => {
+     newAdmin.save((err, admin) => {
        if (err) {
          return res.send({
            success: false,
@@ -72,7 +72,7 @@ module.exports = {
    });
  }, // end addAdmin
 
- userLogin : function(req, res, next){
+ adminLogin : function(req, res, next){
    const { body } = req;
    const { password } = body;
    let { email } = body;
@@ -90,7 +90,7 @@ module.exports = {
    }
    email = email.toLowerCase();
    email = email.trim();
-   Admin.find({ email: email }, (err, users) => {
+   Admin.find({ email: email }, (err, admins) => {
      if (err) {
        console.log('err 2:', err);
        return res.send({
@@ -98,23 +98,23 @@ module.exports = {
          message: 'Error: server error'
        });
      }
-     if (users.length != 1) {
+     if (admins.length != 1) {
        return res.send({
          success: false,
          message: 'Error: Invalid'
        });
      }
-     const user = users[0];
-     if (!user.validPassword(password)) {
+     const admin = admins[0];
+     if (!admin.validPassword(password)) {
        return res.send({
          success: false,
          message: 'Error: Invalid'
        });
      }
-     // Otherwise correct user
-     const userSession = new AdminSession();
-     userSession.userId = user._id;
-     userSession.save((err, doc) => {
+     // Otherwise correct admin
+     const adminSession = new AdminSession();
+     adminSession.adminId = admin._id;
+     adminSession.save((err, doc) => {
        if (err) {
          console.log(err);
          return res.send({
@@ -131,7 +131,7 @@ module.exports = {
    });
  },
 
- userLogOut: function(req, res, next){
+ adminLogOut: function(req, res, next){
    const token = req.query.token;
    // ?token=test
    // Verify the token is one of a kind and it's not deleted.
@@ -151,7 +151,7 @@ module.exports = {
  },
 
 
- userVerify: function(req, res, next){
+ adminVerify: function(req, res, next){
    const token = req.query.token;
 
    AdminSession.find({ _id: token, isDeleted: false }, (err, sessions) => {

@@ -23,7 +23,7 @@ class UserLogin extends Component {
       if (obj && obj.token) {
         const { token } = obj;
         // Verify token
-        fetch('/api/verify?token=' + token)
+        fetch('/api/user/verify?token=' + token)
           .then(res => res.json())
           .then(json => {
             if (json.success) {
@@ -74,7 +74,7 @@ class UserLogin extends Component {
         isLoading: true,
       });
       // Post request to backend
-      fetch('/api/signup', {
+      fetch('/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ class UserLogin extends Component {
         isLoading: true,
       });
       // Post request to backend
-      fetch('/api/signin', {
+      fetch('/api/user/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ class UserLogin extends Component {
         if (obj && obj.token) {
           const { token } = obj;
           // Verify token
-          fetch('/api/logout?token=' + token)
+          fetch('/api/user/logout?token=' + token)
             .then(res => res.json())
             .then(json => {
               if (json.success) {
@@ -233,10 +233,10 @@ class UserLogin extends Component {
           );
         }
         return (
-          <div>
+          <>
             <p>You already login</p>
             <button onClick={this.logout.bind(this)}> CLICK TO LOGOUT </button>
-          </div>
+          </>
         );
       }
 
