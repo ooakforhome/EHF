@@ -31,7 +31,7 @@ class MemberProduct extends Component {
    if (obj && obj.token) {
      const { token } = obj;
      // Verify token
-     fetch('/api/verify?token=' + token)
+     fetch('/api/user/verify?token=' + token)
        .then(res => res.json())
        .then(json => {
          if (json.success) {

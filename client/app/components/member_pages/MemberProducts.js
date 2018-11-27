@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import axios from 'axios';
 import { renderMember } from '../../actions/member-action';
 import { ProductsBox } from '../componentParts/ProductsBox';
 import Categories from '../componentParts/Categories';
 // import API from './api-product';
 import { Link } from 'react-router-dom';
 import { setInStorage, getFromStorage } from '../utils/storage';
+import Logout from './parts/Logout';
+
 
 //SPD to Products
 class MemberProducts extends Component {
@@ -30,7 +33,7 @@ class MemberProducts extends Component {
     if (obj && obj.token) {
       const { token } = obj;
       // Verify token
-      fetch('/api/verify?token=' + token)
+      fetch('/api/user/verify?token=' + token)
         .then(res => res.json())
         .then(json => {
           if (json.success) {
@@ -126,6 +129,18 @@ nexthandleChange(){
     this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
+  onclick_logout(e){
+    e.preventDefault();
+    axios.get("/api/user/logout", { _id: this.state.token})
+    .then( respond => {
+      if(respond.data.success === false){
+        alert("logout unsuccessful");
+      } else {
+        window.location = '/';
+      }
+    })
+  };
+
 
   render() {
     if(!this.props.newproducts.all){
@@ -148,6 +163,11 @@ nexthandleChange(){
 
     return(
       <div>
+        <div>
+          <Logout
+            onclick_logout = {this.onclick_logout.bind(this)}
+          />
+        </div>
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>

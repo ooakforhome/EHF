@@ -1,7 +1,8 @@
 import React from 'react'
 
 export const ProductsBox = ({
-  _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick }) => (
+  _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleDelete
+  }) => (
 
   <div className="item_container" >
     <div className="innerBody">
@@ -23,6 +24,9 @@ export const ProductsBox = ({
       <div className="edit_box">
         <button value={_id} className="item_edit_button" onClick={handleClick}>
           Detail
+        </button>
+        <button value={_id} className="item_dele_button" onClick={handleDelete}>
+          Delete
         </button>
       </div>
     </div>
