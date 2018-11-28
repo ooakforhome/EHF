@@ -27,6 +27,27 @@ module.exports = {
       .findById(req.params._id)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+
+  // add
+  addProduct: function(req, res) {
+    Product
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  updateProduct: function(req, res) {
+    Product
+      .findOneAndUpdate({ _id: req.params._id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  deleteProduct: function(req, res) {
+      Product
+        .findOneAndDelete({ _id: req.params._id })
+        .then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
   }
 
 };

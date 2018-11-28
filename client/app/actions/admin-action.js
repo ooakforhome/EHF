@@ -1,4 +1,4 @@
-import { RENDER_ADMIN, FETCH_ONE_ADMIN } from './types';
+import { RENDER_ADMIN, FETCH_ONE_ADMIN, NEW_PRODUCT_ADMIN } from './types';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -22,4 +22,16 @@ import _ from 'lodash';
         payload: product
       })
     );
+  };
+
+
+  export const createProduct = productData => dispatch => {
+    axios.post('/api/admin/products', productData)
+      .then( res => res.data )
+        .then( product =>
+          dispatch ({
+            type: NEW_PRODUCT_ADMIN,
+            payload: product
+          })
+        )
   };

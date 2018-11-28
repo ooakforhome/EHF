@@ -67,12 +67,6 @@ class MemberProducts extends Component {
         window.location =`/auth/product/${e.target.value}`;
   }
 
-  // handleDelete(e){
-  //   e.preventDefault();
-  //   API.deleteProduct(e.target.value)
-  //     window.location.reload();
-  // }
-
   // Categories link
   handleClickthenav(e){
     e.preventDefault();
@@ -131,7 +125,7 @@ nexthandleChange(){
 
   onclick_logout(e){
     e.preventDefault();
-    axios.get("/api/user/logout", { _id: this.state.token})
+    axios.get(`/api/user/logout?token=${this.state.token}`)
     .then( respond => {
       if(respond.data.success === false){
         alert("logout unsuccessful");
@@ -173,9 +167,6 @@ nexthandleChange(){
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-          <Link to="/newproduct">
-            <button>ADD PRODUCT</button>
-          </Link>
 
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>

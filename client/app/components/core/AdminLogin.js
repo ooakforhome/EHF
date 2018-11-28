@@ -31,7 +31,8 @@ class AdminLogin extends Component {
                 token,
                 isLoading: false
               });
-              window.location =`/admin/products/${this.state.token}`;
+              window.location =`/admin/products`;
+              // window.location =`/admin/products/${this.state.token}`;
             } else {
               this.setState({
                 isLoading: false,
@@ -85,7 +86,6 @@ class AdminLogin extends Component {
         }),
       }).then(res => res.json())
       .then(json => {
-        console.log('json', json);
         if (json.success) {
           this.setState({
             signUpError: json.message,
@@ -123,7 +123,6 @@ class AdminLogin extends Component {
         }),
       }).then(res => res.json())
         .then(json => {
-          console.log('json', json);
           if (json.success) {
             setInStorage('the_main_app', { token: json.token });
             this.setState({
@@ -133,7 +132,7 @@ class AdminLogin extends Component {
               signInEmail: '',
               token: json.token,
             })
-            window.location =`/admin/products/${this.state.token}`;
+            window.location =`/admin/products`;
           } else {
             this.setState({
               signInError: json.message,

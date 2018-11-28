@@ -61,7 +61,7 @@ module.exports = {
     },
         deleteProduct: function(req, res) {
           Product
-            .findOneAndDelete({ _id: req.params._id })
+            .findOneAndDelete({ _id: req.params._id, root: Product })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     }

@@ -21,7 +21,7 @@ export default function(state = initialState, action){
      return {
        state,
        products: action.payload
-     }
+     };
     case FETCH_PRODUCTS:
       return {
         ...state,

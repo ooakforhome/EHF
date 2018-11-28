@@ -19,7 +19,7 @@ export class ImageUpload extends Component {
             type="submit">
               Upload
           </button>
-        </form>
+        </form> 
       </div>
     )
   }

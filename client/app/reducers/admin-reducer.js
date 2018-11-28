@@ -1,4 +1,4 @@
-import { RENDER_ADMIN, FETCH_ONE_ADMIN } from '../actions/types';
+import { RENDER_ADMIN, FETCH_ONE_ADMIN, NEW_PRODUCT_ADMIN } from '../actions/types';
 
 const initState = {
   products: [],
@@ -11,12 +11,17 @@ export default function(state = initState, action){
      return {
        ...state,
        products: action.payload
-     }
+      };
      case FETCH_ONE_ADMIN:
       return {
         state,
         product: action.payload
-      }
+      };
+     case NEW_PRODUCT_ADMIN:
+      return {
+        state,
+        product: action.payload
+      };
     default:
       return state;
   }

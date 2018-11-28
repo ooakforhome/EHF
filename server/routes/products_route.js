@@ -8,6 +8,37 @@ const productPag = require('../controllers/product_paginator');
 
 const router = express.Router();
 
+// Basic API routes
+router.route("/api/basic/products")
+  .get(basicProductCtrl.getProductsBasic);
+
+router.route("/api/basic/product/:_id")
+  .get(basicProductCtrl.getProductByIdBasic);
+
+
+// Member API routes
+router.route("/api/member/products")
+  .get(memberProductCtrl.getProductsMember);
+
+router.route("/api/member/product/:_id")
+  .get(memberProductCtrl.getProductByIdMember);
+
+
+// Admin API routes
+router.route("/api/admin/products")
+  .get(adminProductCtrl.getProductsAdmin)
+  .post(adminProductCtrl.addProduct);
+
+router.route("/api/admin/product/:_id")
+  .get(adminProductCtrl.getProductByIdAdmin)
+  .put(adminProductCtrl.updateProduct)
+  .delete(adminProductCtrl.deleteProduct);
+
+
+
+
+
+
 // API routes
 router.route(`/api/products`)
   .get(productCtrl.getProducts)
@@ -25,25 +56,6 @@ router.route("/api/allproducts/search")
   .get(productPag.renderPerPage);
 
 
-// Basic API routes
-router.route("/api/basic/products")
-  .get(basicProductCtrl.getProductsBasic);
 
-router.route("/api/basic/product/:_id")
-  .get(basicProductCtrl.getProductByIdBasic);
-
-// Member API routes
-router.route("/api/member/products")
-  .get(memberProductCtrl.getProductsMember);
-
-router.route("/api/member/product/:_id")
-  .get(memberProductCtrl.getProductByIdMember);
-
-// Admin API routes
-router.route("/api/admin/products")
-  .get(adminProductCtrl.getProductsAdmin);
-
-router.route("/api/admin/product/:_id")
-  .get(adminProductCtrl.getProductByIdAdmin);
 
 module.exports = router;

@@ -42,5 +42,10 @@ export default {
     // Update a producty by ID
       updateProduct: function(id, productData){
         return axios.put(`/api/product/${id}`, productData);
+      },
+
+    // Admin Logout
+      adminLogout: function(token){
+        return axios(`/api/admin/logout?token=${token}`)
       }
 };

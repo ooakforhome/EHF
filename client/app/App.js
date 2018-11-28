@@ -11,7 +11,7 @@ import Login from './components/core/UserLogin';
 import ProductsAll from './components/product/ProductsAll';
 import Product from './components/product/Product';
 import ProductsByCategory from './components/product/ProductsByCategory';
-import NewProduct from './components/product/NewProduct';
+
 import UserLogin from './components/core/UserLogin';
 import AdminLogin from './components/core/AdminLogin';
 //
@@ -29,6 +29,7 @@ import MemberProduct from './components/member_pages/MemberProduct';
 // Admin Pages
 import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
+import NewProduct from './components/admin_pages/NewProduct';
 
 const App = () =>
   <Router>

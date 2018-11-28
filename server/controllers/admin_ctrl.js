@@ -142,11 +142,12 @@ module.exports = {
          success: false,
          message: 'Error: Server error'
        });
-     }
-     return res.send({
-       success: true,
-       message: 'Good'
-     });
+     }else {
+       return res.send({
+         success: true,
+         message: 'Good'
+     })
+   }
    });
  },
 

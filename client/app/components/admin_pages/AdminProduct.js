@@ -53,7 +53,7 @@ class AdminProduct extends Component {
 
 backToProductsPageOnClick(e){
   e.preventDefault();
-  window.location =`/admin/products/${this.state.token}`;
+  window.location =`/admin/products`;
 }
 
 loadImage(){
@@ -137,10 +137,10 @@ loadImage(){
           </div>
           <div className="updateBlock">
             <EditProduct
-             submitEdit = {this.submitEdit}
-             onChanges = {this.onChanges}
-             _handleSubmit = {this._handleSubmit}
-             _handleImageChange = {this._handleImageChange}
+             submitEdit = {this.submitEdit.bind(this)}
+             onChanges = {this.onChanges.bind(this)}
+             _handleSubmit = {this._handleSubmit.bind(this)}
+             _handleImageChange = {this._handleImageChange.bind(this)}
              />
           </div>
         </div>

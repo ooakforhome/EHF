@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { renderAdmin } from '../../actions/admin-action';
-import { ProductsBox } from '../componentParts/ProductsBox';
+import { ProductsBox } from './parts/ProductsBox';
 import Categories from '../componentParts/Categories';
-// import API from './api-product';
+import API from './api-product';
 import { Link } from 'react-router-dom';
+import Logout from './parts/Logout';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 //SPD to Products
@@ -121,11 +122,24 @@ nexthandleChange(){
     this.updates();
   };
 
+// refrash products data
   updates(){
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
     this.props.renderAdmin({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
+// Logout Admin
+  onclick_logout(e){
+    e.preventDefault();
+    API.adminLogout( this.state.token )
+    .then( respond => {
+      if(respond.data.success === false){
+        alert("logout unsuccessful");
+      } else {
+        window.location="/";
+      }
+    })
+  };
 
   render() {
     if(!this.props.adminproducts.all){
@@ -149,6 +163,12 @@ nexthandleChange(){
 
     return(
       <div>
+        <div>
+          <p>{this.state.token}</p>
+          <Logout
+            onclick_logout = {this.onclick_logout.bind(this)}
+          />
+        </div>
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
@@ -181,7 +201,7 @@ nexthandleChange(){
 
 
 const mapStateToProps = state => ({
-  adminproducts: state.adminproducts.products,
+  adminproducts: state.adminproducts.products
 });
 
 export default connect(mapStateToProps, { renderAdmin })(AdminProducts);
