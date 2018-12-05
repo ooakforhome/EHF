@@ -1,5 +1,6 @@
 const Product = require ('../models/Product_model');
 
+
 module.exports = {
         // find all limit10
         getProducts: function(req, res) {

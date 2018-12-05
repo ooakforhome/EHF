@@ -55,6 +55,8 @@ var productSchema = new Schema({
   Wholesale_10_Pad: { type: String },
   Delivered_Price: { type: String },
   Product_Diameter: { type: Number},
+  Retail: { type: String },
+  addDate: {type: Date, default: Date.now()},
   images: {type: String, default: "null" }
 })
 

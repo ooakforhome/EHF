@@ -1,3 +1,15 @@
+mongoimport --db EHF --collection products --type JSON --file C:/Users/David/Desktop/EHF-Product_CSV/products.json
+mongoimport --db EHF --collection products --type CSV --file C:/Users/David/pagetest2/EHF-MarketPlace/products.csv
+
+mongoimport -d EHF -c products --type csv --file C:/Users/David/Desktop/EHF-Product_CSV/products.csv --headerline
+
+mongoexport --host localhost:27017 --db EHF --collection products --type csv --out C:/Users/David/Desktop/products.csv
+mongoexport --db EHF --collection products --type json --out C:/Users/David/Desktop/EHF-Product_CSV/products_2.json
+
+mongoexport --username  --password "pass" --collection contacts --db marketing --out mdb1-examplenet.json
+//===================================================================
+
+
 npm i --save --dev babel-cli babel-loader babel-preset-latest babel-preset-react babel-preset-stage-0 css-loader json-loader node-sass sass sass-loader style-loader webpack
 
 npm i --save @babel/core @babel/preset-env @babel/preset-react autoprefixer babel-loader connect-history-api-fallback copy-webpack-plugin css-loader express extract-text-webpack-plugin html-webpack-plugin mongoose node-sass nodemon postcss-loader react react-dom react-hot-loader react-router react-router-dom sass-loader style-loader webpack webpack-cli webpack-dev-middleware webpack-hot-middleware webpack-merge whatwg-fetch axios bcryptjs body-parser connect-mongo express-session gridfs-stream lodash morgan multer multer-gridfs-storage

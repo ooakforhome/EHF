@@ -1,3 +1,67 @@
+/* --------Default ---------- */
+$left : left;
+$auto : auto;
+$right: right;
+$background-size: contain;
+
+
+  /* ================= col left==================== */
+  .col-12 { width: percentage(12/12);}
+  .col-11 { width: percentage(11/12); float: $left;}
+  .col-10 { width: percentage(10/12); float: $left;}
+  .col-9 { width: percentage(9/12); float: $left;}
+  .col-8 { width: percentage(8/12); float: $left;}
+  .col-7 { width: percentage(7/12); float: $left;}
+  .col-6 { width: percentage(6/12); float: $left;}
+  .col-5 { width: percentage(5/12); float: $left;}
+  .col-4 { width: percentage(4/12); float: $left;}
+  .col-3 { width: percentage(3/12); float: $left;}
+  .col-2 { width: percentage(2/12); float: $left;}
+  .col-1 { width: percentage(1/12); float: $left;}
+
+  /* ================= col auto==================== */
+  .iCol-12 { width: percentage(12/12);}
+  .iCol-11 { width: percentage(11/12); margin: auto;}
+  .iCol-10 { width: percentage(10/12); margin: auto;}
+  .iCol-9 { width: percentage(9/12); margin: auto;}
+  .iCol-8 { width: percentage(8/12); margin: auto;}
+  .iCol-7 { width: percentage(7/12); margin: auto;}
+  .iCol-6 { width: percentage(6/12); margin: auto;}
+  .iCol-5 { width: percentage(5/12); margin: auto;}
+  .iCol-4 { width: percentage(4/12); margin: auto;}
+  .iCol-3 { width: percentage(3/12); margin: auto;}
+  .iCol-2 { width: percentage(2/12); margin: auto;}
+  .iCol-1 { width: percentage(1/12); margin: auto;}
+
+.text-center{
+  text-align: center;
+}
+
+.border{
+  border: 1px solid black;
+}
+
+.box_shadow {
+  box-shadow: 0px 5px 10px grey;
+}
+
+/* -----sign in page----- */
+.login_page_container{
+  width:300px;
+  height: 100%;
+  margin:auto;
+  margin-top: 250px;
+}
+
+.input-space{
+  margin: 0 0 10px 0;
+}
+
+.toggleContainer{
+  display: none;
+}
+
+
 /* -----ImageUpload----- */
 .form_class {
   padding: 5px;
@@ -264,7 +328,7 @@ input {
 }
 
 .login_block {
-  width: 650px;
+  width: 300px;
   margin: auto;
   padding-top: 100px;
 }
@@ -314,6 +378,30 @@ input {
   width: 500px;
   float: left;
 }
+
+// cart/parts/add_product
+.add_product_container {
+  width: 500px;
+  height: 175px;
+  box-shadow: 1px 1px 10px grey;
+}
+.add_product_image {
+  width: 95%;
+  margin: auto;
+  border: 1px solid black;
+}
+.cart_product_qty_container {
+  padding: 10px 0px;
+  p, input {
+    padding: 0px 5px 0px 0px;
+    margin: 0px;
+  }
+}
+.cart_product_name {}
+.cart_product_price {}
+.cart_product_qty { width: 30px;}
+.cart_product_total {}
+.cart_product_remove_btn {}
 
 @media only screen and (max-width: 640px){
   .innerBody {

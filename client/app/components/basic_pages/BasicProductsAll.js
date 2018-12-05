@@ -5,7 +5,8 @@ import { ProductsBox } from '../componentParts/ProductsBox';
 import Categories from '../componentParts/Categories';
 import API from './api-basic';
 import { Link } from 'react-router-dom';
-// import { setInStorage, getFromStorage } from '../utils/storage';
+import axios from 'axios';
+import { Header } from '../core/Header';
 
 class BasicProductsAll extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class BasicProductsAll extends Component {
     this.state = {
       limit: 10,
       offset: 0,
+      totalPage: 0,
       count: 0,
       token:'',
       Category_type: "Accent Furnitures"
@@ -24,9 +26,11 @@ class BasicProductsAll extends Component {
     this.loadDatas();
   }
 
+
   loadDatas(){
-    const {limit, offset} = this.state;
+    const {limit, offset } = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
+
     this.props.renderBasic({
       limit: limit,
       offset: offset,
@@ -55,9 +59,8 @@ class BasicProductsAll extends Component {
       Category_type: e.target.id
     })
     this.props.renderBasic({limit: 10, offset: 0, Category_type:theName})
+    // this.totalPagesCal()
   };
-
-//////////////////////////////////////////////////////////////////////////
 
 nexthandleChange(){
     const offsetpage = this.props.basicproducts.count/10;
@@ -101,14 +104,13 @@ nexthandleChange(){
     this.props.renderBasic({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
-
   render(){
     if(!this.props.basicproducts.all){
       return "waiting for data";
     }
-    // console.log("===========newproducts all==================")
-    // console.log(this.props.basicproducts.all)
+    console.log(this.props.basicproducts.all)
 
+    const TotalPages = Math.floor(this.props.basicproducts.count/10);
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
@@ -123,18 +125,16 @@ nexthandleChange(){
 
     return(
       <div>
+        <Header />
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-          <Link to="/newproduct">
-            <button>ADD PRODUCT</button>
-          </Link>
 
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>current page{this.state.offset}</p>
+              <p>Page: {this.state.offset} of { TotalPages }</p>
               <p>Total: {this.props.basicproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
@@ -144,14 +144,13 @@ nexthandleChange(){
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-            <p>current page{this.state.offset}</p>
+              <p>Page: {this.state.offset} of { TotalPages }</p>
             <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
           </div>
         </div>
       </div>
     )
   }
-
 }
 
 const mapStateToProps = state => ({

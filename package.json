@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack -p --progress --profile --colors && node server",
     "dev": "node server",
-    "test": "NODE_ENV=test nodemon --exec 'mocha --recursive -R min'"
+    "test": "nodemon --exec \"mocha -R min\""
   },
   "engines": {
     "node": ">=6"
@@ -63,9 +63,13 @@
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hot-middleware": "^2.24.2",
     "webpack-merge": "^4.1.4",
+    "compression": "",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "mocha": "",
+    "chai": "",
+    "request": "",
     "extract-text-webpack-plugin": "^4.0.0-beta.0"
   }
 }

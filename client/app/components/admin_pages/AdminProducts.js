@@ -141,12 +141,18 @@ nexthandleChange(){
     })
   };
 
+// add new product
+  addNewProduct(e){
+    e.preventDefault();
+    window.location=`/newproduct/${this.state.token}`
+  }
+
   render() {
     if(!this.props.adminproducts.all){
       return "waiting for data";
     }
 
-
+    const TotalPages = Math.floor(this.props.adminproducts.count/10);
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
@@ -164,35 +170,34 @@ nexthandleChange(){
     return(
       <div>
         <div>
-          <p>{this.state.token}</p>
           <Logout
             onclick_logout = {this.onclick_logout.bind(this)}
           />
+          <button onClick={this.addNewProduct.bind(this)}>ADD NEW PRODUCT</button>
         </div>
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-          <Link to="/newproduct">
-            <button>ADD PRODUCT</button>
-          </Link>
 
-            <div className ="floatleftblock">
+
+            <div className ="floatleftblock text-center">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>current page{this.state.offset}</p>
-              <p>Total: {this.props.adminproducts.count}</p>
+              <p>Page: {this.state.offset} of { TotalPages }</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
-
+              <p>Total: {this.props.adminproducts.count}</p>
           <div>
             <ProductList products = {this.props.adminproducts.all}/>
           </div>
-          <div className ="floatleftblock">
+          <div className ="floatleftblock text-center">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-            <p>current page{this.state.offset}</p>
+            <p>Page: {this.state.offset} of { TotalPages }</p>
             <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
+                        <p>Total: {this.props.adminproducts.count}</p>
           </div>
+
         </div>
       </div>
     );

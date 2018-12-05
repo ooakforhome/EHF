@@ -171,6 +171,13 @@ class AdminLogin extends Component {
         }
       }
 
+
+    showSignup(e){
+      e.preventDefault();
+        const toggleshow = document.querySelector('.sign_up_container');
+        toggleshow.classList.toggle('toggleContainer');
+    }
+
       render() {
         const { isLoading, token, signInError, signInEmail, signInPassword, signUpEmail, signUpPassword, signUpError } = this.state;
         if (isLoading) {
@@ -178,15 +185,18 @@ class AdminLogin extends Component {
         }
         if (!token) {
           return (
-            <div>
-              <div>
+            <div className="login_page_container">
+
+
+              <div className="sign_In_Box box_shadow">
                 {
                   (signInError) ? (
                     <p>{signInError}</p>
                   ) : (null)
                 }
-                <p>Sign In</p>
+                <p className="text-center">Sign In</p>
                 <input
+                  className="col-11 input-space"
                   type="email"
                   placeholder="Email"
                   value={signInEmail}
@@ -194,6 +204,7 @@ class AdminLogin extends Component {
                 />
                 <br />
                 <input
+                  className="col-11 input-space"
                   type="password"
                   placeholder="Password"
                   value={signInPassword}
@@ -202,17 +213,23 @@ class AdminLogin extends Component {
                 <br />
                 <button onClick={this.onSignIn.bind(this)}>Sign In</button>
               </div>
+
+
               <br />
               <br />
-              <div>
+              <p>dont have a account?</p>
+              <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
+              
+              <div className="sign_up_container toggleContainer box_shadow">
                 {
                   (signUpError) ? (
                     <p>{signUpError}</p>
                   ) : (null)
                 }
-                <p>Sign Up</p>
+                <p className="text-center">Sign Up</p>
                 <p>{signUpEmail}</p>
                 <input
+                  className="col-11 input-space"
                   type="email"
                   placeholder="Email"
                   value={signUpEmail}
@@ -220,6 +237,7 @@ class AdminLogin extends Component {
                 />
                 <br />
                 <input
+                  className="col-11 input-space"
                   type="password"
                   placeholder="Password"
                   value={signUpPassword}
@@ -228,6 +246,7 @@ class AdminLogin extends Component {
                 <br />
                 <button onClick={this.onSignUp.bind(this)}>Sign Up</button>
               </div>
+
            </div>
           );
         }

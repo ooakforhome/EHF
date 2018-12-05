@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { renderMember } from '../../actions/member-action';
-import { ProductsBox } from '../componentParts/ProductsBox';
+import { ProductsBox } from './parts/ProductsBox';
 import Categories from '../componentParts/Categories';
 // import API from './api-product';
 import { Link } from 'react-router-dom';
@@ -62,9 +62,15 @@ class MemberProducts extends Component {
     });
   }
 
+// ProductsBox
   handleClick(e){
       e.preventDefault();
         window.location =`/auth/product/${e.target.value}`;
+  }
+
+  handleAddClick(e){
+    e.preventDefault();
+    console.log("Item added")
   }
 
   // Categories link
@@ -135,19 +141,19 @@ nexthandleChange(){
     })
   };
 
-
   render() {
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
 
-
+    const TotalPages = Math.floor(this.props.newproducts.count/10);
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
           <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
+                  handleAddClick={this.handleAddClick.bind(this)}
                   />
         )}
       </div>
@@ -170,7 +176,7 @@ nexthandleChange(){
 
             <div className ="floatleftblock">
               <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>current page{this.state.offset}</p>
+              <p>Page: {this.state.offset} of { TotalPages }</p>
               <p>Total: {this.props.newproducts.count}</p>
               <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
             </div>
@@ -180,7 +186,7 @@ nexthandleChange(){
           </div>
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-            <p>current page{this.state.offset}</p>
+              <p>Page: {this.state.offset} of { TotalPages }</p>
             <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
           </div>
         </div>

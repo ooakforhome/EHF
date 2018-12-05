@@ -1,11 +1,12 @@
 import React from "react";
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import './styles/styles.scss';
 
 // Home page Link
 import Home from './components/core/Home';
 import Login from './components/core/UserLogin';
+import Header from './components/core/Header';
 
 // component show products pages
 import ProductsAll from './components/product/ProductsAll';
@@ -31,6 +32,8 @@ import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
 import NewProduct from './components/admin_pages/NewProduct';
 
+import Test from './components/cart/parts/add_product'
+
 const App = () =>
   <Router>
     <div>
@@ -43,7 +46,8 @@ const App = () =>
         <Route exact path="/auth/product/:id" component = { MemberProduct } />
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
-        <Route exact path="/newproduct" component = { NewProduct } />
+        <Route exact path="/newproduct/:token" component = { NewProduct } />
+        <Route exact path="/test" component = { Test } />        
     </div>
   </Router>;
 

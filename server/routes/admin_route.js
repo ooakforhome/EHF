@@ -8,6 +8,9 @@ const router = express.Router();
 router.route(`/api/admin/findall`)
   .get(adminCtrl.findAllAdmins);
 
+router.route(`/api/admin/findbyemail`)
+  .get(adminCtrl.findByEmail);
+
 router.route(`/api/admin/findoneadmin`)
   .get(adminCtrl.findSingleAdmin);
 

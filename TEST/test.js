@@ -1,167 +1,24 @@
-import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { Range } from '../filters';
-import * as actions from '../../actions';
+const assert = require('assert');
+const mongoose = require('mongoose');
+const expect  = require('chai').expect;
+const request = require('request');
+const axios = require('axios');
 
-const TEXT_FIELDS = [
-  { label: 'Name', prop: 'name' }
-];
+const base_url = "http://localhost:3080/";
+const Admin = require('../server/models/Admin');
 
-class ArtistFilter extends Component {
-  componentWillMount() {
-    if (this.props.filters) {
-      this.props.searchArtists({
-        name: '',
-        ...this.props.filters
-      });
-    } else {
-      this.props.searchArtists({
-        name: '',
-        sort: 'name'
-      });
-    }
-  }
-
-  componentDidMount() {
-    this.props.setAgeRange();
-    this.props.setYearsActiveRange();
-  }
-
-  handleSubmit(formProps) {
-    this.props.searchArtists({
-      name: '',
-      ...formProps
+describe('Array', function() {
+  describe('#indexOf()', function() {
+    it('should return -1 when the value is not present', function() {
+      assert.equal([1,2,3].indexOf(4), -1);
     });
-  }
-
-  renderInputs() {
-    return TEXT_FIELDS.map(({ label, prop }) =>
-      <div className="input-field" key={prop}>
-        <Field
-          placeholder={label}
-          id={prop}
-          name={prop}
-          component="input"
-          type="text"
-        />
-      </div>
-    );
-  }
-
-  render() {
-    const { handleSubmit } = this.props;
-
-    return (
-      <div className="card blue-grey darken-1 row">
-        <div className="card-content white-text">
-          <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-            <div className="center-align card-title">
-              Search
-            </div>
-
-            {this.renderInputs()}
-
-            <div className="input-field">
-              <Field
-                id="age"
-                label="Age"
-                component={Range}
-                type="text"
-                name="age"
-                range={this.props.ageRange}
-              />
-            </div>
-
-            <div className="input-field">
-              <Field
-                id="years-active"
-                label="Years Active"
-                component={Range}
-                type="text"
-                name="yearsActive"
-                range={this.props.yearsActive}
-              />
-            </div>
-
-            <div>
-              <label className="select" htmlFor="sort">Sort By</label>
-              <Field id="sort" name="sort" component="select">
-                <option value="name">Name</option>
-                <option value="age">Age</option>
-                <option value="yearsActive">Years Active</option>
-              </Field>
-            </div>
-
-            <div className="center-align">
-              <button className="btn">Submit</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { filterCriteria } = state;
-
-  return {
-    yearsActive: filterCriteria.yearsActive,
-    ageRange: filterCriteria.age,
-    filters: state.form.filters && state.form.filters.values
-  };
-};
-
-export default connect(mapStateToProps, actions)(reduxForm({
-  destroyOnUnmount: false,
-  form: 'filters',
-  initialValues: { sort: 'name' }
-})(ArtistFilter));
-
-
-//-=-----------------
-<div className="card-content white-text">
-  <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-    <div className="center-align card-title">
-      Search
-    </div>
-
-    {this.renderInputs()}
-
-    <div className="input-field">
-      <Field
-        id="Product_Weight"
-        label="Product Weight"
-        component={Range}
-        type="text"
-        name="productWeight"
-        range={this.props.ageRange}
-      />
-    </div>
-
-    <div className="input-field">
-      <Field
-        id="Product_Shipping_Weight"
-        label="Product Shipping Weight"
-        component={Range}
-        type="text"
-        name="productShippingWeight"
-        range={this.props.yearsActive}
-      />
-    </div>
-
-    <div>
-      <label className="select" htmlFor="sort">Sort By</label>
-      <Field id="sort" name="sort" component="select">
-        <option value="Product_Name">Product Name</option>
-        <option value="Product_Weight">Product Weight</option>
-        <option value="Product_Shipping_Weight">Product Shipping Weight</option>
-      </Field>
-    </div>
-
-    <div className="center-align">
-      <button className="btn">Submit</button>
-    </div>
-  </form>
-</div>
+    it('this is another test that should pass', (done)=>{
+      assert.equal(5, 3+2);
+      done();
+    });
+    it('should just test something', (done)=>{
+      assert.equal(10, 2*5);
+      done();
+    });
+  });
+});

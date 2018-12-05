@@ -19,6 +19,13 @@ module.exports = {
       .next(err)
   },
 
+  findByEmail: function(req, res){
+    Admin.findOne({email: req.query.email})
+      .then(data => {
+        return res.json(data)
+      })
+  },
+
   addAdmin: function(req, res, next){
     const { body } = req;
     const { password } = body;

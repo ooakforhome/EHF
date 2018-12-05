@@ -1,6 +1,6 @@
 import React, { Component}  from 'react';
-import { Route, Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import { Header } from './Header';
 // import './core.css';
 
 import axios from 'axios';
@@ -14,8 +14,7 @@ class Home extends Component {
 		this.state = {
 			loggedIn: false,
 			username: null,
-			products: "https://cdn0.iconfinder.com/data/icons/delivery-2-1/100/delivery-20-512.png",
-			addImg: "https://cdn3.iconfinder.com/data/icons/buttons/512/Icon_31-512.png"
+			products: "https://cdn0.iconfinder.com/data/icons/delivery-2-1/100/delivery-20-512.png"
 		};
 	}
 
@@ -23,25 +22,12 @@ class Home extends Component {
 	render(){
   	return(
 			<div className='fp_container'>
-				<div className="login_container fRight">
-					<Link to="/user_login" className="fLeft">
-						<p>USER LOGIN</p>
-					</Link>
-					<Link to="/admin_login" className="fLeft">
-						<p>ADMIN LOGIN</p>
-					</Link>
-				</div>
+				<Header />
 				<div className='login_block'>
 					<div className="front_button">
 						<Link to="/products">
 							<img alt="front product" src={this.state.products} />
 							<button>PRODUCTS</button>
-						</Link>
-					</div>
-					<div className="front_button">
-						<Link to="/newproduct">
-							<img alt="front add" src={this.state.addImg} />
-							<button>ADD PRODUCT</button>
 						</Link>
 					</div>
 				</div>
