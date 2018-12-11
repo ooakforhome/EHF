@@ -40,7 +40,8 @@ const storage = new GridFsStorage({
           bucketName: 'uploads',
           metadata: {
             productName: file.originalname.slice(0,-4),
-            ownBy: "Elegant Home Fashions"
+            ownBy: "Elegant Home Fashions",
+            userID: file
           }
         };
         resolve(fileInfo);
@@ -57,6 +58,7 @@ router.post('/api/upload/', upload, (req, res) => {
   console.log(req.file)
   console.log("<<=======================>>");
   console.log(req.file.filename)
+  console.log(req.file.t_id)
 
   let newProductModel = new Product({images: req.file.id});
 
@@ -65,7 +67,7 @@ router.post('/api/upload/', upload, (req, res) => {
 
   return res.json({upload: req.file.filename})
   // axios.put('/api/products' + id, {"images" : res.req.file.id});
-  })
+})
 
 // Get all getImages
 router.get('/api/files', (req, res) =>{

@@ -15,6 +15,9 @@ import ProductsByCategory from './components/product/ProductsByCategory';
 
 import UserLogin from './components/core/UserLogin';
 import AdminLogin from './components/core/AdminLogin';
+
+import Cart from './components/cart/cart';
+
 //
 // import SignupForm from './components/passport/sign-up';
 // import Login from './components/passport/login-form';
@@ -32,7 +35,7 @@ import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
 import NewProduct from './components/admin_pages/NewProduct';
 
-import Test from './components/cart/parts/add_product'
+import Test from './components/cart/checkout.js'
 
 const App = () =>
   <Router>
@@ -47,7 +50,8 @@ const App = () =>
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
         <Route exact path="/newproduct/:token" component = { NewProduct } />
-        <Route exact path="/test" component = { Test } />        
+        <Route exact path="/test" component = { Test } />
+        <Route exact path="/cart" component = { Cart } />
     </div>
   </Router>;
 

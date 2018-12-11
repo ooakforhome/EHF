@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Header } from '../core/Header';
 
-
 class BasicProductsAll extends Component {
   constructor(props) {
     super(props);
@@ -66,6 +65,7 @@ class BasicProductsAll extends Component {
 nexthandleChange(){
     const totalOffset = Math.floor(this.props.basicproducts.count/10);
     let theName = this.state.Category_type.split(' ').join('+');
+
 
     if(this.state.offset >= totalOffset){
       this.setState({

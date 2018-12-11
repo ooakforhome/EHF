@@ -88,12 +88,13 @@ loadImage(){
      body: formData
    }).then(res => res.json())
       .then(data => {
-        if(data){
-          alert('Upload Successfully!!')
-          this.loadImage();
-        } else {
-          alert('Upload failed')
-        }
+        console.log('========================91=========================')
+        console.log(data.upload)
+        API.updateProduct(this.props.match.params.id, {
+          images: data.upload
+        }).then(info=>{
+          alert('Upload successfully!!')
+        }).catch(err=> alert(err))
       })
 
  };

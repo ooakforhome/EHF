@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { renderMember } from '../../actions/member-action';
-import { ProductsBox } from './parts/ProductsBox';
-import Categories from '../componentParts/Categories';
-// import API from './api-product';
 import { Link } from 'react-router-dom';
-import { setInStorage, getFromStorage } from '../utils/storage';
-import Logout from './parts/Logout';
+import axios from 'axios';
 
+import { renderMember } from '../../actions/member-action';
+import Categories from '../componentParts/Categories';
+import { ProductsBox } from './parts/ProductsBox';
+import Logout from './parts/Logout';
+import { setInStorage, getFromStorage } from '../utils/storage';
 
 //SPD to Products
 class MemberProducts extends Component {
@@ -32,7 +31,6 @@ class MemberProducts extends Component {
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
       const { token } = obj;
-      // Verify token
       fetch('/api/user/verify?token=' + token)
         .then(res => res.json())
         .then(json => {
@@ -54,23 +52,12 @@ class MemberProducts extends Component {
 
   loadDatas(){
     const {limit, offset} = this.state;
-    const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
+    const theName = this.state.Category_type.split(' ').join('+');
     this.props.renderMember({
       limit: limit,
       offset: offset,
       Category_type: theName
     });
-  }
-
-// ProductsBox
-  handleClick(e){
-      e.preventDefault();
-        window.location =`/auth/product/${e.target.value}`;
-  }
-
-  handleAddClick(e){
-    e.preventDefault();
-    console.log("Item added")
   }
 
   // Categories link
@@ -85,9 +72,19 @@ class MemberProducts extends Component {
     this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
   };
 
-//////////////////////////////////////////////////////////////////////////
+// ProductsBox
+  handleClick(e){
+    e.preventDefault();
+      window.location =`/auth/product/${e.target.value}`;
+  }
 
-nexthandleChange(){
+  addToCart(e){
+    e.preventDefault();
+      cart.addItem(this.props.memberproduct, () => {
+      });
+  }
+
+  nexthandleChange(){
     const offsetpage = this.props.newproducts.count/10;
     const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
     const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
@@ -153,7 +150,6 @@ nexthandleChange(){
           <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
-                  handleAddClick={this.handleAddClick.bind(this)}
                   />
         )}
       </div>
@@ -198,7 +194,7 @@ nexthandleChange(){
 
 const mapStateToProps = state => ({
   newproducts: state.memberproducts.products,
-  newproduct: state.memberproducts.product,
+  newproduct  : state.memberproducts.product,
 });
 
 export default connect(mapStateToProps, { renderMember })(MemberProducts);

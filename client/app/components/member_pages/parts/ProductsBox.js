@@ -24,9 +24,6 @@ export const ProductsBox = ({
         <button value={_id} className="item_edit_button" onClick={handleClick}>
           Detail
         </button>
-        <button value={_id} className="item_add_button" onClick={handleAddClick}>
-          +
-        </button>
       </div>
     </div>
   </div>

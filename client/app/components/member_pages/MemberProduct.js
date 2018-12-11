@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 // Page and parts import
 import { fetchOneMember } from '../../actions/member-action';
 import { MemberDetailBox } from './parts/MemberDetailBox';
+import cart from '../cart/cart-helper';
 
+// Begin Component
 class MemberProduct extends Component {
   constructor(props){
     super(props)
@@ -14,6 +16,7 @@ class MemberProduct extends Component {
         product: [],
         images: '',
         token:'',
+        redirect: false
       }
  }
 
@@ -26,35 +29,39 @@ class MemberProduct extends Component {
    this.props.fetchOneMember(this.props.match.params.id)
  }
 
- checkValidation(){
-   const obj = getFromStorage('the_main_app');
-   if (obj && obj.token) {
-     const { token } = obj;
-     // Verify token
-     fetch('/api/user/verify?token=' + token)
-       .then(res => res.json())
-       .then(json => {
-         if (json.success) {
-           this.setState({
-             token,
-             isLoading: false
-           });
-         } else {
-           window.location =`/`;
-         }
-       });
-   } else {
-     window.location =`/`;
-   }
- }
+  checkValidation() {
+    const obj = getFromStorage('the_main_app');
+    if (obj && obj.token) {
+      const { token } = obj;
+      fetch('/api/user/verify?token=' + token)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            this.setState({
+              token,
+              isLoading: false
+            });
+          } else {
+            window.location = `/`;
+          }
+        });
+    } else {
+      window.location = `/`;
+    }
+  }
 
-backToProductsPageOnClick(e){
-  e.preventDefault();
-  window.location =`/auth/products/${this.state.token}`;
-}
+  backToProductsPageOnClick(e){
+    e.preventDefault();
+    window.location =`/auth/products/${this.state.token}`;
+  }
+
+  addToCart(e){
+    e.preventDefault();
+      cart.addItem(this.props.memberproduct, () => {
+      });
+  }
 
   render(){
-
     return (
       <div className="detailPage">
         <div className="item_container" style={{visibility: 'visible'}}>
@@ -64,11 +71,12 @@ backToProductsPageOnClick(e){
           <div className="detailPage">
             <MemberDetailBox item={this.props.memberproduct}/>
           </div>
+          <button onClick={this.addToCart.bind(this)}> + </button>
         </div>
       </div>
       );
     }
-  }
+  } // End Class
 
   const mapStateToProps = state => ({
     memberproduct: state.memberproducts.product

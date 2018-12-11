@@ -2,6 +2,7 @@ mongoimport --db EHF --collection products --type JSON --file C:/Users/David/Des
 mongoimport --db EHF --collection products --type CSV --file C:/Users/David/pagetest2/EHF-MarketPlace/products.csv
 
 mongoimport -d EHF -c products --type csv --file C:/Users/David/Desktop/EHF-Product_CSV/products.csv --headerline
+mongoimport -d EHF -c products --type JSON --file C:/Users/David/Desktop/EHF-Product_CSV/products.json
 
 mongoexport --host localhost:27017 --db EHF --collection products --type csv --out C:/Users/David/Desktop/products.csv
 mongoexport --db EHF --collection products --type json --out C:/Users/David/Desktop/EHF-Product_CSV/products_2.json

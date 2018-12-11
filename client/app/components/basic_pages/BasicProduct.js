@@ -33,6 +33,7 @@ class BasicProduct extends Component {
           images: res.data[0].filename
         })
       )
+      .catch(err => console.log("load image is not working"))
   }
 
 
