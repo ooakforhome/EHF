@@ -2,8 +2,10 @@ import React from 'react';
 
 export const AdminDetailBox = ({item}) => (
   <div className="detail_container">
-      <div className="detail_item_image_box detail_box">
-        <img src={`/api/image/${item.images}`} alt={item.Product_Name} className="detail_image"/>
+        <div className="detail_item_image_box detail_box">
+        {item.images == "null" ?
+          "": item.images == undefined? "":
+          <img src={`/api/image/${item.images}`} alt={item.Product_Name} className="detail_image"/>}
       </div>
       <div className="detail_item_info_box detail_box">
         <div>

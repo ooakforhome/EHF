@@ -40,8 +40,7 @@ const storage = new GridFsStorage({
           bucketName: 'uploads',
           metadata: {
             productName: file.originalname.slice(0,-4),
-            ownBy: "Elegant Home Fashions",
-            userID: file
+            ownBy: "Elegant Home Fashions"
           }
         };
         resolve(fileInfo);
@@ -58,7 +57,6 @@ router.post('/api/upload/', upload, (req, res) => {
   console.log(req.file)
   console.log("<<=======================>>");
   console.log(req.file.filename)
-  console.log(req.file.t_id)
 
   let newProductModel = new Product({images: req.file.id});
 

@@ -26,7 +26,9 @@ class AdminProduct extends Component {
  }
 
  componentDidMount(){
-   this.props.fetchOneAdmin(this.props.match.params.id)
+   this.setState({
+     product: this.props.fetchOneAdmin(this.props.match.params.id)
+   })
  }
 
  checkValidation(){
@@ -88,8 +90,6 @@ loadImage(){
      body: formData
    }).then(res => res.json())
       .then(data => {
-        console.log('========================91=========================')
-        console.log(data.upload)
         API.updateProduct(this.props.match.params.id, {
           images: data.upload
         }).then(info=>{

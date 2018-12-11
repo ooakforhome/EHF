@@ -8,7 +8,9 @@ export const ProductsBox = ({
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
-          <img src={`/api/imagesm/${images}`} alt={Product_Name}/>
+          {images == "null"?
+            "":
+            <img src={`/api/imagesm/${images}`} alt={Product_Name}/>}
         </div>
         </div>
       <div><p>Category: <strong>{Category_type}</strong></p></div>

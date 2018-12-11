@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ImageSchema = new Schema({
-  image: String
+const PostSchema = new Schema({
+  title: String
 });
 
-module.exports = ImageSchema;
+module.exports = PostSchema;

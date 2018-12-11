@@ -26,6 +26,13 @@ class AdminProducts extends Component {
     this.checkValidation();
   }
 
+  componentDidMount(){
+    this.props.renderAdmin({limit: this.state.limit, offset: this.state.offset, Category_type:this.state.Category_type})
+  }
+
+  componentDidUpdate(){
+
+  }
 
   checkValidation(){
     const obj = getFromStorage('the_main_app');
@@ -92,13 +99,19 @@ nexthandleChange(){
 
 
     if(this.state.offset >= totalOffset){
-      this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
-        this.setState({offset: totalOffset})
+      this.setState({
+        limit: 10,
+        offset: totalOffset,
+        Category_type: this.state.Category_type
+      })
+          this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
     } else {
-      this.props.renderAdmin({limit: limit, offset: offset+1, Category_type:theName})
-        this.setState({offset: this.state.offset+1})
+      this.setState({
+        limit: 10,
+        offset: this.state.offset+=1
+      })
+          this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
     }
-
 };
 
 
@@ -141,7 +154,6 @@ nexthandleChange(){
   }
 
   render() {
-    console.log(this.props.adminproducts.all);
     if(!this.props.adminproducts.all){
       return "waiting for data";
     }
