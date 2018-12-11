@@ -1,44 +1,38 @@
-<h1>{this.state.Category_type}</h1>
-    <p>Total: {this.props.adminproducts.count}</p>
-<div className ="floatleftblock text-center">
-  <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-  <p>Page: {this.state.offset} of { TotalPages }</p>
-  <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-</div>
-
-/////////////////////////////////////////////
-nexthandleChange(){
-    const totalOffset = Math.floor(this.props.adminproducts.count/10);
-    const {limit, offset} = this.state;
-    let theName = this.state.Category_type.split(' ').join('+');
+// type: 'prev' or 'next'
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+        <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
+    </button>
+`;
 
 
-    if(this.state.offset >= totalOffset){
-      this.setState({
-        limit: 10,
-        offset: totalOffset,
-        Category_type: this.state.Category_type
-      })
-          this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
-    } else {
-      this.setState({
-        limit: 10,
-        offset: this.state.offset+=1
-      })
-          this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
+const createButton = (page, type) =>
+`
+  <button className="btn-inline result_btn--${type}" data-goto=${type === 'prev' ? page -1: page + 1}>
+    <p>${type === 'prev' ? 'Prev' : 'Next'}</p>
+  </button>
+`;
+
+const renderButtons = (page, numResults, resPerPage) => {
+    const pages = Math.ceil(numResults / resPerPage);
+
+    let button;
+    if (page === 1 && pages > 1) {
+        // Only button to go to next page
+        button = createButton(page, 'next');
+    } else if (page < pages) {
+        // Both buttons
+        button = `
+            ${createButton(page, 'prev')}
+            ${createButton(page, 'next')}
+        `;
+    } else if (page === pages && pages > 1) {
+        // Only button to go to prev page
+        button = createButton(page, 'prev');
     }
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
 };
-
-
-  prevhandleChange(e){
-    e.preventDefault();
-      if(this.state.offset == 0){
-        this.setState({limit:10, offset: 0})
-      } else {
-      this.setState({
-        limit: 10,
-        offset: this.state.offset-=1
-      })
-    }
-    this.updates();
-  };

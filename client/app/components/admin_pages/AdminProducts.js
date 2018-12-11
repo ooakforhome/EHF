@@ -7,6 +7,7 @@ import API from './api-product';
 import { Link } from 'react-router-dom';
 import Logout from './parts/Logout';
 import { setInStorage, getFromStorage } from '../utils/storage';
+import pagination from '../componentParts/pagination';
 
 //SPD to Products
 class AdminProducts extends Component {
@@ -90,7 +91,6 @@ nexthandleChange(){
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
 
-
     if(this.state.offset >= totalOffset){
       this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
         this.setState({offset: totalOffset})
@@ -98,6 +98,15 @@ nexthandleChange(){
       this.props.renderAdmin({limit: limit, offset: offset+1, Category_type:theName})
         this.setState({offset: this.state.offset+1})
     }
+
+
+    // pagination.tnexthandleChange(
+    //   this.props.adminproducts.count,
+    //   this.state.limit,
+    //   this.state.offset,
+    //   theName,
+    //   this.props.renderAdmin
+    // )
 
 };
 
@@ -141,7 +150,7 @@ nexthandleChange(){
   }
 
   render() {
-    console.log(this.props.adminproducts.all);
+    // console.log(this.props.adminproducts.all);
     if(!this.props.adminproducts.all){
       return "waiting for data";
     }
@@ -162,8 +171,8 @@ nexthandleChange(){
 
 
     return(
-      <div>
-        <div>
+      <>
+        <div className="admin_products_container">
           <Logout
             onclick_logout = {this.onclick_logout.bind(this)}
           />
@@ -193,7 +202,7 @@ nexthandleChange(){
           </div>
 
         </div>
-      </div>
+      </>
     );
   }
 }

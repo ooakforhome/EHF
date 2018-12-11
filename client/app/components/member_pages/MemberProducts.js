@@ -9,6 +9,8 @@ import { ProductsBox } from './parts/ProductsBox';
 import Logout from './parts/Logout';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
+import cart from '../cart/cart-helper';
+
 //SPD to Products
 class MemberProducts extends Component {
   constructor(props) {
@@ -78,33 +80,19 @@ class MemberProducts extends Component {
       window.location =`/auth/product/${e.target.value}`;
   }
 
-  addToCart(e){
-    e.preventDefault();
-      cart.addItem(this.props.memberproduct, () => {
-      });
-  }
-
   nexthandleChange(){
-    const offsetpage = this.props.newproducts.count/10;
-    const offsetleft = this.props.newproducts.count%10 >= 1? 1 : 0;
-    const totalOffset = parseInt(offsetpage) + parseInt(offsetleft) -1;
+    const totalOffset = Math.floor(this.props.newproducts.count/10);
     const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
 
 
     if(this.state.offset >= totalOffset){
-      this.setState({
-        limit: 10,
-        offset: totalOffset,
-        Category_type: this.state.Category_type
-      })
+      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
+      this.setState({ offset: totalOffset })
     } else {
-      this.setState({
-        limit: 10,
-        offset: this.state.offset+=1
-      })
+      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
+      this.setState({ offset: this.state.offset+=1 })
     }
-    this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
 };
 
 
@@ -138,6 +126,17 @@ class MemberProducts extends Component {
     })
   };
 
+  addToCart(e){
+    e.preventDefault();
+    const theId = e.target.value;
+    axios.get(`/api/product/${theId}`)
+      .then(item => {
+        cart.addItem(item.data,()=>{
+          console.log("item add to cart")
+        })
+      })
+  }
+
   render() {
     if(!this.props.newproducts.all){
       return "waiting for data";
@@ -150,6 +149,7 @@ class MemberProducts extends Component {
           <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
+                  addToCart={this.addToCart.bind(this)}
                   />
         )}
       </div>

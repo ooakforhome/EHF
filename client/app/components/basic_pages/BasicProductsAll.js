@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { renderBasic } from '../../actions/basic-action';
-import { ProductsBox } from '../componentParts/ProductsBox';
+import { ProductsBox } from './parts/ProductsBox';
 import Categories from '../componentParts/Categories';
 import API from './api-basic';
 import { Link } from 'react-router-dom';

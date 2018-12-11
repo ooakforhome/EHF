@@ -71,7 +71,7 @@ class MemberProduct extends Component {
           <div className="detailPage">
             <MemberDetailBox item={this.props.memberproduct}/>
           </div>
-          <button onClick={this.addToCart.bind(this)}> + </button>
+          <button className="add_to_cart_btn" onClick={this.addToCart.bind(this)}> + </button>
         </div>
       </div>
       );

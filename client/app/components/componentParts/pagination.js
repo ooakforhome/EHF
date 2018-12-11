@@ -1,24 +1,16 @@
 const pageparts = {
 
-  tnexthandleChange(newList, tlimit, toffset, tcategory){
+  tnexthandleChange(newList, tlimit, toffset, tcategory, trender){
 
     const totalOffset = Math.floor(newList/10);
     let theName = tcategory.split(' ').join('+');
 
 
     if(toffset >= totalOffset){
-      this.setState({
-        limit: 10,
-        offset: totalOffset,
-        Category_type: tcategory
-      })
+      trender({limit: tlimit, offset: toffset, Category_type:theName})
     } else {
-      this.setState({
-        limit: 10,
-        offset: toffset+=1
-      })
+      trender({limit: tlimit, offset: toffset+1, Category_type:theName})
     }
-    this.props.renderMember({limit: tlimit, offset: toffset, Category_type:theName})
   },
 
 
