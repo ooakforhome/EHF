@@ -1,4 +1,4 @@
-mongoimport --db EHF --collection products --type JSON --file C:/Users/David/Desktop/EHF-Product_CSV/products.json
+  mongoimport --db EHF --collection products --type JSON --file C:/Users/David/Desktop/EHF-Product_CSV/products.json
 mongoimport --db EHF --collection products --type CSV --file C:/Users/David/pagetest2/EHF-MarketPlace/products.csv
 
 mongoimport -d EHF -c products --type csv --file C:/Users/David/Desktop/EHF-Product_CSV/products.csv --headerline

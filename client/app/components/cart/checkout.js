@@ -14,9 +14,12 @@ addressChange(e){
   render(){
     return(
       <>
+        <div>
+          <h2>Checout</h2>
+        </div>
         <form>
           <div>
-            <label for="name"><i className="">NAME</i></label>
+            <label htmlFor="name"><i className="">NAME</i></label>
             <input
               type="text"
               id="name"
@@ -24,7 +27,7 @@ addressChange(e){
               placeholder="exp. Don Jovi"/>
           </div>
           <div>
-            <label for="email"><i className="">Email</i></label>
+            <label htmlFor="email"><i className="">Email</i></label>
             <input
               type="text"
               id="email"
@@ -34,7 +37,7 @@ addressChange(e){
 
           <p>ADDRESS</p>
           <div>
-            <label for="street"><i className="">STREET</i></label>
+            <label htmlFor="street"><i className="">STREET</i></label>
             <input
               type="text"
               id="street"
@@ -43,7 +46,7 @@ addressChange(e){
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
-            <label for="city"><i className="">CITY</i></label>
+            <label htmlFor="city"><i className="">CITY</i></label>
             <input
               type="text"
               id="city"
@@ -52,7 +55,7 @@ addressChange(e){
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
-            <label for="state"><i className="">STATE</i></label>
+            <label htmlFor="state"><i className="">STATE</i></label>
             <input
               type="text"
               id="state"
@@ -61,7 +64,7 @@ addressChange(e){
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
-            <label for="zip"><i className="">ZIP CODE</i></label>
+            <label htmlFor="zip"><i className="">ZIP CODE</i></label>
             <input
               type="text"
               id="zip"
@@ -70,7 +73,7 @@ addressChange(e){
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
-            <label for="country"><i className="">COUNTRY</i></label>
+            <label htmlFor="country"><i className="">COUNTRY</i></label>
             <input
               type="text"
               id="country"

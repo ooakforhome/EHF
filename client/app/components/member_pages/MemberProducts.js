@@ -8,6 +8,7 @@ import Categories from '../componentParts/Categories';
 import { ProductsBox } from './parts/ProductsBox';
 import Logout from './parts/Logout';
 import { setInStorage, getFromStorage } from '../utils/storage';
+import CartItem from './parts/cartItem'
 
 import cart from '../cart/cart-helper';
 
@@ -126,16 +127,28 @@ class MemberProducts extends Component {
     })
   };
 
-  addToCart(e){
-    e.preventDefault();
-    const theId = e.target.value;
-    axios.get(`/api/product/${theId}`)
-      .then(item => {
-        cart.addItem(item.data,()=>{
-          console.log("item add to cart")
-        })
-      })
+  showinfo(){
+    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+    return document.querySelector('.showLocalAmount').textContent= inLocal;
   }
+
+
+addToCart(e){
+  e.preventDefault();
+  const theId = e.target.value;
+  axios.get(`/api/product/${theId}`)
+    .then(item => {
+      const itemid = item.data._id;
+      if(localStorage.cart.match(itemid)){
+        alert("item already added")
+    }else{
+      cart.addItem(item.data,()=>{
+              this.showinfo();
+
+            })
+          }
+    })
+}
 
   render() {
     if(!this.props.newproducts.all){
@@ -163,6 +176,7 @@ class MemberProducts extends Component {
           <Logout
             onclick_logout = {this.onclick_logout.bind(this)}
           />
+          <CartItem />
         </div>
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
@@ -180,6 +194,7 @@ class MemberProducts extends Component {
           <div>
             <ProductList products = {this.props.newproducts.all}/>
           </div>
+          
           <div className ="floatleftblock">
             <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
               <p>Page: {this.state.offset} of { TotalPages }</p>

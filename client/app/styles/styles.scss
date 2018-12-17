@@ -403,7 +403,43 @@ input {
 .cart_product_total {}
 .cart_product_remove_btn {}
 
+.cart-container {
+  width: 50px;
+  position: relative;
+  .imgforcart { position:absolute; width:30px; float:left; }
+  .showLocalAmount { position: absolute; float:left; font-weight: 600;}
+}
+
 @media only screen and (max-width: 640px){
+
+  /* ================= col left==================== */
+  .s-col-12 { width: percentage(12/12);}
+  .s-col-11 { width: percentage(11/12); float: $left;}
+  .s-col-10 { width: percentage(10/12); float: $left;}
+  .s-col-9 { width: percentage(9/12); float: $left;}
+  .s-col-8 { width: percentage(8/12); float: $left;}
+  .s-col-7 { width: percentage(7/12); float: $left;}
+  .s-col-6 { width: percentage(6/12); float: $left;}
+  .s-col-5 { width: percentage(5/12); float: $left;}
+  .s-col-4 { width: percentage(4/12); float: $left;}
+  .s-col-3 { width: percentage(3/12); float: $left;}
+  .s-col-2 { width: percentage(2/12); float: $left;}
+  .s-col-1 { width: percentage(1/12); float: $left;}
+
+  /* ================= col auto==================== */
+  .s-iCol-12 { width: percentage(12/12);}
+  .s-iCol-11 { width: percentage(11/12); margin: auto;}
+  .s-iCol-10 { width: percentage(10/12); margin: auto;}
+  .s-iCol-9 { width: percentage(9/12); margin: auto;}
+  .s-iCol-8 { width: percentage(8/12); margin: auto;}
+  .s-iCol-7 { width: percentage(7/12); margin: auto;}
+  .s-iCol-6 { width: percentage(6/12); margin: auto;}
+  .s-iCol-5 { width: percentage(5/12); margin: auto;}
+  .s-iCol-4 { width: percentage(4/12); margin: auto;}
+  .s-iCol-3 { width: percentage(3/12); margin: auto;}
+  .s-iCol-2 { width: percentage(2/12); margin: auto;}
+  .s-iCol-1 { width: percentage(1/12); margin: auto;}
+
   .innerBody {
     width: 50%;
     min-width: 300px;

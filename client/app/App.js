@@ -35,7 +35,7 @@ import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
 import NewProduct from './components/admin_pages/NewProduct';
 
-import Test from './components/cart/checkout.js'
+import Checkout from './components/cart/checkout.js'
 
 const App = () =>
   <Router>
@@ -50,7 +50,7 @@ const App = () =>
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
         <Route exact path="/newproduct/:token" component = { NewProduct } />
-        <Route exact path="/test" component = { Test } />
+        <Route exact path="/checkout" component = { Checkout } />
         <Route exact path="/cart" component = { Cart } />
     </div>
   </Router>;
