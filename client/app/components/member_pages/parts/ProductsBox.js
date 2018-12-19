@@ -24,9 +24,9 @@ export const ProductsBox = ({
         <div className="item_img_box">
 
           {
-            (`${images}` === "null") ? "":
-              (`${images}` === "undefined") ? "":
-                (`${images}` === "") ? "":
+            (`${images}` === "null") ? <img src={`/api/imagesm/1d919e518209e5cbfedd0713f2a75c5e.jpg`} alt={Product_Name}/>:
+              (`${images}` === "undefined") ? <img src={`/api/imagesm/1d919e518209e5cbfedd0713f2a75c5e.jpg`} alt={Product_Name}/>:
+                (`${images}` === "") ? <img src={`/api/imagesm/1d919e518209e5cbfedd0713f2a75c5e.jpg`} alt={Product_Name}/>:
                   <img src={`/api/imagesm/${images}`} alt={Product_Name}/>
           }
 
