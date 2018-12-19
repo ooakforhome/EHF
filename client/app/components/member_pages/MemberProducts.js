@@ -8,7 +8,7 @@ import Categories from '../componentParts/Categories';
 import { ProductsBox } from './parts/ProductsBox';
 import Logout from './parts/Logout';
 import { setInStorage, getFromStorage } from '../utils/storage';
-import CartItem from './parts/cartItem'
+import CartItem from './parts/cartItem';
 
 import cart from '../cart/cart-helper';
 
@@ -22,13 +22,20 @@ class MemberProducts extends Component {
       count: 0,
       token:'',
       Category_type: "Accent Furnitures"
-    };
+    }
   }
 
 // mount Redux data info.
   componentWillMount() {
     this.checkValidation();
   }
+
+  componentDidMount(){
+    window.addEventListener('load', () => {
+    this.showAdded();
+    })
+  }
+
 
   checkValidation(){
     const obj = getFromStorage('the_main_app');
@@ -60,7 +67,7 @@ class MemberProducts extends Component {
       limit: limit,
       offset: offset,
       Category_type: theName
-    });
+    })
   }
 
   // Categories link
@@ -133,29 +140,41 @@ class MemberProducts extends Component {
   }
 
 
-addToCart(e){
-  e.preventDefault();
-  const theId = e.target.value;
-  axios.get(`/api/product/${theId}`)
-    .then(item => {
-      const itemid = item.data._id;
-      if(localStorage.cart.match(itemid)){
-        alert("item already added")
-    }else{
-      cart.addItem(item.data,()=>{
-              this.showinfo();
+  addToCart(e){
+    e.preventDefault();
+    const theId = e.target.value;
+    axios.get(`/api/product/${theId}`)
+      .then(item => {
+        const itemid = item.data._id;
+        if(localStorage.cart.match(itemid)){
+          alert("item already added")
+      }else{
+        cart.addItem(item.data,()=>{
+          this.showinfo();
+        })
+        document.querySelector(`[data-item="${item.data._id}"]`).classList.add('bk-yes')
+        }
+      })
+  }
 
-            })
-          }
-    })
-}
+  showAdded(){
+    let localCart = JSON.parse(localStorage.cart).map((item)=>{
+      return item._id;
+    });
+      localCart.forEach((nid)=>{
+        if(document.querySelector(`[data-item="${nid}"]`)){
+          document.querySelector(`[data-item="${nid}"]`).classList.add('bk-yes');
+        }
+      })
+  }
 
   render() {
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
 
-    const TotalPages = Math.floor(this.props.newproducts.count/10);
+    const TotalPages = Math.ceil(this.props.newproducts.count/10);
+    const CurrentPage = this.state.offset + 1;
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
@@ -163,12 +182,20 @@ addToCart(e){
                   {...product}
                   handleClick={this.handleClick.bind(this)}
                   addToCart={this.addToCart.bind(this)}
+                  showAdded={this.showAdded.bind(this)}
                   />
         )}
+    </div>
+  )
+
+    const PageBtn = () => (
+      <div className ="floatleftblock">
+        <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+        <p>Page: { CurrentPage } of { TotalPages }</p>
+        <p>Total: {this.props.newproducts.count}</p>
+        <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
       </div>
     )
-
-
 
     return(
       <div>
@@ -181,28 +208,17 @@ addToCart(e){
         <div className="category_nav">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
+
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-
-            <div className ="floatleftblock">
-              <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>Page: {this.state.offset} of { TotalPages }</p>
-              <p>Total: {this.props.newproducts.count}</p>
-              <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-            </div>
-
+            <PageBtn />
           <div>
-            <ProductList products = {this.props.newproducts.all}/>
+            <ProductList products = {this.props.newproducts.all} />
           </div>
-          
-          <div className ="floatleftblock">
-            <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>Page: {this.state.offset} of { TotalPages }</p>
-            <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-          </div>
+            <PageBtn />
         </div>
       </div>
-    );
+    )
   }
 }
 

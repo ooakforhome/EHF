@@ -107,7 +107,8 @@ nexthandleChange(){
     }
     // console.log(this.props.basicproducts.all)
 
-    const TotalPages = Math.floor(this.props.basicproducts.count/10);
+    const TotalPages = Math.ceil(this.props.basicproducts.count/10);
+    const CurrentPage = this.state.offset + 1;
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
@@ -120,6 +121,15 @@ nexthandleChange(){
       </div>
     )
 
+    const PageBtn=()=>(
+      <div className ="floatleftblock">
+        <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+        <p>Page: { CurrentPage } of { TotalPages }</p>
+        <p>Total: {this.props.basicproducts.count}</p>
+        <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
+      </div>
+    )
+
     return(
       <div>
         <Header />
@@ -128,22 +138,11 @@ nexthandleChange(){
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-
-            <div className ="floatleftblock">
-              <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>Page: {this.state.offset} of { TotalPages }</p>
-              <p>Total: {this.props.basicproducts.count}</p>
-              <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-            </div>
-
+            <PageBtn />
           <div>
             <ProductList products = {this.props.basicproducts.all}/>
           </div>
-          <div className ="floatleftblock">
-            <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>Page: {this.state.offset} of { TotalPages }</p>
-            <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-          </div>
+            <PageBtn />
         </div>
       </div>
     )

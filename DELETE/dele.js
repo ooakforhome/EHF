@@ -1,38 +1,66 @@
-// type: 'prev' or 'next'
-const createButton = (page, type) => `
-    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
-        <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
-        <svg class="search__icon">
-            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
-        </svg>
-    </button>
-`;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import scriptLoader from 'react-async-script-loader';
 
+class PaypalButton extends React.Component {
 
-const createButton = (page, type) =>
-`
-  <button className="btn-inline result_btn--${type}" data-goto=${type === 'prev' ? page -1: page + 1}>
-    <p>${type === 'prev' ? 'Prev' : 'Next'}</p>
-  </button>
-`;
+  render() {
+    const {
+      total,
+      currency,
+      env,
+      commit,
+      client,
+      onSuccess,
+      onError,
+      onCancel,
+    } = this.props;
 
-const renderButtons = (page, numResults, resPerPage) => {
-    const pages = Math.ceil(numResults / resPerPage);
+    const {
+      showButton,
+    } = this.state;
 
-    let button;
-    if (page === 1 && pages > 1) {
-        // Only button to go to next page
-        button = createButton(page, 'next');
-    } else if (page < pages) {
-        // Both buttons
-        button = `
-            ${createButton(page, 'prev')}
-            ${createButton(page, 'next')}
-        `;
-    } else if (page === pages && pages > 1) {
-        // Only button to go to prev page
-        button = createButton(page, 'prev');
-    }
+    const payment = () =>
+      paypal.rest.payment.create(env, client, {
+        transactions: [
+          {
+            amount: {
+              total,
+              currency,
+            }
+          },
+        ],
+      });
 
-    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
-};
+    const onAuthorize = (data, actions) =>
+      actions.payment.execute()
+        .then(() => {
+          const payment = {
+            paid: true,
+            cancelled: false,
+            payerID: data.payerID,
+            paymentID: data.paymentID,
+            paymentToken: data.paymentToken,
+            returnUrl: data.returnUrl,
+          };
+
+          onSuccess(payment);
+        });
+
+    return (
+      <div>
+        {showButton && <paypal.Button.react
+          env={env}
+          client={client}
+          commit={commit}
+          payment={payment}
+          onAuthorize={onAuthorize}
+          onCancel={onCancel}
+          onError={onError}
+        />}
+      </div>
+    );
+  }
+}
+
+export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(PaypalButton);

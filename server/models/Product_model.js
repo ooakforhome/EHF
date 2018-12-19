@@ -57,7 +57,8 @@ var productSchema = new Schema({
   Product_Diameter: { type: Number},
   Retail: { type: Number },
   addDate: {type: Date, default: Date.now()},
-  images: {type: String, default: "null" }
+  images: {type: String, default: "null" },
+  active: {type: String, default: "true"}
 })
 
 module.exports = mongoose.model ('Product', productSchema);

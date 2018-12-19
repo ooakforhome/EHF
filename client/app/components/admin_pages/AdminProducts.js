@@ -155,7 +155,8 @@ nexthandleChange(){
       return "waiting for data";
     }
 
-    const TotalPages = Math.floor(this.props.adminproducts.count/10);
+    const TotalPages = Math.ceil(this.props.adminproducts.count/10);
+    const CurrentPage = this.state.offset + 1;
     const ProductList = ({products}) => (
       <div>
         {products.map((product, i) =>
@@ -167,9 +168,14 @@ nexthandleChange(){
         )}
       </div>
     )
-
-
-
+    const PageBtn = () => (
+      <div className ="floatleftblock text-center">
+        <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
+        <p>Page: { CurrentPage } of { TotalPages }</p>
+        <p>Total: {this.props.adminproducts.count}</p>
+        <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
+      </div>
+    )
     return(
       <>
         <div className="admin_products_container">
@@ -183,24 +189,11 @@ nexthandleChange(){
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
-
-
-            <div className ="floatleftblock text-center">
-              <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-              <p>Page: {this.state.offset} of { TotalPages }</p>
-              <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-            </div>
-              <p>Total: {this.props.adminproducts.count}</p>
+            <PageBtn />
           <div>
             <ProductList products = {this.props.adminproducts.all}/>
           </div>
-          <div className ="floatleftblock text-center">
-            <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
-            <p>Page: {this.state.offset} of { TotalPages }</p>
-            <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
-                        <p>Total: {this.props.adminproducts.count}</p>
-          </div>
-
+            <PageBtn />
         </div>
       </>
     );

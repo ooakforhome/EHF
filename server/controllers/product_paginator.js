@@ -24,26 +24,3 @@ module.exports = {
       });
   }
 };
-
-
-const buildQuery = (criteria) => {
-  const query = {};
-
-  if (criteria.Product_Name) {
-    query.$text = { $search: criteria.Product_Name };
-  }
-
-  if (criteria.Category_type) {
-    {Category_type : req.query.Category_type}
-  }
-
-
-  if (criteria.Product_Shipping_Weight) {
-    query.Product_Shipping_Weight = {
-      $gte: criteria.Product_Shipping_Weight.min,
-      $lte: criteria.Product_Shipping_Weight.max
-    };
-  }
-
-  return query;
-};

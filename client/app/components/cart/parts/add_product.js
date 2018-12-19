@@ -11,9 +11,15 @@ const totalPrice=(qty, iprice)=>{
 
 const AddProduct=({ name, product, quantity, qtyChangeHandler, removeInCart })=>(
       // add_product should have fixed width and height
-        <div id="add_product_container" className="add_product_container">
+        <div id="add_product_container" className="add_product_container" data-taget={product._id}>
           <div className="col-3" >
-            <img className="add_product_image" alt={product.Product_Name} src={`/api/imagesm/${product.images}`} />
+            {
+              (`${product.images}` === "null") ? "":
+                (`${product.images}` === "undefined") ? "":
+                  (`${product.images}` === "") ? "":
+                    <img className="add_product_image" alt={product.Product_Name} src={`/api/imagesm/${product.images}`} />
+            }
+
           </div>
           <div className="col-6">
             <p className="cart_product_name">{product.Product_Name}</p>
@@ -39,7 +45,10 @@ const AddProduct=({ name, product, quantity, qtyChangeHandler, removeInCart })=>
               <h2 id="gTotal" className="cart_product_total fLeft">{totalPrice(quantity, product.Retail)}</h2>
             </div>
             <div className="col-12 fLeft">
-              <button className="cart_product_remove_btn" onClick={removeInCart}>X Remove</button>
+              <button
+                className="cart_product_remove_btn"
+                name={name}
+                onClick={removeInCart}>X Remove</button>
             </div>
           </div>
         </div>

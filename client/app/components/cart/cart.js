@@ -27,8 +27,10 @@ loadStorageinfo(){
   })
 }
 
+
 removeInCart(e){
-  cart.removeItem();
+  const theOne = e.target.name
+  cart.removeItem(theOne);
       this.loadStorageinfo();
 }
 
