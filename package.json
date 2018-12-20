@@ -21,13 +21,11 @@
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.4",
-    "babel-preset-latest": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-env": "",
     "bcrypt": "^3.0.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
-    "compression": "",
+    "compression": "^1.7.3",
     "connect-history-api-fallback": "^1.5.0",
     "connect-mongo": "^2.0.1",
     "copy-webpack-plugin": "^4.5.2",
@@ -68,9 +66,9 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "mocha": "",
-    "chai": "",
-    "request": "",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0"
+    "chai": "^4.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "mocha": "^5.2.0",
+    "request": "^2.88.0"
   }
 }

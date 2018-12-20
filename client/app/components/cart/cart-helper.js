@@ -16,6 +16,7 @@ const cart = {
       cart.push({
         product: item,
         _id: item._id,
+        retail: item.Retail,
         quantity: 1
       })
       localStorage.setItem('cart', JSON.stringify(cart))

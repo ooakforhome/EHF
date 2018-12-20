@@ -143,7 +143,7 @@ class MemberProducts extends Component {
   addToCart(e){
     e.preventDefault();
     const theId = e.target.value;
-    axios.get(`/api/product/${theId}`)
+    axios.get(`/api/member/product/${theId}`)
       .then(item => {
         const itemid = item.data._id;
         if(localStorage.cart.match(itemid)){

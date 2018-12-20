@@ -57,8 +57,14 @@ class MemberProduct extends Component {
 
   addToCart(e){
     e.preventDefault();
-      cart.addItem(this.props.memberproduct, () => {
-      });
+      const itemid = this.props.match.params.id;
+        if(localStorage.cart.match(itemid)){
+          alert("item already added")
+        } else {
+          cart.addItem(this.props.memberproduct, () => {
+            alert("item added")
+          });
+        }
   }
 
   render(){

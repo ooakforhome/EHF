@@ -5,20 +5,13 @@ import { Redirect } from 'react-router-dom';
 
 // import parts
 import Checkout from './checkout';
-import PaypalButton from './paypalButton';
+// import PaypalButton from './paypal/PaypalButton.js';
 
 class Cart extends Component{
 
+
 componentWillMount(){
   this.loadStorageinfo();
-}
-
-componentDidMount(){
-  this.totalAmount();
-}
-
-componentDidUpdate(){
-  this.totalAmount();
 }
 
 loadStorageinfo(){
@@ -42,16 +35,10 @@ qtyChangeHandler(e){
 }
 
 
-totalAmount(){
-  let total = 0;
-  const doc = document.querySelectorAll("#gTotal");
-    for(var i = 0; i < doc.length; i++){
-      total += parseInt(doc[i].textContent);
-    }
-    return document.querySelector("#totalamount").textContent = total;
-}
-
   render(){
+    let Total = JSON.parse(localStorage.cart).map(item=>{ return item.retail* item.quantity}).reduce((acc, curr)=>{
+      return acc+curr
+    }, 0)
 
     const ShowInCart = ({items}) => (
       <div>
@@ -75,7 +62,7 @@ totalAmount(){
           <ShowInCart items={this.state.products}/>
           <div>
             <p className="fLeft">TOTAL</p>
-            <h3 className="fLeft">$<b id="totalamount">$$</b></h3>
+            <h3 className="fLeft">$<b id="totalamount">{Total}</b></h3>
           </div>
         </div>
         <div className="s-iCol-12 col-6">

@@ -35,7 +35,8 @@ import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
 import NewProduct from './components/admin_pages/NewProduct';
 
-import Checkout from './components/cart/checkout.js'
+import Checkout from './components/cart/paypal/PaypalCheckout.js'
+// import Checkout from './components/cart/checkout.js'
 
 const App = () =>
   <Router>

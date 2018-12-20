@@ -103,3 +103,13 @@ mongoimport -d EHF -c products --type csv --file C:\Users\David\Desktop\EHF-Prod
 
 //windowhardware
 mongoimport -d EHF -c products --type csv --file C:\Users\David\Desktop\EHF-Product_CSV\windowhardware.csv --headerline
+//============================================================================
+// docker file => git repo => jenkins server => test, staging, production
+// sudo docker install docker engine
+// sudo service docker start
+// sudo docker pull ${image, example ubuntu}
+// sudo docker run -it ${imageID}
+// sudo apt-get install pip
+// sudo pip install docker compose
+// mkdir workpress
+// wordpress>  sudo gedit docker-compose.yml
