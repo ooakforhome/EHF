@@ -80,31 +80,18 @@ qtyChangeHandler(e){
           return acc+curr
           }, 0);
     const tax = 0.07;
-
     let Items = [];
       (!localStorage.cart)?'':JSON.parse(localStorage.cart).forEach(item => Items.push({
         name: item.product.Product_Name,
         description: item.product.Product_Name,
         quantity: item.quantity,
-        price: item.retail+parseFloat((item.retail*tax).toFixed(2)),
+        price: item.retail,
         sku: item.product.SKU,
         tax: parseFloat((item.retail*tax).toFixed(2)),
         currency: "USD",
       })
     );
-
-    const Address = {
-      recipient_name: "test",
-      line1: "223 lkjlkj st",
-      line2: "apt 1",
-      city: "atl",
-      country_code: "us",
-      postal_code: "30340",
-      phone: "1233456789",
-      state: "ga",
-    };
-      // (!localStorage.shipping_address)?'': Address.push(JSON.parse(localStorage.shipping_address));
-      // console.log(Address[0])
+    console.log(Items)
 
     const onError = (error) =>
       console.log('Erroneous payment OR failed to load script!', error);
@@ -123,8 +110,6 @@ qtyChangeHandler(e){
         </div>
         <div className="s-iCol-12 col-6">
           <Checkout />
-        </div>
-        <div>
           <PaypalButton
             client={CLIENT}
             env={'sandbox'}
