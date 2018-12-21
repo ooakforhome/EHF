@@ -11,19 +11,39 @@ addressChange(e){
   })
 }
 
+formSubmit(){
+  let address = [];
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem('shipping_address')) {
+        localStorage.removeItem('shipping_address')
+      }
+      address.push({
+        recipient_name: this.state.recipient_name,
+        line1: this.state.address1,
+        line2: this.state.address2,
+        city: this.state.city,
+        state: this.state.state,
+        postal_code: this.state.zipcode,
+        country_code: this.state.country,
+        phone: this.state.phone,
+      })
+      localStorage.setItem('shipping_address', JSON.stringify(address))
+    }
+}
+
   render(){
     return(
       <>
         <div>
           <h2>Checkout</h2>
         </div>
-        <form>
+        <form onSubmit={this.formSubmit.bind(this)}>
           <div>
             <label htmlFor="name"><i className="">NAME</i></label>
             <input
               type="text"
               id="name"
-              name="name"
+              name="customer_name"
               placeholder="exp. Don Jovi"/>
           </div>
           <div>
@@ -31,18 +51,36 @@ addressChange(e){
             <input
               type="text"
               id="email"
-              name="email"
+              name="customer_email"
               placeholder="john@example.com"/>
           </div>
 
           <p>ADDRESS</p>
           <div>
+            <label htmlFor="street"><i className="">Recipient Name</i></label>
+            <input
+              type="text"
+              id="street"
+              name="recipient_name"
+              placeholder="testName"
+              onChange={this.addressChange.bind(this)}/>
+          </div>
+          <div>
             <label htmlFor="street"><i className="">STREET</i></label>
             <input
               type="text"
               id="street"
-              name="street"
-              placeholder="exp. Don Jovi"
+              name="address1"
+              placeholder="123 test dr"
+              onChange={this.addressChange.bind(this)}/>
+          </div>
+          <div>
+            <label htmlFor="street"><i className="">STREET</i></label>
+            <input
+              type="text"
+              id="street"
+              name="address2"
+              placeholder="apt 1"
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
@@ -51,7 +89,7 @@ addressChange(e){
               type="text"
               id="city"
               name="city"
-              placeholder="john@example.com"
+              placeholder="ATL"
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
@@ -60,7 +98,7 @@ addressChange(e){
               type="text"
               id="state"
               name="state"
-              placeholder="exp. Don Jovi"
+              placeholder="GA"
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
@@ -68,8 +106,8 @@ addressChange(e){
             <input
               type="text"
               id="zip"
-              name="zip"
-              placeholder="john@example.com"
+              name="zipcode"
+              placeholder="30340"
               onChange={this.addressChange.bind(this)}/>
           </div>
           <div>
@@ -78,9 +116,19 @@ addressChange(e){
               type="text"
               id="country"
               name="country"
-              placeholder="john@example.com"
+              placeholder="US"
               onChange={this.addressChange.bind(this)}/>
           </div>
+          <div>
+            <label htmlFor="country"><i className="">Phone #</i></label>
+            <input
+              type="text"
+              id="country"
+              name="phone"
+              placeholder="123-456-7890"
+              onChange={this.addressChange.bind(this)}/>
+          </div>
+          <button type="submit">SUBMIT</button>
         </form>
       </>
     )

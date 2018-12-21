@@ -45,10 +45,10 @@ payment: function(data, actions) {
           line1: '4th Floor',
           line2: 'Unit #34',
           city: 'San Jose',
-          country_code: 'US',
+          state: 'CA',
           postal_code: '95131',
+          country_code: 'US',
           phone: '011862212345678',
-          state: 'CA'
         }
       }
     }],
@@ -129,7 +129,6 @@ class PaypalButton extends React.Component {
                 shipping,
                 handling_fee,
                 shipping_discount,
-                insurance,
               }
             },
             description: 'The payment transaction description.',
@@ -186,3 +185,33 @@ class PaypalButton extends React.Component {
 }
 
 export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(PaypalButton);
+//================================================================================
+
+// API EXAMPLE
+localhost:3080/api/placeorder
+
+{
+"products": [{
+		"product": "5bae6a2bb69130d3b5f1e00f",
+		"quantity": 1,
+		"status": "Not processed"
+	},{
+		"product": "5bae6a2bb69130d3b5f1e012",
+		"quantity": 2,
+		"status": "Not processed"
+	}],
+"customer_name": "testName",
+"customer_email": "test@test.com",
+"shipping_address": {
+	"recipient_name": "testName",-
+	"address1": "123 test dr",
+	"address2": "apt 1",
+	"city": "Atlanta",
+	"state": "GA",
+	"zipcode": "30340",
+	"country": "US",
+	"phone": "123-456-7890"
+},
+"payment_id": "fake1232341ID",
+"user": "5bfc37e9b40bea21b8beec68"
+}

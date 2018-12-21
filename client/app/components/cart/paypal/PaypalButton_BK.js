@@ -44,22 +44,20 @@ class PaypalButton extends React.Component {
   }
 
   render() {
-    const { total, currency, env, commit, client, onSuccess, onError, onCancel, items,shipping_address, recipient_name, line1, line2, city, country_code, postal_code, phone, state, } = this.props;
+    const { total, currency, env, commit, client, onSuccess, onError, onCancel,} = this.props;
+
     const { showButton } = this.state;
 
     const payment = () =>
       paypal.rest.payment.create(env, client, {
-        transactions: [{
+        transactions: [
+          {
             amount: {
               total,
               currency,
-            },
-            description: 'The payment transaction description.',
-            item_list: {
-              items: []
-              }
             }
-          ]
+          },
+        ],
       });
 
     const onAuthorize = (data, actions) =>

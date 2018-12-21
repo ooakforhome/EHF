@@ -4,7 +4,7 @@ const basicProductCtrl = require('../controllers/basic_product_contrl');
 const memberProductCtrl = require('../controllers/member_product_contrl');
 const adminProductCtrl = require('../controllers/admin_product_contrl');
 const productPag = require('../controllers/product_paginator');
-
+const placeOrder = require('../controllers/order_ctrl')
 
 const router = express.Router();
 
@@ -34,7 +34,9 @@ router.route("/api/admin/product/:_id")
   .put(adminProductCtrl.updateProduct)
   .delete(adminProductCtrl.deleteProduct);
 
-
+// Order API routes
+router.route("/api/placeorder")
+  .post(placeOrder.createOrder);
 
 
 

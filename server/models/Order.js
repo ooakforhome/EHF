@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const CartItemSchema = new mongoose.Schema({
   product: {type: mongoose.Schema.ObjectId, ref: 'Product'},
@@ -8,7 +8,7 @@ const CartItemSchema = new mongoose.Schema({
     enum: ['Not processed' , 'Processing', 'Shipped', 'Delivered', 'Cancelled']}
 })
 
-const CartItem = mongoose.model('CartItem', CartItemSchema)
+module.exports = mongoose.model('CartItem', CartItemSchema)
 
 
 const OrderSchema = new mongoose.Schema({
@@ -24,12 +24,15 @@ const OrderSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, 'Please fill a valid email address'],
     required: 'Email is required'
   },
-  delivery_address: {
-    street: {type: String, required: 'Street is required'},
+  shipping_address: {
+    recipient_name: {type: String, required: 'Recipient name is required'},
+    address1: {type: String, required: 'Street is required'},
+    address2: {type: String },
     city: {type: String, required: 'City is required'},
     state: {type: String},
     zipcode: {type: String, required: 'Zip Code is required'},
-    country: {type: String, required: 'Country is required'}
+    country: {type: String, default: 'US'},
+    phone: {type: String }
   },
   payment_id: {},
   updated: Date,
@@ -40,6 +43,4 @@ const OrderSchema = new mongoose.Schema({
   user: {type: mongoose.Schema.ObjectId, ref: 'User'}
 })
 
-const Order = mongoose.model('Order', OrderSchema)
-
-export {Order, CartItem}
+module.exports = mongoose.model('Order', OrderSchema)

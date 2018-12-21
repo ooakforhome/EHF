@@ -31,9 +31,11 @@ class MemberProducts extends Component {
   }
 
   componentDidMount(){
-    window.addEventListener('load', () => {
-    this.showAdded();
-    })
+    // if(localStorage.cart){
+    //   window.addEventListener('load', () => {
+    //   this.showAdded();
+    //   })
+    // }
   }
 
 
@@ -146,7 +148,7 @@ class MemberProducts extends Component {
     axios.get(`/api/member/product/${theId}`)
       .then(item => {
         const itemid = item.data._id;
-        if(localStorage.cart.match(itemid)){
+        if(localStorage.cart && localStorage.cart.match(itemid)){
           alert("item already added")
       }else{
         cart.addItem(item.data,()=>{
@@ -158,14 +160,16 @@ class MemberProducts extends Component {
   }
 
   showAdded(){
-    let localCart = JSON.parse(localStorage.cart).map((item)=>{
-      return item._id;
-    });
-      localCart.forEach((nid)=>{
-        if(document.querySelector(`[data-item="${nid}"]`)){
-          document.querySelector(`[data-item="${nid}"]`).classList.add('bk-yes');
-        }
+    if(localStorage.cart){
+      let localCart = JSON.parse(localStorage.cart).map((item)=>{
+        return item._id;
+      });
+        localCart.forEach((nid)=>{
+          if(document.querySelector(`[data-item="${nid}"]`)){
+            document.querySelector(`[data-item="${nid}"]`).classList.add('bk-yes');
+          }
       })
+    }
   }
 
   render() {
