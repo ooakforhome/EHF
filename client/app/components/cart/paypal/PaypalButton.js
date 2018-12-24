@@ -44,7 +44,7 @@ class PaypalButton extends React.Component {
   }
 
   render() {
-    const { total, currency, env, commit, client, onSuccess, onError, onCancel, items } = this.props;
+    const { total, currency, env, commit, client, onSuccess, onError, onCancel, items, details } = this.props;
 
     const { showButton } = this.state;
 
@@ -55,6 +55,7 @@ class PaypalButton extends React.Component {
             amount: {
               total,
               currency,
+              details,
             },
             description: 'The payment transaction description.',
             item_list: {

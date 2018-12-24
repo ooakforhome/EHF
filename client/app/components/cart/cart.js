@@ -74,11 +74,13 @@ qtyChangeHandler(e){
         }
     }
 
-    let Total = (!localStorage.cart)?0:JSON.parse(localStorage.cart)
+    let SubTotal = (!localStorage.cart)?0:JSON.parse(localStorage.cart)
       .map(item=>{ return item.retail* item.quantity})
         .reduce((acc, curr)=>{
           return acc+curr
           }, 0);
+
+    const Total = parseFloat((SubTotal*1.07).toFixed(2));
     const tax = 0.07;
     let Items = [];
       (!localStorage.cart)?'':JSON.parse(localStorage.cart).forEach(item => Items.push({
@@ -91,7 +93,15 @@ qtyChangeHandler(e){
         currency: "USD",
       })
     );
-    console.log(Items)
+    let Details = {
+      subtotal: parseFloat(`${SubTotal}`),
+      tax: parseFloat((SubTotal*.07).toFixed(2)),
+      shipping: 0,
+    }
+
+
+    console.log(Details)
+    console.log(Total)
 
     const onError = (error) =>
       console.log('Erroneous payment OR failed to load script!', error);
@@ -105,7 +115,7 @@ qtyChangeHandler(e){
           <ShowInCart items={this.state.products}/>
           <div>
             <p className="fLeft">TOTAL</p>
-            <h3 className="fLeft">$<b id="totalamount">{Total}</b></h3>
+            <h3 className="fLeft">$<b id="totalamount">{SubTotal}</b></h3>
           </div>
         </div>
         <div className="s-iCol-12 col-6">
@@ -117,6 +127,7 @@ qtyChangeHandler(e){
             currency={'USD'}
             total={Total}
             items={Items}
+            details= {Details}
             onSuccess={onSuccess}
             onError={onError}
             onCancel={onCancel}
