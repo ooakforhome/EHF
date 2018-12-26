@@ -11,6 +11,12 @@ router.route(`/api/user/findall`)
 router.route(`/api/user/findoneuser`)
   .get(userCtrl.findSingleUsers);
 
+router.route(`/api/user/findbyemail`)
+  .get(userCtrl.findUserByEmail);
+
+router.route(`/api/user/findbytoken`)
+  .get(userCtrl.findUserByToken);
+
 router.route(`/api/user/signup`)
   .post(userCtrl.addUser);
 
@@ -24,4 +30,3 @@ router.route(`/api/user/verify`)
   .get(userCtrl.userVerify);
 
 module.exports = router;
- 

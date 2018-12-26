@@ -35,6 +35,7 @@ const OrderSchema = new mongoose.Schema({
     phone: {type: String }
   },
   payment_id: {},
+  payment_status: {type: String, default: "Not Successful"},
   updated: Date,
   created: {
     type: Date,

@@ -10,7 +10,6 @@ const totalPrice=(qty, iprice)=>{
 
 
 const AddProduct=({ name, product, quantity, qtyChangeHandler, removeInCart })=>(
-      // add_product should have fixed width and height
         <div id="add_product_container" className="add_product_container" data-taget={product._id}>
           <div className="col-3" >
             {

@@ -23,6 +23,16 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   },
+  shipping_address: {
+    recipient_name: {type: String, required: 'Recipient name is required'},
+    address1: {type: String, required: 'Street is required'},
+    address2: {type: String },
+    city: {type: String, required: 'City is required'},
+    state: {type: String},
+    zipcode: {type: String, required: 'Zip Code is required'},
+    country: {type: String, default: 'US'},
+    phone: {type: String }
+  },
   allProducts: [{type: mongoose.Schema.Types.ObjectId, ref: Product}]
 });
 

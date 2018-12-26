@@ -16,7 +16,7 @@ import ProductsByCategory from './components/product/ProductsByCategory';
 import UserLogin from './components/core/UserLogin';
 import AdminLogin from './components/core/AdminLogin';
 
-import Cart from './components/cart/cart';
+import CartPage from './components/cart/cartPage';
 
 //
 // import SignupForm from './components/passport/sign-up';
@@ -35,7 +35,8 @@ import AdminProductsAll from './components/admin_pages/AdminProducts';
 import AdminProduct from './components/admin_pages/AdminProduct';
 import NewProduct from './components/admin_pages/NewProduct';
 
-import Checkout from './components/cart/paypal/PaypalCheckout.js'
+import Checkout from './components/cart/paypal/PaypalCheckout';
+import Receipt from './components/cart/purchaseReceipt'
 // import Checkout from './components/cart/checkout.js'
 
 const App = () =>
@@ -46,13 +47,16 @@ const App = () =>
         <Route exact path="/admin_login" component = { AdminLogin } />
         <Route exact path="/products" component = { BasicProductsAll } />
         <Route exact path="/product/:id" component = { BasicProduct } />
-        <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
-        <Route exact path="/auth/product/:id" component = { MemberProduct } />
+
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
         <Route exact path="/newproduct/:token" component = { NewProduct } />
-        <Route exact path="/checkout" component = { Checkout } />
-        <Route exact path="/cart" component = { Cart } />
+
+        <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
+        <Route exact path="/auth/product/:id" component = { MemberProduct } />        
+        <Route exact path="/cart" component = { CartPage } />
+        <Route exact path="/checkout/:id" component = { Checkout } />
+        <Route exact path="/receipt/:id" component = { Receipt } />
     </div>
   </Router>;
 

@@ -78,7 +78,8 @@ class PaypalButton extends React.Component {
             returnUrl: data.returnUrl,
           };
 
-          onSuccess(payment);
+          onSuccess(localStorage.setItem('paid', JSON.stringify(payment)));
+          // localStorage.setItem('paid', payment);
         });
 
   return (
@@ -98,6 +99,4 @@ class PaypalButton extends React.Component {
 
 }
 
-//Sandbox. https://api.sandbox.paypal.com
-// Live. https://api.paypal.com
 export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(PaypalButton);

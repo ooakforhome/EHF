@@ -16,7 +16,19 @@ module.exports = {
       .then(data => {
         console.log(res.json(data));
       })
-      .next(err)
+      .next(err + "There is a error")
+  },
+
+  findUserByEmail: function(req, res, next){
+    User.findOne({ email: req.query.email}, (err, data)=>{
+      if (err) {
+        return res.send({
+          success: false,
+          message: 'Error: Server error'
+        });
+      }
+      console.log(res.json(data._id))
+    })
   },
 
   addUser: function(req, res, next){
@@ -174,7 +186,14 @@ module.exports = {
        });
      }
    })
-  }
+ },
+
+ findUserByToken: function(req, res){
+   UserSession.findById({_id: req.query._id})
+    .then(data=>{
+      console.log(res.json(data.userId));
+    })
+ }
 
 } // end module export
 //=========================================================
