@@ -5,12 +5,11 @@ import axios from 'axios';
 
 // import parts
 import PaypalButton from './PaypalButton.js';
+import Creds from './cred';
 
-
-const CLIENT = {
-  sandbox: 'AeK8ZZ1wQQvzSlZBRhS0mjHSz5JOguwuR8wi7yleu4byGxwuhZw86Xjow7iyz2TWJ_9Yz3dl0W2uMg4k',
-  production: 'AeK8ZZ1wQQvzSlZBRhS0mjHSz5JOguwuR8wi7yleu4byGxwuhZw86Xjow7iyz2TWJ_9Yz3dl0W2uMg4k'
-}
+const ENV = process.env.NODE_ENV === 'production'
+  ? 'production'
+  : 'sandbox';
 
 
 class PaypalCheckout extends Component{
@@ -62,12 +61,22 @@ loadStorageinfo(){
       shipping: 0,
     }
 
+    const shipAddress = (!localStorage.shipping_address)?'':JSON.parse(localStorage.shipping_address)[0];
+    let ShipAddress = [];
+    (!localStorage.shipping_address)?'':JSON.parse(localStorage.shipping_address).map(item => ShipAddress.push({
+        recipient_name: item.recipient_name,
+        line1: item.line1,
+        line2: (!item.line2)?"":item.line2,
+        city: item.city,
+        state: item.state,
+        postal_code: item.postal_code,
+        country_code: 'US',
+        phone: item.phone,
+      })
+    )
     const onSuccess = (payment) => {
-        // console.log('Successful payment!', payment);
-        if(payment.paid === true){
-          alert("your payment is successful");
-          window.location = `/receipt/${this.state.orderID}`
-        }
+        alert("your payment is successful");
+        window.location = `/receipt/${this.state.orderID}`
     }
 
     const onError = (error) =>
@@ -86,13 +95,14 @@ loadStorageinfo(){
         </div>
         <div className="s-iCol-12 col-6">
           <PaypalButton
-            client={CLIENT}
-            env={'sandbox'}
+            client={Creds}
+            env={ENV}
             commit={true}
             currency={'USD'}
             total={Total}
             items={Items}
             details= {Details}
+            shipping_address = {ShipAddress[0]}
             onSuccess={onSuccess}
             onError={onError}
             onCancel={onCancel}

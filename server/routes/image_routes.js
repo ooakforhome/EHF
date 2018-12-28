@@ -2,7 +2,7 @@ const path = require('path');
 // const express = require("express");
 // const bodyParser = require("body-parser");
 
-const crypto = require('crypto');
+const crypto = require('bcrypt-nodejs');
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');

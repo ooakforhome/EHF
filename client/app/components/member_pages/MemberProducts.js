@@ -12,6 +12,7 @@ import CartItem from './parts/cartItem';
 
 import cart from '../cart/cart-helper';
 
+
 //SPD to Products
 class MemberProducts extends Component {
   constructor(props) {
