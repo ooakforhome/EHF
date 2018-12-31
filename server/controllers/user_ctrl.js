@@ -11,7 +11,7 @@ module.exports = {
       })
   },
 
-  findSingleUsers: function(req, res, next){
+  findSingleUser: function(req, res, next){
     User.findById({_id: req.query._id, root: User})
       .then(data => {
         console.log(res.json(data));
@@ -57,7 +57,7 @@ module.exports = {
      if (err) {
        return res.send({
          success: false,
-         message: 'Error: Server error'
+         message: 'Error: Server error - find'
        });
      } else if (previousUsers.length > 0) {
        return res.send({
@@ -73,7 +73,7 @@ module.exports = {
        if (err) {
          return res.send({
            success: false,
-           message: 'Error: Server error'
+           message: err
          });
        }
        return res.send({
@@ -143,11 +143,12 @@ module.exports = {
    });
  },
 
+
  userLogOut: function(req, res, next){
    const token = req.query.token;
    // ?token=test
    // Verify the token is one of a kind and it's not deleted.
-   UserSession.findOneAndUpdate({ _id: token, isDeleted: false }, { $set: { isDeleted:true }}, null, (err, sessions) => {
+   UserSession.findOneAndUpdate({ _id: token }, { $set: { isDeleted:true }}, null, (err, sessions) => {
      if (err) {
        console.log(err);
        return res.send({
@@ -157,7 +158,7 @@ module.exports = {
      }
      return res.send({
        success: true,
-       message: 'Good'
+       message: 'User Log Out successfully'
      });
    });
  },

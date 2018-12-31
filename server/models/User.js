@@ -24,12 +24,12 @@ const UserSchema = new mongoose.Schema({
     default: Date.now()
   },
   shipping_address: {
-    recipient_name: {type: String, required: 'Recipient name is required'},
-    address1: {type: String, required: 'Street is required'},
+    recipient_name: {type: String},
+    address1: {type: String},
     address2: {type: String },
-    city: {type: String, required: 'City is required'},
+    city: {type: String},
     state: {type: String},
-    zipcode: {type: String, required: 'Zip Code is required'},
+    zipcode: {type: String},
     country: {type: String, default: 'US'},
     phone: {type: String }
   },

@@ -9,13 +9,10 @@ router.route(`/api/user/findall`)
   .get(userCtrl.findAllUsers);
 
 router.route(`/api/user/findoneuser`)
-  .get(userCtrl.findSingleUsers);
+  .get(userCtrl.findSingleUser);
 
 router.route(`/api/user/findbyemail`)
   .get(userCtrl.findUserByEmail);
-
-router.route(`/api/user/findbytoken`)
-  .get(userCtrl.findUserByToken);
 
 router.route(`/api/user/signup`)
   .post(userCtrl.addUser);
@@ -28,5 +25,8 @@ router.route(`/api/user/logout`)
 
 router.route(`/api/user/verify`)
   .get(userCtrl.userVerify);
+
+router.route(`/api/user/findbytoken`)
+  .get(userCtrl.findUserByToken);
 
 module.exports = router;

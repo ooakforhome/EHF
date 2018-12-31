@@ -152,7 +152,7 @@ module.exports = {
      }else {
        return res.send({
          success: true,
-         message: 'Good'
+         message: 'Log Out Admin Successfully'
      })
    }
    });
