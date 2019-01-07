@@ -58,6 +58,11 @@ qtyChangeHandler(e){
       this.loadStorageinfo();
 }
 
+backToProductsPage(){
+  const token = JSON.parse(localStorage.the_main_app).token;
+  window.location = `/auth/products/${token}`
+}
+
 confirmSubmit(e){
   e.preventDefault();
   // optimize localhost data into database format
@@ -86,7 +91,7 @@ confirmSubmit(e){
       })
 
   // Upload data into database
-  axios.get(`/api/user/findbytoken?_id=${tk}`)
+  axios.get(`/api/user/findidbytoken?_id=${tk}`)
     .then(tkid => {
       axios.post('/api/placeorder', {
           products: lsCart,
@@ -131,6 +136,7 @@ confirmSubmit(e){
 
     return(
       <>
+        <button onClick={this.backToProductsPage.bind(this)}>BACK TO PRODUCTS PAGE</button>
         <div id="cart_container" className="s-iCol-12 col-6">
           <ShowInCart items={this.state.products}/>
           <div>

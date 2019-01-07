@@ -6,9 +6,12 @@ import axios from 'axios';
 import { renderMember } from '../../actions/member-action';
 import Categories from '../componentParts/Categories';
 import { ProductsBox } from './parts/ProductsBox';
-import Logout from './parts/Logout';
+
 import { setInStorage, getFromStorage } from '../utils/storage';
-import CartItem from './parts/cartItem';
+
+import MemberHeader from './parts/MemberHeader';
+import MemberProfile from "./parts/MemberProfile";
+
 
 import cart from '../cart/cart-helper';
 
@@ -30,15 +33,6 @@ class MemberProducts extends Component {
   componentWillMount() {
     this.checkValidation();
   }
-
-  componentDidMount(){
-    // if(localStorage.cart){
-    //   window.addEventListener('load', () => {
-    //   this.showAdded();
-    //   })
-    // }
-  }
-
 
   checkValidation(){
     const obj = getFromStorage('the_main_app');
@@ -125,18 +119,6 @@ class MemberProducts extends Component {
     this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
-  onclick_logout(e){
-    e.preventDefault();
-    axios.get(`/api/user/logout?token=${this.state.token}`)
-    .then( respond => {
-      if(respond.data.success === false){
-        alert("logout unsuccessful");
-      } else {
-        window.location = '/';
-      }
-    })
-  };
-
   showinfo(){
     let inLocal = JSON.parse(localStorage.getItem('cart')).length;
     return document.querySelector('.showLocalAmount').textContent= inLocal;
@@ -204,16 +186,13 @@ class MemberProducts extends Component {
 
     return(
       <div>
-        <div>
-          <Logout
-            onclick_logout = {this.onclick_logout.bind(this)}
-          />
-          <CartItem />
+        <div className="col-12 inline_block">
+          <MemberHeader />
         </div>
-        <div className="category_nav">
+        <div className="category_nav col-12 inline_block">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
-
+        <div className="memberProfileBlock hide"><MemberProfile /></div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
             <PageBtn />

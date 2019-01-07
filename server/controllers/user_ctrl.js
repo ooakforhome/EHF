@@ -13,10 +13,10 @@ module.exports = {
 
   findSingleUser: function(req, res, next){
     User.findById({_id: req.query._id, root: User})
-      .then(data => {
-        console.log(res.json(data));
+      .then(info => {
+        return res.json(info)
       })
-      .next(err + "There is a error")
+        .catch(next)
   },
 
   findUserByEmail: function(req, res, next){
@@ -29,6 +29,7 @@ module.exports = {
       }
       console.log(res.json(data._id))
     })
+      .catch(next)
   },
 
   addUser: function(req, res, next){
@@ -83,6 +84,12 @@ module.exports = {
      });
    });
  }, // end addUser
+
+ updateUser : function(req, res){
+   User.findOneAndUpdate({_id: req.query._id}, req.body)
+    .then(info => { return res.json(info)})
+    .catch(err => res.status(422).json(err))
+ },
 
  userLogin : function(req, res, next){
    const { body } = req;
@@ -189,11 +196,26 @@ module.exports = {
    })
  },
 
- findUserByToken: function(req, res){
+ findUserIdByToken: function(req, res){
    UserSession.findById({_id: req.query._id})
     .then(data=>{
-      console.log(res.json(data.userId));
+      return res.json(data.userId);
     })
+ },
+
+ findUserByToken: function(req, res, next){
+   UserSession.findById({_id: req.query._id})
+    .then(data=>{
+      User.findById({_id: data.userId, root: User})
+        .then(info => {
+          return res.send({
+            "shipping_address" : info.shipping_address,
+            "email" : info.email,
+            "username": info.username
+          })
+        })
+    })
+    .catch(next)
  }
 
 } // end module export

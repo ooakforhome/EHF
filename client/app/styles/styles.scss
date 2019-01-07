@@ -49,6 +49,10 @@ $background-size: contain;
   box-shadow: 0px 5px 10px grey;
 }
 
+.inline_block {
+  display: inline-block;
+}
+
 .bk-yes {
   background-color: #cacaca ;
 }
@@ -165,6 +169,33 @@ ul {
     width: 100px;
   }
 }
+
+.memberProfileBlock{
+  position:fixed;
+  background:grey;
+  width: 100vw;
+  height: 100vw;
+  top: 0px;
+  .profile-block{
+    position: relative;
+    margin:auto;
+    margin-top: 100px;
+    width: 500px;
+    height: 615px;
+    background-color: white;
+    box-shadow: 1px 1px 1px black;
+    padding-left: 10px;  
+    .profile-box-block{
+      width:100%;
+      .profile-box-close{
+        float: right;
+        margin: 5px;
+      }
+    }
+  }
+}
+
+
 /* -----NewProduct----- */
 .spdFormContainer {
   width:830px;

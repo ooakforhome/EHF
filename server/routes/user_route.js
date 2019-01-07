@@ -17,6 +17,9 @@ router.route(`/api/user/findbyemail`)
 router.route(`/api/user/signup`)
   .post(userCtrl.addUser);
 
+router.route(`/api/user/userupdate`)
+  .put(userCtrl.updateUser)
+
 router.route(`/api/user/signin`)
   .post(userCtrl.userLogin);
 
@@ -25,6 +28,9 @@ router.route(`/api/user/logout`)
 
 router.route(`/api/user/verify`)
   .get(userCtrl.userVerify);
+
+router.route(`/api/user/findidbytoken`)
+  .get(userCtrl.findUserIdByToken);
 
 router.route(`/api/user/findbytoken`)
   .get(userCtrl.findUserByToken);

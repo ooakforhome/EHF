@@ -53,7 +53,7 @@ const App = () =>
         <Route exact path="/newproduct/:token" component = { NewProduct } />
 
         <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
-        <Route exact path="/auth/product/:id" component = { MemberProduct } />        
+        <Route exact path="/auth/product/:id" component = { MemberProduct } />
         <Route exact path="/cart" component = { CartPage } />
         <Route exact path="/checkout/:id" component = { Checkout } />
         <Route exact path="/receipt/:id" component = { Receipt } />
