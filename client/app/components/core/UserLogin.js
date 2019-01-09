@@ -31,7 +31,7 @@ class UserLogin extends Component {
                 token,
                 isLoading: false
               });
-              window.location =`/auth/products/${this.state.token}`;
+              window.location =`/auth/products/`;
             } else {
               this.setState({
                 isLoading: false,
@@ -131,7 +131,7 @@ class UserLogin extends Component {
               signInEmail: '',
               token: json.token,
             })
-            window.location =`/auth/products/${this.state.token}`;
+            window.location =`/auth/products/`;
           } else {
             this.setState({
               signInError: json.message,

@@ -35,4 +35,7 @@ router.route(`/api/user/findidbytoken`)
 router.route(`/api/user/findbytoken`)
   .get(userCtrl.findUserByToken);
 
+router.route(`/api/user/finduserpopulate`)
+  .get(userCtrl.userShowAllItemsAdded);
+
 module.exports = router;

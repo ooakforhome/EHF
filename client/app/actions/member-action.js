@@ -1,4 +1,4 @@
-import { RENDER_MEMBER, FETCH_ONE_MEMBER } from './types';
+import { RENDER_MEMBER, FETCH_ONE_MEMBER, SEARCH_PRODUCTS_MEMBER } from './types';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -22,4 +22,14 @@ import _ from 'lodash';
         payload: product
       })
     );
+  };
+
+  export const searchBoxMember = searchValue => dispatch => {
+    axios.get(`/api/member/products/search?search=${searchValue}`)
+      .then( res => res.data )
+        .then( products => dispatch({
+          type: SEARCH_PRODUCTS_MEMBER,
+          payload: products
+        })
+      );
   };

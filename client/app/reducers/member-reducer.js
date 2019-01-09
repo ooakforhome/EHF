@@ -1,4 +1,4 @@
-import { RENDER_MEMBER, FETCH_ONE_MEMBER } from '../actions/types';
+import { RENDER_MEMBER, FETCH_ONE_MEMBER, SEARCH_PRODUCTS_MEMBER } from '../actions/types';
 
 const initState = {
   products: [],
@@ -16,6 +16,11 @@ export default function(state = initState, action){
       return {
         state,
         product: action.payload
+     }
+     case SEARCH_PRODUCTS_MEMBER:
+      return {
+        state,
+        products: action.payload
       }
     default:
       return state;

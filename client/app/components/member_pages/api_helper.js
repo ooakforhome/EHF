@@ -19,6 +19,10 @@ export default {
     return axios.get(`/api/user/findoneuser?_id=${memberID}`)
   },
 
+  memberSearchProduct: function(search){
+    return axios.get(`/api/member/products/search?search=${search}`)
+  },
+
   updateUserInfo: function(userid, userData){
     return axios.put(`/api/user/userupdate?_id=${userid}`, userData)
   }

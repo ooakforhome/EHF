@@ -4,40 +4,36 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './styles/styles.scss';
 
 // Home page Link
-import Home from './components/core/Home';
-import Login from './components/core/UserLogin';
-import Header from './components/core/Header';
+  import Home from './components/core/Home';
+  import Login from './components/core/UserLogin';
+  import Header from './components/core/Header';
 
 // component show products pages
-import ProductsAll from './components/product/ProductsAll';
-import Product from './components/product/Product';
-import ProductsByCategory from './components/product/ProductsByCategory';
+  import ProductsAll from './components/product/ProductsAll';
+  import Product from './components/product/Product';
+  import ProductsByCategory from './components/product/ProductsByCategory';
 
-import UserLogin from './components/core/UserLogin';
-import AdminLogin from './components/core/AdminLogin';
-
-import CartPage from './components/cart/cartPage';
-
-//
-// import SignupForm from './components/passport/sign-up';
-// import Login from './components/passport/login-form';
+  import UserLogin from './components/core/UserLogin';
+  import AdminLogin from './components/core/AdminLogin';
 
 // Basic Pages
-import BasicProductsAll from './components/basic_pages/BasicProductsAll';
-import BasicProduct from './components/basic_pages/BasicProduct';
-
-// Member Pages
-import MemberProductsAll from './components/member_pages/MemberProducts';
-import MemberProduct from './components/member_pages/MemberProduct';
+  import BasicProductsAll from './components/basic_pages/BasicProductsAll';
+  import BasicProduct from './components/basic_pages/BasicProduct';
 
 // Admin Pages
-import AdminProductsAll from './components/admin_pages/AdminProducts';
-import AdminProduct from './components/admin_pages/AdminProduct';
-import NewProduct from './components/admin_pages/NewProduct';
+  import AdminProductsAll from './components/admin_pages/AdminProducts';
+  import AdminProduct from './components/admin_pages/AdminProduct';
+  import NewProduct from './components/admin_pages/NewProduct';
 
-import Checkout from './components/cart/paypal/PaypalCheckout';
-import Receipt from './components/cart/purchaseReceipt'
-// import Checkout from './components/cart/checkout.js'
+// Member Pages
+  import MemberProductsAll from './components/member_pages/MemberProducts';
+  import MemberProduct from './components/member_pages/MemberProduct';
+
+  import CartPage from './components/cart/cartPage';
+  import Checkout from './components/cart/paypal/PaypalCheckout';
+  import Receipt from './components/cart/purchaseReceipt'
+  // import Checkout from './components/cart/checkout.js'
+
 
 const App = () =>
   <Router>
@@ -52,7 +48,7 @@ const App = () =>
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
         <Route exact path="/newproduct/:token" component = { NewProduct } />
 
-        <Route exact path="/auth/products/:token" component = { MemberProductsAll } />
+        <Route exact path="/auth/products/" component = { MemberProductsAll } />
         <Route exact path="/auth/product/:id" component = { MemberProduct } />
         <Route exact path="/cart" component = { CartPage } />
         <Route exact path="/checkout/:id" component = { Checkout } />

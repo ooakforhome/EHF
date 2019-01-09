@@ -52,7 +52,8 @@ class MemberProduct extends Component {
 
   backToProductsPageOnClick(e){
     e.preventDefault();
-    window.location =`/auth/products/${this.state.token}`;
+    // window.location =`/auth/products/${this.state.token}`;
+    window.location =`/auth/products`;
   }
 
   addToCart(e){

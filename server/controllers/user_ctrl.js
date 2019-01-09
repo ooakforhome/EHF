@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 const Product = require('../models/Product_model');
+const Cart = require('../models/Cart')
 
 module.exports = {
   findAllUsers: function(req, res, next){
@@ -216,6 +217,17 @@ module.exports = {
         })
     })
     .catch(next)
+ },
+
+ userShowAllItemsAdded: function(req, res, next){
+   UserSession.findById({_id: req.query._id})
+    .then(data=>{
+      User.findById({_id: data.userId, root: User})
+        .populate('productsInCart')
+        .then( productinfo => {
+          return res.send(productinfo.productsInCart)
+        })
+    })
  }
 
 } // end module export

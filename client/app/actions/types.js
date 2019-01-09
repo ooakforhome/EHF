@@ -7,6 +7,7 @@ export const FETCH_ONE_BASIC = 'FETCH_ONE_BASIC';
 // member-action
 export const RENDER_MEMBER = 'RENDER_MEMBER';
 export const FETCH_ONE_MEMBER = 'FETCH_ONE_MEMBER';
+export const SEARCH_PRODUCTS_MEMBER = 'SEARCH_PRODUCTS_MEMBER';
 
 // admin-action
 export const RENDER_ADMIN = 'RENDER_ADMIN';

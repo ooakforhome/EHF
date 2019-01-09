@@ -18,6 +18,7 @@ const productRoutes = require('./routes/products_route');
 const imageRoutes = require('./routes/image_routes');
 const userRoutes = require('./routes/user_route');
 const adminRoutes = require('./routes/admin_route');
+const cartRoutes = require('./routes/cart_route');
 
 // Configuration
 // ================================================================================================
@@ -36,6 +37,7 @@ app.use('/', productRoutes);
 app.use('/', imageRoutes);
 app.use('/', userRoutes);
 app.use('/', adminRoutes);
+app.use('/', cartRoutes);
 
 if (isDev) {
   const compiler = webpack(webpackConfig);

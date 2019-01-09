@@ -20,9 +20,11 @@ router.route("/api/basic/product/:_id")
 router.route("/api/member/products")
   .get(memberProductCtrl.getProductsMember);
 
+router.route("/api/member/products/search")
+  .get(memberProductCtrl.searchProductFromMember);
+
 router.route("/api/member/product/:_id")
   .get(memberProductCtrl.getProductByIdMember);
-
 
 // Admin API routes
 router.route("/api/admin/products")

@@ -1,66 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import scriptLoader from 'react-async-script-loader';
+Input:"coderbyte"
+Output:"etybredoc"
 
-class PaypalButton extends React.Component {
+Input:"I Love Code"
+Output:"edoC evoL I"
 
-  render() {
-    const {
-      total,
-      currency,
-      env,
-      commit,
-      client,
-      onSuccess,
-      onError,
-      onCancel,
-    } = this.props;
+function FirstReverse(str) {
+  var reverseword = '';
 
-    const {
-      showButton,
-    } = this.state;
-
-    const payment = () =>
-      paypal.rest.payment.create(env, client, {
-        transactions: [
-          {
-            amount: {
-              total,
-              currency,
-            }
-          },
-        ],
-      });
-
-    const onAuthorize = (data, actions) =>
-      actions.payment.execute()
-        .then(() => {
-          const payment = {
-            paid: true,
-            cancelled: false,
-            payerID: data.payerID,
-            paymentID: data.paymentID,
-            paymentToken: data.paymentToken,
-            returnUrl: data.returnUrl,
-          };
-
-          onSuccess(payment);
-        });
-
-    return (
-      <div>
-        {showButton && <paypal.Button.react
-          env={env}
-          client={client}
-          commit={commit}
-          payment={payment}
-          onAuthorize={onAuthorize}
-          onCancel={onCancel}
-          onError={onError}
-        />}
-      </div>
-    );
+  for(var i = str.length; i >= 0; i--){
+    reverseword += str[i];
   }
+    return reverseword;
 }
 
-export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(PaypalButton);
+// keep this function call here
+FirstReverse(readline());

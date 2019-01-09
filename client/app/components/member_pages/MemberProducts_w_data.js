@@ -133,21 +133,39 @@ class MemberProducts extends Component {
   }
 
 // Add product to cart in localStorage 01
+  // addToCart(e){
+  //   e.preventDefault();
+  //   const theId = e.target.value;
+  //   axios.get(`/api/member/product/${theId}`)
+  //     .then(item => {
+  //       const itemid = item.data._id;
+  //       if(localStorage.cart && localStorage.cart.match(itemid)){
+  //         alert("item already added")
+  //     }else{
+  //       cart.addItem(item.data,()=>{
+  //         this.showinfo();
+  //       })
+  //       document.querySelector(`[data-item="${item.data._id}"]`).classList.add('bk-yes')
+  //     }
+  //   })
+  // }
+
+// Working add product do database 02
   addToCart(e){
     e.preventDefault();
     const theId = e.target.value;
     axios.get(`/api/member/product/${theId}`)
       .then(item => {
-        const itemid = item.data._id;
-        if(localStorage.cart && localStorage.cart.match(itemid)){
-          alert("item already added")
-      }else{
-        cart.addItem(item.data,()=>{
-          this.showinfo();
+          axios.post(`/api/cart/addtocart`, {
+            quantity: item.data.quantity,
+            price: item.data.Retail,
+            itemID: item.data._id,
+            userID: this.state.cID
+          })
+          .then( data => {
+            document.querySelector(`[data-item="${item.data._id}"]`).classList.add('bk-yes')
+          })
         })
-        document.querySelector(`[data-item="${item.data._id}"]`).classList.add('bk-yes')
-      }
-    })
   }
 
   showAdded(){
@@ -172,9 +190,7 @@ class MemberProducts extends Component {
 
   searchBoxInput(e){
     e.preventDefault();
-   // Using Redux
     this.props.searchBoxMember(this.state.searchBox)
-   // Using API
     // API.memberSearchProduct(this.state.searchBox)
     //   .then(products => {
     //     console.log(products.data);
