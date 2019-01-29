@@ -6,113 +6,234 @@ import axios from "axios";
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 // import parts
-import AddAddress from './addAddress';
-import ShowAddress from './showAddress';
+import Add_Address from './add_address';
+import Show_Address from './show_address';
 
 class CartPage extends Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      products: [],
+      address: [],
+      grandTotal: 0,
+      username: "",
+      email: "",
+      recipient_name: "",
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      country: "",
+      phone: "",
+    }
+  }
 
   componentWillMount() {
     this.checkValidation();
+  }
+
+  componentDidMount(){
     this.loadStorageinfo();
+    this.loadGrandTotal();
+    this.getUserAddress();
   }
 
-checkValidation(){
-  const obj = getFromStorage('the_main_app');
-  if (obj && obj.token) {
-    const { token } = obj;
-    fetch('/api/user/verify?token=' + token)
-      .then(res => res.json())
-      .then(json => {
-        if (json.success) {
+  checkValidation(){
+    const obj = getFromStorage('the_main_app');
+    if (obj && obj.token) {
+      const { token } = obj;
+      fetch('/api/user/verify?token=' + token)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            this.setState({
+              token,
+              isLoading: false
+            });
+
+          } else {
+            window.location =`/`;
+          }
+        });
+    } else {
+        window.location =`/`;
+    }
+  }
+
+
+  loadStorageinfo(){
+    cart.getCart(items =>{
+      this.setState({
+        products: items.data
+      })
+    })
+  }
+
+  loadGrandTotal(){
+    cart.calculateCartTotal( newTotal => {
+      this.setState({
+        grandTotal: newTotal.toFixed(2)
+      })
+    })
+  }
+
+  removeInCart(e){
+    const theOne = e.target.name;
+    cart.removeItem(theOne);
+    this.loadStorageinfo();
+    this.loadGrandTotal();
+  }
+
+  qtyChangeHandler(e){
+    e.preventDefault()
+    let num = parseInt(e.target.value);
+    const item_id = e.target.id;
+    cart.updateCart(item_id, num);
+    this.loadStorageinfo();
+    this.loadGrandTotal();
+  }
+
+  backToProductsPage(){
+    const token = JSON.parse(localStorage.the_main_app).token;
+    {(token) ? `/auth/products/`: '/' }
+    window.location = `/auth/products/`
+    // window.location = `/auth/products/${token}`
+  }
+
+  getUserAddress(){
+    cart.userId( id => {
+      axios.get(`/api/user/finduseraddress?userID=${id.data}`)
+        .then( getAddress =>{
+          const gA = getAddress.data;
           this.setState({
-            token,
-            isLoading: false
-          });
-
-        } else {
-          window.location =`/`;
-        }
-      });
-  } else {
-      window.location =`/`;
+            username: gA.username,
+            email: gA.email,
+            recipient_name: gA.address.recipient_name,
+            address1: gA.address.address1,
+            address2: gA.address.address2,
+            city: gA.address.city,
+            state: gA.address.state,
+            zipcode: gA.address.zipcode,
+            phone: gA.address.phone,
+            address: [{
+              recipient_name: gA.address.recipient_name,
+              address1: gA.address.address1,
+              address2: gA.address.address2,
+              city: gA.address.city,
+              state: gA.address.state,
+              zipcode: gA.address.zipcode,
+              country: "USA",
+              phone: gA.address.phone,
+            }]
+          })
+        })
+    })
   }
-}
 
+  addressChange(e){
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value.trim()
+    })
+  }
 
-loadStorageinfo(){
-  this.setState({
-    products: cart.getCart()
-  })
-}
-
-removeInCart(e){
-  const theOne = e.target.name
-  cart.removeItem(theOne);
-      this.loadStorageinfo();
-}
-
-qtyChangeHandler(e){
-  e.preventDefault()
-  let num = parseInt(e.target.value);
-    cart.updateCart(e.target.name, num)
-      this.loadStorageinfo();
-}
-
-backToProductsPage(){
-  const token = JSON.parse(localStorage.the_main_app).token;
-  window.location = `/auth/products/${token}`
-}
-
-confirmSubmit(e){
-  e.preventDefault();
-  // optimize localhost data into database format
-    // const lsUser = JSON.parse(localStorage.the_main_app).token;
-    const tk = JSON.parse(localStorage.the_main_app).token;
-
-    const lsCart = [];
-    JSON.parse(localStorage.cart).forEach(cartData=>{
-      lsCart.push({
-        product: cartData.product._id,
-        quantity: cartData.quantity,
-        retail: cartData.retail,
+  formSubmit(){
+    cart.userId(id=>{
+      axios.post(`/api/user/userupdate?_id=${id.data}`, {
+        username: this.state.username,
+        shipping_address : {
+          recipient_name : this.state.recipient_name,
+          address1 : this.state.address1,
+          address2 : this.state.address2,
+          city : this.state.city,
+          state : this.state.state,
+          zipcode : this.state.zipcode,
+          country : "USA",
+          phone : this.state.phone
+          }
       })
-    });
-    const newAddress = JSON.parse(localStorage.shipping_address)[0];
-    const lsShipAddress = [];
-      lsShipAddress.push({
-        recipient_name: newAddress.recipient_name,
-        address1: newAddress.line1,
-        address2: newAddress.line2,
-        city: newAddress.city,
-        state: newAddress.state,
-        zipcode: newAddress.postal_code,
-        country: newAddress.country_code,
-        phone: newAddress.phone,
+      .then((info, err)=>{
+        if(err){console.log(err)}
+        else{
+          this.getUserAddress();
+        }
       })
+    })
+  }
 
-  // Upload data into database
+  formUpdate(){
+    cart.userId(id=>{
+      axios.post(`/api/user/userupdate?_id=${id.data}`, {
+        username: this.state.username,
+        shipping_address : {
+          recipient_name : this.state.recipient_name,
+          address1 : this.state.address1,
+          address2 : this.state.address2,
+          city : this.state.city,
+          state : this.state.state,
+          zipcode : this.state.zipcode,
+          country : "USA",
+          phone : this.state.phone
+          }
+      })
+      .then((info, err)=>{
+        if(err){console.log(err)}
+        else{
+          this.getUserAddress();
+          window.location="/cart"
+        }
+      })
+    })
+  }
+
+  triggerUpdate(){
+    document.querySelector('.show_address_container').classList.toggle("hide");
+    document.querySelector('.update_address_btn').classList.toggle("hide");
+    document.querySelector('.update_address_box').classList.toggle("hide");
+    document.querySelector('.change_address_btn').classList.toggle("hide");
+  }
+
+  confirmSubmit(e){
+    e.preventDefault();
+    // optimize localhost data into database format
+      // Set token variable
+      const tk = JSON.parse(localStorage.the_main_app).token;
+      // Set a empty array for cart item input
+      const lsCart = [];
+
+      cart.getCart(items => {
+        items.data.forEach(item => {
+          lsCart.push(item)
+        })
+      });
+
+  const newaddress = this.state.address[0];
+
+      //--> Upload data into database
   axios.get(`/api/user/findidbytoken?_id=${tk}`)
     .then(tkid => {
       axios.post('/api/placeorder', {
-          products: lsCart,
-          customer_name: newAddress.customer_name,
-          customer_email: newAddress.customer_email,
-          shipping_address: lsShipAddress[0],
-          user: tkid.data
+        products: lsCart,
+        customer_name: this.state.username,
+        customer_email: this.state.email,
+        shipping_address: newaddress,
+        user: tkid.data
+        })
+          .then(orderData => {
+          window.location=`/checkout/${orderData.data._id}`
           })
-            .then(orderData => {
-            window.location=`/checkout/${orderData.data._id}`
-            })
       })
   }
 
 
   render(){
-    if(this.state.products.length <= 0){
-      alert("Your cart is empty!")
-      // this.props.history.push("/")
-      window.location = "/";
-    }
+    // if(!this.state.address[0]){
+    //   alert("Your cart is empty!")
+    //   // this.props.history.push("/")
+    //   window.location = "/";
+    // }
+
 
     const ShowInCart = ({items}) => (
       <div>
@@ -120,7 +241,6 @@ confirmSubmit(e){
           <AddProduct
             key={i}
             {...item}
-            name = {i}
             qtyChangeHandler = {this.qtyChangeHandler.bind(this)}
             removeInCart = {this.removeInCart.bind(this)}
           />
@@ -128,33 +248,75 @@ confirmSubmit(e){
       </div>
     )
 
-    let SubTotal = (!localStorage.cart)?0:JSON.parse(localStorage.cart)
-      .map(item=>{ return item.retail* item.quantity})
-        .reduce((acc, curr)=>{
-          return acc+curr
-          }, 0);
+    const GrandTotal = 0;
+
+    // Toggle add or show address
+    const TriggerAddress = () => {
+        if(this.state.address1 !== undefined ){
+         return  (
+          <Show_Address
+            user = {this.state.username}
+            email = {this.state.email}
+            recipient_name = {this.state.recipient_name}
+            address1 = {this.state.address1}
+            address2 = {this.state.address2}
+            city = {this.state.city}
+            state = {this.state.state}
+            zipcode = {this.state.zipcode}
+            country = {this.state.country}
+            phone = {this.state.phone}
+            triggerUpdate = {this.triggerUpdate.bind(this)}
+            addressChange = {this.addressChange.bind(this)}
+            formUpdate = {this.formUpdate.bind(this)}
+            />
+          )
+        } else {
+        return (
+          <Add_Address
+            addressChange = {this.addressChange.bind(this)}
+            formSubmit = {this.formSubmit.bind(this)}
+            />
+          )
+        }
+    }
 
     return(
       <>
-        <button onClick={this.backToProductsPage.bind(this)}>BACK TO PRODUCTS PAGE</button>
+        <div className="col-12">
+            <button onClick={this.backToProductsPage.bind(this)}>
+              BACK TO PRODUCTS PAGE
+            </button>
+        </div>
+        <br />
         <div id="cart_container" className="s-iCol-12 col-6">
           <ShowInCart items={this.state.products}/>
           <div>
             <p className="fLeft">TOTAL</p>
-            <h3 className="fLeft">$<b id="totalamount">{SubTotal}</b></h3>
+            <h3 className="fLeft">$<b id="totalamount">{this.state.grandTotal}</b></h3>
           </div>
         </div>
-
-
-        <div className="s-iCol-12 col-6">
-          {(!localStorage.shipping_address)?<AddAddress />: <ShowAddress />}
+        <hr className="s-iCol-12 col-12"/>
+        <div className="s-iCol-12 col-12">
+          <TriggerAddress />
+          <br />
+          <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
         </div>
-
-        {(!localStorage.shipping_address)? "":
-        <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>}
       </>
     )
   }
 }
 
 export default CartPage;
+// <div className="s-iCol-12 col-6">
+  // {(!localStorage.shipping_address)?<AddAddress />: <ShowAddress />}
+  // {(!localStorage.shipping_address)? "":
+  // <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>}
+// </div>
+
+
+// {(this.state.address.address1 === "")?
+//   <Add_Address
+//     addressChange = {this.addressChange.bind(this)}
+//     formSubmit = {this.formSubmit.bind(this)}
+//   /> :
+//   <ShowAddress />}

@@ -28,7 +28,7 @@ module.exports = {
           message: 'Error: Server error'
         });
       }
-      console.log(res.json(data._id))
+        return res.json(data._id)
     })
       .catch(next)
   },
@@ -87,8 +87,8 @@ module.exports = {
  }, // end addUser
 
  updateUser : function(req, res){
-   User.findOneAndUpdate({_id: req.query._id}, req.body)
-    .then(info => { return res.json(info)})
+   User.findOneAndUpdate({_id: req.query._id}, req.body,{new: true})
+    .then(info => { return res.json(info.shipping_address)})
     .catch(err => res.status(422).json(err))
  },
 
@@ -112,7 +112,6 @@ module.exports = {
    email = email.trim();
    User.find({ email: email }, (err, users) => {
      if (err) {
-       console.log('err 2:', err);
        return res.send({
          success: false,
          message: 'Error: server error'
@@ -228,7 +227,54 @@ module.exports = {
           return res.send(productinfo.productsInCart)
         })
     })
- }
+ },
+
+ userRemoveACartItem: function(req, res, next){
+   // const userID = req.body.userID;
+   const cartID = req.body.cartID;
+   // const productInCart = req.body.productInCart;
+   Cart
+    .findByIdAndRemove({_id: cartID}, (err)=>{
+       if(!err){
+         // return res.send({succssful : "true"})
+         User
+           .update({ productsInCart: cartID },
+           { $pull : { productsInCart : cartID }}, (err)=>{
+             if(err) throw err;
+             return res.send({succssful : "true"})
+           })
+       } else {
+         return res.send({succssful : "false"})
+       }
+    })
+  },
+
+  userGetAddress: function(req, res, next){
+    const userID = req.query.userID;
+    User.findById({_id: userID, root: User})
+      .then(info => {
+        return res.send({
+          "address" : info.shipping_address,
+          "email" : info.email,
+          "username": info.username
+        })
+      })
+        .catch(next)
+  }
 
 } // end module export
 //=========================================================
+
+// userShowAllItemsAdded: function(req, res, next){
+//   UserSession.findById({_id: req.query._id})
+//    .then(data=>{
+//      User.findById({_id: data.userId, root: User})
+//        .populate({
+//          path: 'productsInCart', populate: {
+//            path: 'itemID'}
+//        })
+//        .then( productinfo => {
+//          return res.send(productinfo.productsInCart)
+//        })
+//    })
+// }

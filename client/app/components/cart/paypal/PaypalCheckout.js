@@ -16,42 +16,44 @@ class PaypalCheckout extends Component{
 
 componentWillMount(){
   this.loadStorageinfo();
+  this.loadGrandTotal()
   this.setState({
     orderID: this.props.match.params.id
   })
 }
 
 loadStorageinfo(){
-  this.setState({
-    products: cart.getCart()
+  cart.getCart(items =>{
+    this.setState({
+      products: items.data
+    })
   })
 }
 
+loadGrandTotal(){
+  cart.calculateCartTotal( newTotal => {
+    this.setState({
+      grandTotal: newTotal.data
+    })
+  })
+}
 
   render(){
 
-    if(this.state.products.length <= 0){
-      alert("Your cart is empty!")
-      // this.props.history.push("/")
-      window.location = "/";
-    }
-
-  let SubTotal = (!localStorage.cart)?0:JSON.parse(localStorage.cart)
-    .map(item=>{ return item.retail* item.quantity})
-      .reduce((acc, curr)=>{
-        return acc+curr
-        }, 0);
+    let SubTotal = this.state.grandTotal;
 
     const Total = parseFloat((SubTotal*1.07).toFixed(2));
     const tax = 0.07;
     let Items = [];
-      (!localStorage.cart)?'':JSON.parse(localStorage.cart).forEach(item => Items.push({
-        name: item.product.Product_Name,
-        description: item.product.Product_Name,
+      (!this.state.products)?
+        '':
+        this.state.products.forEach(item => Items.push({
+        name: item.Product_Name,
+        description: item.Product_Name,
         quantity: item.quantity,
-        price: item.retail,
-        sku: item.product.SKU,
-        tax: parseFloat((item.retail*tax).toFixed(2)),
+        price: item.purchase_price,
+        sku: item.itemID,
+        tax: parseFloat((item.purchase_price*tax).toFixed(2)),
         currency: "USD",
       })
     );
@@ -74,40 +76,43 @@ loadStorageinfo(){
         phone: item.phone,
       })
     )
-    const onSuccess = (payment) => {
-        alert("your payment is successful");
-        window.location = `/receipt/${this.state.orderID}`
-    }
 
-    const onError = (error) =>
-      console.log('Erroneous payment OR failed to load script!', error);
 
-    const onCancel = (data) =>
-      console.log('Cancelled payment!', data);
+  //--> validation
+    // const onSuccess = (payment) => {
+    //     alert("your payment is successful");
+    //     window.location = `/receipt/${this.state.orderID}`
+    // }
+    //
+    // const onError = (error) =>
+    //   console.log('Erroneous payment OR failed to load script!', error);
+    //
+    // const onCancel = (data) =>
+    //   console.log('Cancelled payment!', data);
 
     return(
       <>
-        <div id="cart_container" className="s-iCol-12 col-6">
-          <div>
-            <p className="fLeft">TOTAL</p>
-            <h3 className="fLeft">$<b id="totalamount">{SubTotal}</b></h3>
-          </div>
+      <div id="cart_container" className="s-iCol-12 col-6">
+        <div>
+          <p className="fLeft">TOTAL</p>
+          <h3 className="fLeft">$<b id="totalamount">{SubTotal}</b></h3>
         </div>
-        <div className="s-iCol-12 col-6">
-          <PaypalButton
-            client={Creds}
-            env={ENV}
-            commit={true}
-            currency={'USD'}
-            total={Total}
-            items={Items}
-            details= {Details}
-            shipping_address = {ShipAddress[0]}
-            onSuccess={onSuccess}
-            onError={onError}
-            onCancel={onCancel}
-          />
-        </div>
+      </div>
+      <div className="s-iCol-12 col-6">
+        <PaypalButton
+          client={Creds}
+          env={ENV}
+          commit={true}
+          currency={'USD'}
+          total={Total}
+          items={Items}
+          details= {Details}
+          shipping_address = {ShipAddress[0]}
+          onSuccess={onSuccess}
+          onError={onError}
+          onCancel={onCancel}
+        />
+      </div>
       </>
     )
   }

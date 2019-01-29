@@ -16,9 +16,9 @@ const shortName=(name, limit=25)=>{
 
 
 export const ProductsBox = ({
-  _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleAddClick,addToCart, showAdded, Retail }) => (
+  _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleAddClick,addToCart, Retail}) => (
 
-  <div className="item_container" onLoad={showAdded}>
+  <div className="item_container" >
     <div className="item_inner_body innerBody" data-item={_id}>
       <div className="item_img">
         <div className="item_img_box">

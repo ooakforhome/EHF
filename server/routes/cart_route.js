@@ -7,4 +7,11 @@ const router = express.Router();
   router.route("/api/cart/addtocart")
     .post(cartCtrl.addProductInCart);
 
+  router.route("/api/cart/updateqtyincart")
+    .put(cartCtrl.updateQtyInCart);
+
+  router.route("/api/cart/removeacartitem")
+    .delete(cartCtrl.removeACartItem);
+
+
 module.exports = router;

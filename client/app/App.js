@@ -32,6 +32,7 @@ import './styles/styles.scss';
   import CartPage from './components/cart/cartPage';
   import Checkout from './components/cart/paypal/PaypalCheckout';
   import Receipt from './components/cart/purchaseReceipt'
+  import Addaddress from './components/cart/addAddress'
   // import Checkout from './components/cart/checkout.js'
 
 
@@ -53,6 +54,7 @@ const App = () =>
         <Route exact path="/cart" component = { CartPage } />
         <Route exact path="/checkout/:id" component = { Checkout } />
         <Route exact path="/receipt/:id" component = { Receipt } />
+        <Route exeact path="/addaddress" component = { Addaddress } />
     </div>
   </Router>;
 

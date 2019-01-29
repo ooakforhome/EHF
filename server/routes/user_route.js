@@ -18,7 +18,7 @@ router.route(`/api/user/signup`)
   .post(userCtrl.addUser);
 
 router.route(`/api/user/userupdate`)
-  .put(userCtrl.updateUser)
+  .post(userCtrl.updateUser)
 
 router.route(`/api/user/signin`)
   .post(userCtrl.userLogin);
@@ -35,7 +35,16 @@ router.route(`/api/user/findidbytoken`)
 router.route(`/api/user/findbytoken`)
   .get(userCtrl.findUserByToken);
 
-router.route(`/api/user/finduserpopulate`)
+router.route(`/api/user/finduseraddress`)
+  .get(userCtrl.userGetAddress);
+
+// router.route(`/api/user/finduserpopulate`)
+//   .get(userCtrl.userShowAllItemsAdded);
+router.route(`/api/user/useraddtocart`)
   .get(userCtrl.userShowAllItemsAdded);
+
+router.route(`/api/user/userremoveitem`)
+  .delete(userCtrl.userRemoveACartItem);
+
 
 module.exports = router;

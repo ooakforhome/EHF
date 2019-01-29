@@ -22,6 +22,8 @@ class MemberProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      amountInCart: 0,
+      itemsInCart: [],
       limit: 10,
       offset: 0,
       count: 0,
@@ -33,6 +35,8 @@ class MemberProducts extends Component {
 // mount Redux data info.
   componentWillMount() {
     this.checkValidation();
+    this.getInCartNumber();
+    this.getCartItemIds();
   }
 
   componentDidMount(){
@@ -127,40 +131,76 @@ class MemberProducts extends Component {
     this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
-  showinfo(){
-    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
-    return document.querySelector('.showLocalAmount').textContent= inLocal;
-  }
+  // showinfo(){
+  //   let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+  //   return document.querySelector('.showLocalAmount').textContent= inLocal;
+  // }
 
-// Add product to cart in localStorage 01
+
   addToCart(e){
     e.preventDefault();
     const theId = e.target.value;
+
     axios.get(`/api/member/product/${theId}`)
       .then(item => {
-        const itemid = item.data._id;
-        if(localStorage.cart && localStorage.cart.match(itemid)){
+        // console.log("-------indexof-------")
+        // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
+        if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
           alert("item already added")
-      }else{
-        cart.addItem(item.data,()=>{
-          this.showinfo();
+        } else {
+        // console.log(item)
+          axios.post(`/api/cart/addtocart`, {
+            product_name: item.data.Product_Name,
+            quantity: item.data.quantity,
+            price: item.data.Retail,
+            image: item.data.images,
+            itemID: item.data._id,
+            userID: this.state.cID
+          })
+        .then(()=>{
+          this.getCartItemIds();
+          this.getInCartNumber();
         })
-        document.querySelector(`[data-item="${item.data._id}"]`).classList.add('bk-yes')
       }
     })
   }
 
   showAdded(){
-    if(localStorage.cart){
-      let localCart = JSON.parse(localStorage.cart).map((item)=>{
-        return item._id;
-      });
-        localCart.forEach((nid)=>{
-          if(document.querySelector(`[data-item="${nid}"]`)){
-            document.querySelector(`[data-item="${nid}"]`).classList.add('bk-yes');
-          }
+    console.log(this.state.itemsInCart)
+    // if(this.state.itemsInCart.length > 0){
+    //   this.state.itemsInCart.forEach((_id)=>{
+    //     return document.querySelector(`[data-item='${_id}']`).classList.add('bk-yes');
+    //   })
+    // } else{
+    //   console.log("No Item")
+    // }
+  }
+
+  getCartItemIds(){
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    const pID = [];
+    API.showUserCart(token)
+      .then(items => {
+        if(items){
+          items.data.forEach(item=>{
+            pID.push(item.itemID)
+          })
+          this.setState({
+            itemsInCart: pID
+          })
+        }
       })
-    }
+          .then(()=>{
+            this.showAdded();
+          })
+  }
+
+  getInCartNumber() {
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    API.showUserCart(token)
+      .then(inCart => {
+        this.setState({amountInCart: inCart.data.length})
+      })
   }
 
   searchBoxValue(e){
@@ -172,14 +212,30 @@ class MemberProducts extends Component {
 
   searchBoxInput(e){
     e.preventDefault();
-   // Using Redux
     this.props.searchBoxMember(this.state.searchBox)
-   // Using API
     // API.memberSearchProduct(this.state.searchBox)
     //   .then(products => {
     //     console.log(products.data);
     //   })
   }
+
+  showProfileBlock(){
+    document.querySelector(".memberProfileBlock").classList.toggle("hide")
+  }
+  onclick_logout(e){
+    e.preventDefault();
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token
+
+    API.memberLogout(token)
+      .then( respond => {
+        if(respond.data.success === false){
+          alert("logout unsuccessful");
+        } else {
+          window.location = '/';
+        }
+      })
+  }
+
 
   render() {
     if(!this.props.newproducts.all){
@@ -195,7 +251,6 @@ class MemberProducts extends Component {
                   {...product}
                   handleClick={this.handleClick.bind(this)}
                   addToCart={this.addToCart.bind(this)}
-                  showAdded={this.showAdded.bind(this)}
                   />
         )}
     </div>
@@ -213,7 +268,11 @@ class MemberProducts extends Component {
     return(
       <div>
         <div className="col-12 inline_block">
-          <MemberHeader />
+          <MemberHeader
+            showProfileBlock = {this.showProfileBlock.bind(this)}
+            onclick_logout = {this.onclick_logout.bind(this)}
+            amountInCart = {this.state.amountInCart}
+          />
         </div>
         <div className="category_nav col-12 inline_block">
           < Categories clickthenav = { this.handleClickthenav.bind(this) } />
@@ -244,7 +303,7 @@ class MemberProducts extends Component {
 
 
 const mapStateToProps = state => ({
-  newproducts: state.memberproducts.products,
+  newproducts : state.memberproducts.products,
   newproduct  : state.memberproducts.product,
 });
 
