@@ -6,8 +6,8 @@ import axios from "axios";
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 // import parts
+import Add_Address from './add_address';
 import Show_Address from './show_address';
-import Update_Address from './update_address';
 
 class CartPage extends Component{
   constructor(props){
@@ -33,6 +33,12 @@ class CartPage extends Component{
     this.checkValidation();
   }
 
+  componentDidMount(){
+    this.loadStorageinfo();
+    this.loadGrandTotal();
+    this.getUserAddress();
+  }
+
   checkValidation(){
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
@@ -45,9 +51,7 @@ class CartPage extends Component{
               token,
               isLoading: false
             });
-            this.loadStorageinfo();
-            this.loadGrandTotal();
-            this.getUserAddress();
+
           } else {
             window.location =`/`;
           }
@@ -56,7 +60,6 @@ class CartPage extends Component{
         window.location =`/`;
     }
   }
-
 
 
   loadStorageinfo(){
@@ -69,15 +72,9 @@ class CartPage extends Component{
 
   loadGrandTotal(){
     cart.calculateCartTotal( newTotal => {
-      if( !newTotal){
-        this.setState({
-          grandTotal: 0
-        })
-      } else {
-        this.setState({
-          grandTotal: newTotal.toFixed(2)
-        })
-      }
+      this.setState({
+        grandTotal: newTotal.toFixed(2)
+      })
     })
   }
 
@@ -135,6 +132,7 @@ class CartPage extends Component{
   }
 
   addressChange(e){
+    e.preventDefault();
     this.setState({
       [e.target.name]: e.target.value.trim()
     })
@@ -160,15 +158,8 @@ class CartPage extends Component{
         if(err){console.log(err)}
         else{
           this.getUserAddress();
-          this.triggerUpdate();
         }
       })
-    })
-  }
-
-  addressUpdateChange(e){
-    this.setState({
-      [e.target.name]: e.target.value
     })
   }
 
@@ -191,9 +182,8 @@ class CartPage extends Component{
       .then((info, err)=>{
         if(err){console.log(err)}
         else{
-          // console.log(info)
-          this.triggerUpdate();
-          // this.getUserAddress();
+          this.getUserAddress();
+          window.location="/cart"
         }
       })
     })
@@ -246,7 +236,7 @@ class CartPage extends Component{
     //   window.location = "/";
     // }
 
-    // console.log("render")
+
     const ShowInCart = ({items}) => (
       <div>
         {items.map((item, i)=>
@@ -261,6 +251,36 @@ class CartPage extends Component{
     )
 
     const GrandTotal = 0;
+
+    // Toggle add or show address
+    const TriggerAddress = () => {
+        if(this.state.address1 !== undefined ){
+         return  (
+          <Show_Address
+            user = {this.state.username}
+            email = {this.state.email}
+            recipient_name = {this.state.recipient_name}
+            address1 = {this.state.address1}
+            address2 = {this.state.address2}
+            city = {this.state.city}
+            state = {this.state.state}
+            zipcode = {this.state.zipcode}
+            country = {this.state.country}
+            phone = {this.state.phone}
+            triggerUpdate = {this.triggerUpdate.bind(this)}
+            addressChange = {this.addressChange.bind(this)}
+            formUpdate = {this.formUpdate.bind(this)}
+            />
+          )
+        } else {
+        return (
+          <Add_Address
+            addressChange = {this.addressChange.bind(this)}
+            formSubmit = {this.formSubmit.bind(this)}
+            />
+          )
+        }
+    }
 
     return(
       <>
@@ -279,26 +299,7 @@ class CartPage extends Component{
         </div>
         <hr className="s-iCol-12 col-12"/>
         <div className="s-iCol-12 col-12">
-        <Show_Address
-          user = {this.state.username}
-          email = {this.state.email}
-          recipient_name = {this.state.recipient_name}
-          address1 = {this.state.address1}
-          address2 = {this.state.address2}
-          city = {this.state.city}
-          state = {this.state.state}
-          zipcode = {this.state.zipcode}
-          country = {this.state.country}
-          phone = {this.state.phone}
-        />
-        <div className="update_address_box hide">
-          <Update_Address
-            formUpdate = {this.formUpdate.bind(this)}
-            addressUpdateChange = {this.addressUpdateChange.bind(this)}
-          />
-        </div>
-        <button
-          className="update_address_btn" onClick={this.triggerUpdate.bind(this)}>UPDATE</button>
+          <TriggerAddress />
           <br />
           <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
         </div>
@@ -308,3 +309,16 @@ class CartPage extends Component{
 }
 
 export default CartPage;
+// <div className="s-iCol-12 col-6">
+  // {(!localStorage.shipping_address)?<AddAddress />: <ShowAddress />}
+  // {(!localStorage.shipping_address)? "":
+  // <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>}
+// </div>
+
+
+// {(this.state.address.address1 === "")?
+//   <Add_Address
+//     addressChange = {this.addressChange.bind(this)}
+//     formSubmit = {this.formSubmit.bind(this)}
+//   /> :
+//   <ShowAddress />}

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const Product = require('./Product_model');
 const Cart = require('./Cart');
+const Order = require('./Order');
 
 const UserSchema = new mongoose.Schema({
   username: { type: String },
@@ -34,8 +35,8 @@ const UserSchema = new mongoose.Schema({
     country: {type: String, default: 'US'},
     phone: {type: String }
   },
-  allProducts: [{type: mongoose.Schema.Types.ObjectId, ref: Product}],
-  productsInCart: [{type: mongoose.Schema.Types.ObjectId, ref: Cart}]
+  order_history: [{type: mongoose.Schema.Types.ObjectId, ref: Order}],
+  productsInCart: [{type: mongoose.Schema.Types.ObjectId, ref: Cart}],
 });
 
 UserSchema.methods.generateHash = function(password) {

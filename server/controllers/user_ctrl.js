@@ -249,6 +249,17 @@ module.exports = {
     })
   },
 
+ emptyUserCart: function(req, res, err){
+   // const userID = req.body.userID;
+   const userID = req.query._id;
+   // find and remove info in cart
+   User
+    .findOneAndUpdate({ _id: userID }, { $set: { productsInCart: [] }})
+      .then(info => {
+        return res.send({test: info.data})
+      })
+ },
+
   userGetAddress: function(req, res, next){
     const userID = req.query.userID;
     User.findById({_id: userID, root: User})

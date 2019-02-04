@@ -15,7 +15,7 @@ class UpdateAddress extends Component {
         phone: "",
       }
   }
-
+ 
   componentDidMount(){
     this.getUserAddress();
   }

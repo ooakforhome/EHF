@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import cart from './cart-helper'
 
 class PurchaseReceipt extends Component {
   constructor(props){
@@ -13,11 +12,13 @@ class PurchaseReceipt extends Component {
 
 
 endPurchase(){
-  cart.userId( id => {
-    cart.emptyCart(id.data, (info)=>{
-      window.location= `/auth/products`;
-    })
+  const local = ["cart", "paid", "shipping_address", "__paypal_storage__"]
+  const authId = JSON.parse(localStorage.the_main_app).token;
+  local.forEach(storage => {
+    localStorage.removeItem(storage);
   })
+      window.location= `/auth/products/${authId}`;
+
 }
 
 render(){

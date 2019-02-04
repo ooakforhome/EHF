@@ -24,7 +24,7 @@ export default {
   },
 
   updateUserInfo: function(userid, userData){
-    return axios.put(`/api/user/userupdate?_id=${userid}`, userData)
+    return axios.post(`/api/user/userupdate?_id=${userid}`, userData)
   },
 
   showUserCart: (token)=>{

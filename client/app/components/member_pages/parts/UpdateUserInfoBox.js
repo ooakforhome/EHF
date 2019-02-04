@@ -54,15 +54,16 @@ updateSubmit(){
   API.loadUserIdByToken(tkid)
     .then(info => {
       API.updateUserInfo( info.data , {
-          username: this.state.username,
-          shipping_address : {
-            recipient_name: this.state.recipient_name,
-            address1: this.state.address1,
-            address2: this.state.address2,
-            city: this.state.city,
-            state: this.state.state,
-            zipcode: this.state.zipcode,
-            phone: this.state.phone
+        username: this.state.username,
+        shipping_address : {
+          recipient_name : this.state.recipient_name,
+          address1 : this.state.address1,
+          address2 : this.state.address2,
+          city : this.state.city,
+          state : this.state.state,
+          zipcode : this.state.zipcode,
+          country : "USA",
+          phone : this.state.phone
           }
         })
     })

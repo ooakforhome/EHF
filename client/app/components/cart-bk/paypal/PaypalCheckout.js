@@ -12,46 +12,34 @@ const ENV = process.env.NODE_ENV === 'production'
   : 'sandbox';
 
 
-  class PaypalCheckout extends Component{
+class PaypalCheckout extends Component{
 
-  componentWillMount(){
-    this.loadStorageinfo();
-    this.loadGrandTotal();
-    this.locadUserAddress();
+componentWillMount(){
+  this.loadStorageinfo();
+  this.loadGrandTotal()
+  this.setState({
+    orderID: this.props.match.params.id
+  })
+}
+
+loadStorageinfo(){
+  cart.getCart(items =>{
     this.setState({
-      orderID: this.props.match.params.id
+      products: items.data
     })
-  }
+  })
+}
 
-  loadStorageinfo(){
-    cart.getCart(items =>{
-      this.setState({
-        products: items.data
-      })
+loadGrandTotal(){
+  cart.calculateCartTotal( newTotal => {
+    this.setState({
+      grandTotal: newTotal.data
     })
-  }
-
-  loadGrandTotal(){
-    cart.calculateCartTotal( newTotal => {
-      this.setState({
-        grandTotal: newTotal
-      })
-    })
-  }
-
-  locadUserAddress(){
-    cart.getUserAddress( user => {
-      this.setState({
-        address: user.data.address
-      })
-    })
-  }
+  })
+}
 
   render(){
-    if(!this.state.address){
-      return "wait a min"
-    }
-    console.log(this.state.products)
+
     let SubTotal = this.state.grandTotal;
 
     const Total = parseFloat((SubTotal*1.07).toFixed(2));
@@ -60,8 +48,8 @@ const ENV = process.env.NODE_ENV === 'production'
       (!this.state.products)?
         '':
         this.state.products.forEach(item => Items.push({
-        name: item.product_name,
-        description: item.product_name,
+        name: item.Product_Name,
+        description: item.Product_Name,
         quantity: item.quantity,
         price: item.purchase_price,
         sku: item.itemID,
@@ -75,35 +63,32 @@ const ENV = process.env.NODE_ENV === 'production'
       shipping: 0,
     }
 
-    const { address1,address2,city,phone,recipient_name,state,zipcode } = this.state.address;
-    let TheAddress = {
-      recipient_name: recipient_name,
-      line1: address1,
-      line2: address2,
-      city: city,
-      state: state,
-      postal_code: zipcode,
-      country_code: 'US',
-      phone: phone
-    };
+    const shipAddress = (!localStorage.shipping_address)?'':JSON.parse(localStorage.shipping_address)[0];
+    let ShipAddress = [];
+    (!localStorage.shipping_address)?'':JSON.parse(localStorage.shipping_address).map(item => ShipAddress.push({
+        recipient_name: item.recipient_name,
+        line1: item.line1,
+        line2: (!item.line2)?"":item.line2,
+        city: item.city,
+        state: item.state,
+        postal_code: item.postal_code,
+        country_code: 'US',
+        phone: item.phone,
+      })
+    )
 
 
-
-  // --> validation
-    const onSuccess = (payment) => {
-        cart.userId( id => {
-          cart.emptyCart(id.data, (complete) => {
-            alert("your payment is successful");
-            window.location = `/receipt/${this.state.orderID}`
-          })
-        })
-    }
-
-    const onError = (error) =>
-      console.log('Erroneous payment OR failed to load script!', error);
-
-    const onCancel = (data) =>
-      console.log('Cancelled payment!', data);
+  //--> validation
+    // const onSuccess = (payment) => {
+    //     alert("your payment is successful");
+    //     window.location = `/receipt/${this.state.orderID}`
+    // }
+    //
+    // const onError = (error) =>
+    //   console.log('Erroneous payment OR failed to load script!', error);
+    //
+    // const onCancel = (data) =>
+    //   console.log('Cancelled payment!', data);
 
     return(
       <>
@@ -122,7 +107,7 @@ const ENV = process.env.NODE_ENV === 'production'
           total={Total}
           items={Items}
           details= {Details}
-          shipping_address = {TheAddress}
+          shipping_address = {ShipAddress[0]}
           onSuccess={onSuccess}
           onError={onError}
           onCancel={onCancel}

@@ -1,9 +1,8 @@
 import React from "react";
 
-const Add_Address = ({addressChange, formSubmit}) => (
-  <div>
-    <h2>ADD ADDRESS</h2>
-      <p>ADDRESS</p>
+const Update_Address = ({addressChange, formUpdate}) => (
+  <div className="update_address_container">
+    <h2>UPDATE ADDRESS</h2>
       <div>
         <label><i>Recipient Name: </i></label>
         <input
@@ -74,8 +73,8 @@ const Add_Address = ({addressChange, formSubmit}) => (
           onChange={addressChange}
           />
       </div>
-      <button onClick={formSubmit}>Submit</button>
+      <button className="change_address_btn hide" onClick={formUpdate}>Submit</button>
   </div>
 )
 
-export default Add_Address
+export default Update_Address

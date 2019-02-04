@@ -37,13 +37,14 @@ class MemberProducts extends Component {
     this.checkValidation();
     this.getInCartNumber();
     this.getCartItemIds();
+    this.getUserId();
   }
 
-  componentDidMount(){
+  getUserId(){
     API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
-      .then(id => {
-        this.setState({cID: id.data})
-      })
+        .then(id => {
+          this.setState({cID: id.data})
+        })
   }
 
   checkValidation(){
@@ -143,6 +144,7 @@ class MemberProducts extends Component {
 
     axios.get(`/api/member/product/${theId}`)
       .then(item => {
+        console.log(item.data)
         // console.log("-------indexof-------")
         // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
         if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
@@ -166,7 +168,7 @@ class MemberProducts extends Component {
   }
 
   showAdded(){
-    console.log(this.state.itemsInCart)
+    // console.log(this.state.itemsInCart)
     // if(this.state.itemsInCart.length > 0){
     //   this.state.itemsInCart.forEach((_id)=>{
     //     return document.querySelector(`[data-item='${_id}']`).classList.add('bk-yes');
@@ -235,7 +237,6 @@ class MemberProducts extends Component {
         }
       })
   }
-
 
   render() {
     if(!this.props.newproducts.all){

@@ -46,5 +46,7 @@ router.route(`/api/user/useraddtocart`)
 router.route(`/api/user/userremoveitem`)
   .delete(userCtrl.userRemoveACartItem);
 
+router.route(`/api/user/emptyusercart/`)
+  .post(userCtrl.emptyUserCart);
 
 module.exports = router;
