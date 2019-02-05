@@ -33,7 +33,9 @@ module.exports = {
         $or:[
           {'SKU': search },
           {'Category_type': search },
-          {'Color': search }]
+          {'Color': search },
+          {'Product_Name': search}
+         ]
         })
       .select('-UPC -Zone_8 -wholesale_price')
       .limit(limit)

@@ -69,12 +69,6 @@ class UserLogin extends Component {
 
   onSignUp() {
       // Grab state
-    const emailCheck = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    if(emailCheck.test(this.state.signUpEmail) === false){
-      alert("Please input correct email format")
-    } else if(this.state.signUpPassword.length < 8){
-      alert("Your password have to be more than 8 characters")
-    } else {
       const { signUpEmail, signUpPassword } = this.state;
       this.setState({
         isLoading: true,
@@ -105,7 +99,6 @@ class UserLogin extends Component {
           });
         }
       });
-    }
   }
 
   onSignIn() {
@@ -232,6 +225,7 @@ class UserLogin extends Component {
                   ) : (null)
                 }
                 <p className="text-center">Sign Up</p>
+                <p>{signUpEmail}</p>
                 <input
                   className="col-11 input-space"
                   type="email"

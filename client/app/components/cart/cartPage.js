@@ -14,7 +14,7 @@ class CartPage extends Component{
     super(props)
     this.state = {
       products: [],
-      address: [],
+      address: {},
       grandTotal: 0,
       username: "",
       email: "",
@@ -57,8 +57,6 @@ class CartPage extends Component{
     }
   }
 
-
-
   loadStorageinfo(){
     cart.getCart(items =>{
       this.setState({
@@ -89,12 +87,15 @@ class CartPage extends Component{
   }
 
   qtyChangeHandler(e){
-    e.preventDefault()
-    let num = parseInt(e.target.value);
+    let num = e.target.value;
     const item_id = e.target.id;
-    cart.updateCart(item_id, num);
-    this.loadStorageinfo();
-    this.loadGrandTotal();
+    cart.updateCart(item_id, num)
+  }
+
+  updateQty(e){
+    e.preventDefault();
+      this.loadStorageinfo()
+      this.loadGrandTotal()
   }
 
   backToProductsPage(){
@@ -119,7 +120,7 @@ class CartPage extends Component{
             state: gA.address.state,
             zipcode: gA.address.zipcode,
             phone: gA.address.phone,
-            address: [{
+            address: {
               recipient_name: gA.address.recipient_name,
               address1: gA.address.address1,
               address2: gA.address.address2,
@@ -128,7 +129,7 @@ class CartPage extends Component{
               zipcode: gA.address.zipcode,
               country: "USA",
               phone: gA.address.phone,
-            }]
+            }
           })
         })
     })
@@ -192,8 +193,8 @@ class CartPage extends Component{
         if(err){console.log(err)}
         else{
           // console.log(info)
+          this.getUserAddress();
           this.triggerUpdate();
-          // this.getUserAddress();
         }
       })
     })
@@ -238,7 +239,6 @@ class CartPage extends Component{
       })
   }
 
-
   render(){
     // if(!this.state.address[0]){
     //   alert("Your cart is empty!")
@@ -246,7 +246,8 @@ class CartPage extends Component{
     //   window.location = "/";
     // }
 
-    // console.log("render")
+    console.log(this.state.address)
+    console.log(this.state.address1)
     const ShowInCart = ({items}) => (
       <div>
         {items.map((item, i)=>
@@ -254,7 +255,9 @@ class CartPage extends Component{
             key={i}
             {...item}
             qtyChangeHandler = {this.qtyChangeHandler.bind(this)}
+            updateQty = {this.updateQty.bind(this)}
             removeInCart = {this.removeInCart.bind(this)}
+            totalPrice = {((item.quantity) * (item.purchase_price)).toFixed(2)}
           />
         )}
       </div>
@@ -280,16 +283,9 @@ class CartPage extends Component{
         <hr className="s-iCol-12 col-12"/>
         <div className="s-iCol-12 col-12">
         <Show_Address
+          {...this.state.address}
           user = {this.state.username}
           email = {this.state.email}
-          recipient_name = {this.state.recipient_name}
-          address1 = {this.state.address1}
-          address2 = {this.state.address2}
-          city = {this.state.city}
-          state = {this.state.state}
-          zipcode = {this.state.zipcode}
-          country = {this.state.country}
-          phone = {this.state.phone}
         />
         <div className="update_address_box hide">
           <Update_Address
@@ -299,9 +295,9 @@ class CartPage extends Component{
         </div>
         <button
           className="update_address_btn" onClick={this.triggerUpdate.bind(this)}>UPDATE</button>
-          <br />
-          <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
         </div>
+        <br />
+        <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
       </>
     )
   }
