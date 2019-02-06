@@ -211,7 +211,8 @@ module.exports = {
           return res.send({
             "shipping_address" : info.shipping_address,
             "email" : info.email,
-            "username": info.username
+            "username": info.username,
+            "items_in_cart": info.productsInCart
           })
         })
     })

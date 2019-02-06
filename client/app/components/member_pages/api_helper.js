@@ -3,6 +3,19 @@ import axios from 'axios';
 
 export default {
 
+  //----begin---------- new memberProducts api -----------------
+  getAllProducts: function(limit, offset, Category_type){
+    return axios.get(`/api/member/products?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
+  },
+
+  findSingleProductById: function(productID){
+    return axios.get(`/api/member/product/${productID}`)
+  },
+  addToCart: function(product_Data){
+    return axios.post(`/api/cart/addtocart`, product_Data)
+  },
+
+  //----end------------ new memberProducts api -----------------
   loadUserIdByToken: function(token){
     return axios.get(`/api/user/findidbytoken?_id=${token}`)
   },
@@ -30,4 +43,5 @@ export default {
   showUserCart: (token)=>{
     return axios.get(`/api/user/useraddtocart?_id=${token}`)
   }
+
 };

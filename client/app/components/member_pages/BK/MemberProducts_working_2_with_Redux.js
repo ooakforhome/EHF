@@ -37,11 +37,16 @@ class MemberProducts extends Component {
     this.checkValidation();
     this.getInCartNumber();
     this.getCartItemIds();
-    this.getItemInCart();
     this.getUserId();
   }
 
-// Initial Load
+  getUserId(){
+    API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
+        .then(id => {
+          this.setState({cID: id.data})
+        })
+  }
+
   checkValidation(){
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
@@ -63,65 +68,19 @@ class MemberProducts extends Component {
         window.location =`/`;
     }
   }
-  getUserId(){
-    API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
-        .then(id => {
-          this.setState({cID: id.data})
-        })
-  }
-  getItemInCart(){
-    API.loadUserByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
-      .then(info => {
-        if(info.data.items_in_cart){
-          this.setState({
-            itemsInCart: info.data.items_in_cart
-          })
-        }
-      })
-  }
-  getCartItemIds(){
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    const pID = [];
-    API.showUserCart(token)
-      .then(items => {
-        if(items){
-          items.data.forEach(item=>{
-            pID.push(item.itemID)
-          })
-          this.setState({
-            itemsInCart: pID
-          })
-        }
-      })
-          .then(()=>{
-            this.showAdded();
-          })
-  }
-  getInCartNumber() {
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    API.showUserCart(token)
-      .then(inCart => {
-        this.setState({amountInCart: inCart.data.length})
-      })
-  }
-// MemberHeader component
-  showProfileBlock(){
-  document.querySelector(".memberProfileBlock").classList.toggle("hide")
-}
-  onclick_logout(e){
-  e.preventDefault();
-  const token = JSON.parse(localStorage.getItem('the_main_app')).token
 
-  API.memberLogout(token)
-    .then( respond => {
-      if(respond.data.success === false){
-        alert("logout unsuccessful");
-      } else {
-        window.location = '/';
-      }
+
+  loadDatas(){
+    const {limit, offset} = this.state;
+    const theName = this.state.Category_type.split(' ').join('+');
+    this.props.renderMember({
+      limit: limit,
+      offset: offset,
+      Category_type: theName
     })
-}
-// Categories Component
+  }
+
+  // Categories link
   handleClickthenav(e){
     e.preventDefault();
     const theName = e.target.id.split(' ').join('+'); // query need + in between space
@@ -132,18 +91,60 @@ class MemberProducts extends Component {
     })
     this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
   };
-// ProductList Component
+
+// ProductsBox
   handleClick(e){
     e.preventDefault();
       window.location =`/auth/product/${e.target.value}`;
   }
+
+  nexthandleChange(){
+    const totalOffset = Math.floor(this.props.newproducts.count/10);
+    const {limit, offset} = this.state;
+    let theName = this.state.Category_type.split(' ').join('+');
+
+
+    if(this.state.offset >= totalOffset){
+      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
+      this.setState({ offset: totalOffset })
+    } else {
+      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
+      this.setState({ offset: this.state.offset+=1 })
+    }
+};
+
+
+  prevhandleChange(e){
+    e.preventDefault();
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
+      } else {
+      this.setState({
+        limit: 10,
+        offset: this.state.offset-=1
+      })
+    }
+    this.updates();
+  };
+
+  updates(){
+    const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
+    this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+  };
+
+  // showinfo(){
+  //   let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+  //   return document.querySelector('.showLocalAmount').textContent= inLocal;
+  // }
+
+
   addToCart(e){
     e.preventDefault();
     const theId = e.target.value;
 
     axios.get(`/api/member/product/${theId}`)
       .then(item => {
-        // console.log(item.data)
+        console.log(item.data)
         // console.log("-------indexof-------")
         // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
         if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
@@ -165,52 +166,7 @@ class MemberProducts extends Component {
       }
     })
   }
-// Search Input
-  searchBoxValue(e){
-    e.preventDefault();
-    this.props.searchBoxMember(e.target.value)
-    // this.setState({
-    //   searchBox: e.target.value
-    // })
-  }
-// PageBtn Component
-  nexthandleChange(){
-    const totalOffset = Math.floor(this.props.newproducts.count/10);
-    const {limit, offset} = this.state;
-    let theName = this.state.Category_type.split(' ').join('+');
 
-
-    if(this.state.offset >= totalOffset){
-      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
-      this.setState({ offset: totalOffset })
-    } else {
-      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
-      this.setState({ offset: this.state.offset+=1 })
-    }
-  };
-  prevhandleChange(e){
-    e.preventDefault();
-      if(this.state.offset == 0){
-        this.setState({limit:10, offset: 0})
-      } else {
-      this.setState({
-        limit: 10,
-        offset: this.state.offset-=1
-      })
-    }
-    this.loadDatas();
-  };
-
-// helpers
-  loadDatas(){
-    const {limit, offset} = this.state;
-    const theName = this.state.Category_type.split(' ').join('+');
-    this.props.renderMember({
-      limit: limit,
-      offset: offset,
-      Category_type: theName
-    })
-  }
   showAdded(){
     // console.log(this.state.itemsInCart)
     // if(this.state.itemsInCart.length > 0){
@@ -222,12 +178,83 @@ class MemberProducts extends Component {
     // }
   }
 
+  getCartItemIds(){
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    const pID = [];
+    API.showUserCart(token)
+      .then(items => {
+        if(items){
+          items.data.forEach(item=>{
+            pID.push(item.itemID)
+          })
+          this.setState({
+            itemsInCart: pID
+          })
+        }
+      })
+          .then(()=>{
+            this.showAdded();
+          })
+  }
+
+  getInCartNumber() {
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    API.showUserCart(token)
+      .then(inCart => {
+        this.setState({amountInCart: inCart.data.length})
+      })
+  }
+
+  searchBoxValue(e){
+    e.preventDefault();
+    this.props.searchBoxMember(e.target.value)
+    // this.setState({
+    //   searchBox: e.target.value
+    // })
+  }
+
+  // searchBoxInput(e){
+  //   e.preventDefault();
+  //   this.props.searchBoxMember(this.state.searchBox)
+  //   // API.memberSearchProduct(this.state.searchBox)
+  //   //   .then(products => {
+  //   //     console.log(products.data);
+  //   //   })
+  // }
+  //
+  // searchBoxEnter(e){
+  //   e.preventDefault();
+  //   console.log(e.charCode)
+  //   if(e.charCode == 13){
+  //     this.props.searchBoxMember(this.state.searchBox)
+  //   } else {
+  //     return "";
+  //   }
+  // }
+
+  showProfileBlock(){
+    document.querySelector(".memberProfileBlock").classList.toggle("hide")
+  }
+  onclick_logout(e){
+    e.preventDefault();
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token
+
+    API.memberLogout(token)
+      .then( respond => {
+        if(respond.data.success === false){
+          alert("logout unsuccessful");
+        } else {
+          window.location = '/';
+        }
+      })
+  }
+
   render() {
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
-    // console.log(this.state.itemsInCart)
-    // console.log(this.props.newproducts.all)
+
+    console.log(this.props.newproducts.all)
 
     const TotalPages = Math.ceil(this.props.newproducts.count/10);
     const CurrentPage = this.state.offset + 1;
@@ -236,7 +263,6 @@ class MemberProducts extends Component {
         {products.map((product, i) =>
           <ProductsBox key={i}
                   {...product}
-                  cart = {this.state.itemsInCart}
                   handleClick={this.handleClick.bind(this)}
                   addToCart={this.addToCart.bind(this)}
                   />

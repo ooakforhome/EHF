@@ -12,7 +12,7 @@ import { setInStorage, getFromStorage } from '../utils/storage';
 
 import MemberHeader from './parts/MemberHeader';
 import MemberProfile from "./parts/MemberProfile";
-import ProductsBox from './parts/ProductsBox';
+import { ProductsBox } from './parts/ProductsBox';
 
 import cart from '../cart/cart-helper';
 
@@ -37,11 +37,16 @@ class MemberProducts extends Component {
     this.checkValidation();
     this.getInCartNumber();
     this.getCartItemIds();
-    this.getItemInCart();
     this.getUserId();
   }
 
-// Initial Load
+  getUserId(){
+    API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
+        .then(id => {
+          this.setState({cID: id.data})
+        })
+  }
+
   checkValidation(){
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
@@ -63,22 +68,116 @@ class MemberProducts extends Component {
         window.location =`/`;
     }
   }
-  getUserId(){
-    API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
-        .then(id => {
-          this.setState({cID: id.data})
-        })
+
+
+  loadDatas(){
+    const {limit, offset} = this.state;
+    const theName = this.state.Category_type.split(' ').join('+');
+    this.props.renderMember({
+      limit: limit,
+      offset: offset,
+      Category_type: theName
+    })
   }
-  getItemInCart(){
-    API.loadUserByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
-      .then(info => {
-        if(info.data.items_in_cart){
-          this.setState({
-            itemsInCart: info.data.items_in_cart
-          })
-        }
+
+  // Categories link
+  handleClickthenav(e){
+    e.preventDefault();
+    const theName = e.target.id.split(' ').join('+'); // query need + in between space
+    this.setState({
+      limit: 10,
+      offset: 0,
+      Category_type: e.target.id
+    })
+    this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
+  };
+
+// ProductsBox
+  handleClick(e){
+    e.preventDefault();
+      window.location =`/auth/product/${e.target.value}`;
+  }
+
+  nexthandleChange(){
+    const totalOffset = Math.floor(this.props.newproducts.count/10);
+    const {limit, offset} = this.state;
+    let theName = this.state.Category_type.split(' ').join('+');
+
+
+    if(this.state.offset >= totalOffset){
+      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
+      this.setState({ offset: totalOffset })
+    } else {
+      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
+      this.setState({ offset: this.state.offset+=1 })
+    }
+};
+
+
+  prevhandleChange(e){
+    e.preventDefault();
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
+      } else {
+      this.setState({
+        limit: 10,
+        offset: this.state.offset-=1
       })
+    }
+    this.updates();
+  };
+
+  updates(){
+    const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
+    this.props.renderMember({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
+  };
+
+  // showinfo(){
+  //   let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+  //   return document.querySelector('.showLocalAmount').textContent= inLocal;
+  // }
+
+
+  addToCart(e){
+    e.preventDefault();
+    const theId = e.target.value;
+
+    API.findSingleProductById(theId)
+      .then(item => {
+        console.log(item.data)
+        // console.log("-------indexof-------")
+        // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
+        if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
+          alert("item already added")
+        } else {
+        // console.log(item)
+          API.addToCart({
+            product_name: item.data.Product_Name,
+            quantity: item.data.quantity,
+            price: item.data.Retail,
+            image: item.data.images,
+            itemID: item.data._id,
+            userID: this.state.cID
+          })
+        .then(()=>{
+          this.getCartItemIds();
+          this.getInCartNumber();
+        })
+      }
+    })
   }
+
+  showAdded(){
+    // console.log(this.state.itemsInCart)
+    // if(this.state.itemsInCart.length > 0){
+    //   this.state.itemsInCart.forEach((_id)=>{
+    //     return document.querySelector(`[data-item='${_id}']`).classList.add('bk-yes');
+    //   })
+    // } else{
+    //   console.log("No Item")
+    // }
+  }
+
   getCartItemIds(){
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
     const pID = [];
@@ -97,6 +196,7 @@ class MemberProducts extends Component {
             this.showAdded();
           })
   }
+
   getInCartNumber() {
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
     API.showUserCart(token)
@@ -104,130 +204,44 @@ class MemberProducts extends Component {
         this.setState({amountInCart: inCart.data.length})
       })
   }
-// MemberHeader component
-  showProfileBlock(){
-  document.querySelector(".memberProfileBlock").classList.toggle("hide")
-}
-  onclick_logout(e){
-  e.preventDefault();
-  const token = JSON.parse(localStorage.getItem('the_main_app')).token
 
-  API.memberLogout(token)
-    .then( respond => {
-      if(respond.data.success === false){
-        alert("logout unsuccessful");
-      } else {
-        window.location = '/';
-      }
-    })
-}
-// Categories Component
-  handleClickthenav(e){
-    e.preventDefault();
-    const theName = e.target.id.split(' ').join('+'); // query need + in between space
-    this.setState({
-      limit: 10,
-      offset: 0,
-      Category_type: e.target.id
-    })
-    this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
-  };
-// ProductList Component
-  handleClick(e){
-    e.preventDefault();
-      window.location =`/auth/product/${e.target.value}`;
-  }
-  addToCart(e){
-    e.preventDefault();
-    const theId = e.target.value;
-
-    axios.get(`/api/member/product/${theId}`)
-      .then(item => {
-        // console.log(item.data)
-        // console.log("-------indexof-------")
-        // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
-        if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
-          alert("item already added")
-        } else {
-        // console.log(item)
-          axios.post(`/api/cart/addtocart`, {
-            product_name: item.data.Product_Name,
-            quantity: item.data.quantity,
-            price: item.data.Retail,
-            image: item.data.images,
-            itemID: item.data._id,
-            userID: this.state.cID
-          })
-        .then(()=>{
-          this.getCartItemIds();
-          this.getInCartNumber();
-        })
-      }
-    })
-  }
-// Search Input
   searchBoxValue(e){
     e.preventDefault();
-    this.props.searchBoxMember(e.target.value)
-    // this.setState({
-    //   searchBox: e.target.value
-    // })
-  }
-// PageBtn Component
-  nexthandleChange(){
-    const totalOffset = Math.floor(this.props.newproducts.count/10);
-    const {limit, offset} = this.state;
-    let theName = this.state.Category_type.split(' ').join('+');
-
-
-    if(this.state.offset >= totalOffset){
-      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
-      this.setState({ offset: totalOffset })
-    } else {
-      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
-      this.setState({ offset: this.state.offset+=1 })
-    }
-  };
-  prevhandleChange(e){
-    e.preventDefault();
-      if(this.state.offset == 0){
-        this.setState({limit:10, offset: 0})
-      } else {
-      this.setState({
-        limit: 10,
-        offset: this.state.offset-=1
-      })
-    }
-    this.loadDatas();
-  };
-
-// helpers
-  loadDatas(){
-    const {limit, offset} = this.state;
-    const theName = this.state.Category_type.split(' ').join('+');
-    this.props.renderMember({
-      limit: limit,
-      offset: offset,
-      Category_type: theName
+    this.setState({
+      searchBox: e.target.value
     })
   }
-  showAdded(){
-    // console.log(this.state.itemsInCart)
-    // if(this.state.itemsInCart.length > 0){
-    //   this.state.itemsInCart.forEach((_id)=>{
-    //     return document.querySelector(`[data-item='${_id}']`).classList.add('bk-yes');
+
+  searchBoxInput(e){
+    e.preventDefault();
+    this.props.searchBoxMember(this.state.searchBox)
+    // API.memberSearchProduct(this.state.searchBox)
+    //   .then(products => {
+    //     console.log(products.data);
     //   })
-    // } else{
-    //   console.log("No Item")
-    // }
+  }
+
+  showProfileBlock(){
+    document.querySelector(".memberProfileBlock").classList.toggle("hide")
+  }
+  onclick_logout(e){
+    e.preventDefault();
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token
+
+    API.memberLogout(token)
+      .then( respond => {
+        if(respond.data.success === false){
+          alert("logout unsuccessful");
+        } else {
+          window.location = '/';
+        }
+      })
   }
 
   render() {
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
-    // console.log(this.state.itemsInCart)
-    // console.log(this.props.newproducts.all)
 
     const TotalPages = Math.ceil(this.props.newproducts.count/10);
     const CurrentPage = this.state.offset + 1;
@@ -236,7 +250,6 @@ class MemberProducts extends Component {
         {products.map((product, i) =>
           <ProductsBox key={i}
                   {...product}
-                  cart = {this.state.itemsInCart}
                   handleClick={this.handleClick.bind(this)}
                   addToCart={this.addToCart.bind(this)}
                   />
@@ -273,6 +286,7 @@ class MemberProducts extends Component {
             placeholder="What do you want to search?"
             onChange = {this.searchBoxValue.bind(this)}
              />
+          <button onClick={this.searchBoxInput.bind(this)}>Search</button>
         </div>
         <div className="memberProfileBlock hide"><MemberProfile /></div>
         <div className="products_box">
