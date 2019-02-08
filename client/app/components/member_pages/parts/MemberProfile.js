@@ -14,21 +14,12 @@ class MemeberProfile extends Component{
       infoPage: true,
       updatePage: false
     }
+    this.showPurchaseDetail = this.showPurchaseDetail.bind(this)
   }
 
   componentWillMount(){
     console.log("render componentWillMount")
     this.loadMemberInfo()
-    this.setState({
-      purchases: [
-        {date: "123"},
-        {date: "223"},
-        {date: "323"},
-        {date: "423"},
-        {date: "523"},
-        {date: "623"}
-      ]
-    })
   }
 
   componentDidMount(){
@@ -36,9 +27,10 @@ class MemeberProfile extends Component{
   }
 
   loadMemberInfo(){
-    API.loadUserByToken(JSON.parse(localStorage.the_main_app).token)
+    API.userLimitedInfo(JSON.parse(localStorage.the_main_app).token)
       .then( member => {
         this.setState({
+          purchases: member.data.order_history,
           memberInfo: member.data,
           memberAddress: member.data.shipping_address,
           username: member.data.shipping_address.username,
@@ -108,25 +100,30 @@ class MemeberProfile extends Component{
     document.querySelector(".memberProfileBlock").classList.toggle("hide")
   }
 
-  showPurchaseDetail(){
-    console.log("info")
+  showPurchaseDetail(a){
+    console.log(a)
   }
 
   render(){
-    if(!this.state.memberInfo){
+    if(!this.state.memberInfo && !this.state.purchases){
       console.log("wait")
     }
 
-    console.log(this.state.purchases)
+    console.log(this.state.memberInfo)
 
     const PurchaseHistory = ({purchases}) => (
-      <ul>
-      { purchases.map((purchase, i) =>{
-          <li key={i} onClick={this.state.showPurchaseDetail}>
-            {purchase.date}
-          </li>
-        })
-      }
+      <ul className="purchaseHistoryUl">
+      { purchases.map((purchase, i) => {
+          let date = purchase.created.split('').slice(0,10).join('');
+          console.log(purchase)
+          return (
+            <li
+             key={i}
+             onClick={()=> this.showPurchaseDetail(i)}>
+              Purchase date : {date}
+            </li>
+        )}
+      )}
       </ul>
     )
 

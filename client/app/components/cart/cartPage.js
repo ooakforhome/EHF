@@ -218,8 +218,8 @@ class CartPage extends Component{
         user: id.data
       })
       .then(orderData => {
-        console.log(orderData)
-        console.log(orderData.data._id)
+        // console.log(orderData)
+        // console.log(orderData.data._id)
       window.location=`/checkout/${orderData.data._id}`
       })
       .catch(err => {console.log("confirmSubmit error")})

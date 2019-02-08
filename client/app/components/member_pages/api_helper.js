@@ -24,6 +24,10 @@ export default {
     return axios.get(`/api/user/findbytoken?_id=${token}`)
   },
 
+  userLimitedInfo: function(token){
+    return axios.get(`/api/user/userlimitedinfo?_id=${token}`)
+  },
+
   memberLogout: function(token){
     return axios.get(`/api/user/logout?token=${token}`)
   },

@@ -314,7 +314,39 @@ module.exports = {
             })
             .catch(err => {console.log("HERE IS THE ERROR: "+ err)})
           })
- }
+ },
+
+ // userLimitedInfo: function(req, res, next){
+ //   UserSession.findById({_id: req.query._id})
+ //    .then(data=>{
+ //      User
+ //        .findById({_id: data.userId, root: User})
+ //        .select('-password -isDeleted -signUpDate -_id')
+ //        .populate({path: 'productsInCart', select: '-userID'})
+ //        .populate({
+ //          path: 'order_history',
+ //          select: '-payment_id -user',
+ //          populate: {path: 'product', model: Cart }
+ //        })
+ //        .then( productinfo => {
+ //          return res.send(productinfo)
+ //        })
+ //    })
+ // },
+
+ userLimitedInfo: function(req, res, next){
+   UserSession.findById({_id: req.query._id})
+    .then(data=>{
+      User
+        .findById({_id: data.userId, root: User})
+        .select('-password -isDeleted -signUpDate -_id')
+        .populate({path: 'productsInCart', select: '-userID'})
+        .populate({path: 'order_history', select: '-payment_id -user'})
+        .then( productinfo => {
+          return res.send(productinfo)
+        })
+    })
+ },
 
 } // end module export
 //=========================================================

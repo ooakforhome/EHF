@@ -180,9 +180,9 @@ ul {
 
 .memberProfileBlock{
   position:fixed;
-  background:grey;
+  background: rgba(96,96,96,.7);
   width: 100vw;
-  height: 100vw;
+  height: 100%;
   top: 0px;
   .profile-block{
     position: relative;
@@ -203,6 +203,11 @@ ul {
   }
 }
 
+.purchaseHistoryUl {
+  background: rgba(256,256,256,.5);
+  width: 500px;
+  height: 500px;
+}
 
 /* -----NewProduct----- */
 .spdFormContainer {

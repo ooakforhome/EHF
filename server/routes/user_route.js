@@ -52,4 +52,7 @@ router.route(`/api/user/emptyusercart/`)
 router.route(`/api/user/paymentsuccessful/`)
   .put(userCtrl.userPaymentSuccessful);
 
+router.route(`/api/user/userlimitedinfo`)
+  .get(userCtrl.userLimitedInfo);
+
 module.exports = router;
