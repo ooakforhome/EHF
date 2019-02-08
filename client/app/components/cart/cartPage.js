@@ -209,35 +209,44 @@ class CartPage extends Component{
 
   confirmSubmit(e){
     e.preventDefault();
-    // optimize localhost data into database format
-      // Set token variable
-      const tk = JSON.parse(localStorage.the_main_app).token;
-      // Set a empty array for cart item input
-      const lsCart = [];
-
-      cart.getCart(items => {
-        items.data.forEach(item => {
-          lsCart.push(item)
-        })
-      });
-
-  const newaddress = this.state.address[0];
-
-      //--> Upload data into database
-  axios.get(`/api/user/findidbytoken?_id=${tk}`)
-    .then(tkid => {
+    cart.userId(id => {
       axios.post('/api/placeorder', {
-        products: lsCart,
+        products: this.state.products,
         customer_name: this.state.username,
         customer_email: this.state.email,
-        shipping_address: newaddress,
-        user: tkid.data
-        })
-          .then(orderData => {
-          window.location=`/checkout/${orderData.data._id}`
-          })
+        shipping_address: this.state.address,
+        user: id.data
       })
+      .then(orderData => {
+        console.log(orderData)
+        console.log(orderData.data._id)
+      window.location=`/checkout/${orderData.data._id}`
+      })
+      .catch(err => {console.log("confirmSubmit error")})
+    })
   }
+
+  // confirmSubmit(e){
+  //   e.preventDefault();
+  //   // optimize localhost data into database format
+  //     // Set token variable
+  // const tk = JSON.parse(localStorage.the_main_app).token;
+  //
+  //     //--> Upload data into database
+  // axios.get(`/api/user/findidbytoken?_id=${tk}`)
+  //   .then(tkid => {
+  //     axios.post('/api/placeorder', {
+  //       products: this.state.products,
+  //       customer_name: this.state.username,
+  //       customer_email: this.state.email,
+  //       shipping_address: this.state.address,
+  //       user: tkid.data
+  //       })
+  //         .then(orderData => {
+  //         window.location=`/checkout/${orderData.data._id}`
+  //         })
+  //     })
+  // }
 
   render(){
     // if(!this.state.address[0]){
@@ -245,9 +254,6 @@ class CartPage extends Component{
     //   // this.props.history.push("/")
     //   window.location = "/";
     // }
-
-    console.log(this.state.address)
-    console.log(this.state.address1)
     const ShowInCart = ({items}) => (
       <div>
         {items.map((item, i)=>

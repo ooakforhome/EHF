@@ -79,7 +79,8 @@ class PaypalButton extends React.Component {
             returnUrl: data.returnUrl,
           };
 
-          onSuccess(localStorage.setItem('paid', JSON.stringify(payment)));
+          onSuccess(payment);
+          // onSuccess(localStorage.setItem('paid', JSON.stringify(payment)));
           // localStorage.setItem('paid', payment);
         });
 

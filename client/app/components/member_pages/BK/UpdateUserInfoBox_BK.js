@@ -6,20 +6,13 @@ class UpdateUserInfoBox extends Component {
   constructor(props){
     super(props);
       this.state={
-        memberData : {}
+        memberData : {},
+        pageOn: true
       }
   }
 
 componentWillMount(){
   this.findUserinfo();
-}
-
-componentDidMount(){
-  this.findUserinfo();
-}
-
-componentDidUpdate(){
-  this.updateSubmit()
 }
 
 findUserinfo(){
@@ -49,7 +42,8 @@ memberAddressChange(e){
   })
 }
 
-updateSubmit(){
+updateSubmit(e){
+  e.preventDefault();
   const tkid = JSON.parse(localStorage.getItem("the_main_app")).token;
   API.loadUserIdByToken(tkid)
     .then(info => {
@@ -67,11 +61,15 @@ updateSubmit(){
           }
         })
     })
+    this.setState({
+      pageOn: !this.state.pageOn
+    })
 }
 
   render(){
+    console.log(this.state.pageOn)
     return(
-      <>
+      <div className={(this.state.pageOn === false)?"updateUserInfoBox hide": "updateUserInfoBox"}>
         <div className="update_address_containerk">
           <h2>UPDATE ADDRESS</h2>
         </div>
@@ -80,6 +78,7 @@ updateSubmit(){
           <div>
             <label htmlFor="name"><i className="">NAME</i></label>
             <input
+              placeholder={this.state.username}
               type="text"
               id="name"
               name="username"
@@ -90,6 +89,7 @@ updateSubmit(){
           <div>
             <label htmlFor="street"><i className="">Recipient Name</i></label>
             <input
+              placeholder={this.state.recipient_name}
               type="text"
               id="street"
               name="recipient_name"
@@ -98,6 +98,7 @@ updateSubmit(){
           <div>
             <label htmlFor="address_1"><i className="">STREET</i></label>
             <input
+              placeholder={this.state.address1}
               type="text"
               id="address_1"
               name="address1"
@@ -106,6 +107,7 @@ updateSubmit(){
           <div>
             <label htmlFor="address_2"><i className="">STREET</i></label>
             <input
+              placeholder={this.state.address2}
               type="text"
               id="address_2"
               name="address2"
@@ -114,6 +116,7 @@ updateSubmit(){
           <div>
             <label htmlFor="city"><i className="">CITY</i></label>
             <input
+              placeholder={this.state.city}
               type="text"
               id="city"
               name="city"
@@ -122,6 +125,7 @@ updateSubmit(){
           <div>
             <label htmlFor="state"><i className="">STATE</i></label>
             <input
+              placeholder={this.state.state}
               type="text"
               id="state"
               name="state"
@@ -130,6 +134,7 @@ updateSubmit(){
           <div>
             <label htmlFor="zip"><i className="">ZIP CODE</i></label>
             <input
+              placeholder={this.state.zipcode}
               type="text"
               id="zip"
               name="zipcode"
@@ -138,6 +143,7 @@ updateSubmit(){
           <div>
             <label htmlFor="phone_number"><i className="">Phone #</i></label>
             <input
+              placeholder={this.state.phone}
               type="text"
               id="phone_number"
               name="phone"
@@ -145,7 +151,7 @@ updateSubmit(){
           </div>
           <button className="change_address_btnk" type="submit">SUBMIT</button>
         </form>
-      </>
+      </div>
     )
   }
 

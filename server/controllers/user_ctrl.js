@@ -1,7 +1,8 @@
 const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 const Product = require('../models/Product_model');
-const Cart = require('../models/Cart')
+const Cart = require('../models/Cart');
+const Order = require('../models/Order')
 
 module.exports = {
   findAllUsers: function(req, res, next){
@@ -86,9 +87,21 @@ module.exports = {
    });
  }, // end addUser
 
+ // updateUser : function(req, res){
+ //   User.findOneAndUpdate({_id: req.query._id}, req.body,{new: true})
+ //    .then(info => { return res.json(info.shipping_address)})
+ //    .catch(err => res.status(422).json(err))
+ // },
+
  updateUser : function(req, res){
    User.findOneAndUpdate({_id: req.query._id}, req.body,{new: true})
-    .then(info => { return res.json(info.shipping_address)})
+    .then(info => {
+      return res.send({
+        username: info.username,
+        email: info.email,
+        shipping_address: info.shipping_address
+      })
+    })
     .catch(err => res.status(422).json(err))
  },
 
@@ -272,21 +285,36 @@ module.exports = {
         })
       })
         .catch(next)
-  }
+  },
+
+ userPaymentSuccessful: function(req, res, next){
+   // const userID = req.body.userID;
+   const userID = req.body._id;
+   const orderID = req.body.orderid;
+   const paymentID = req.body.paymentid;
+   // find and remove info in cart
+
+   User
+    .findOneAndUpdate(
+      { _id: userID },
+      {
+        $set: { productsInCart: [] },
+        $push: { order_history: orderID}
+      })
+      .then( userInfo => {
+        Order
+          .findOneAndUpdate(
+            { _id: orderID },
+            {
+              $set: {payment_status: "Successful"},
+              payment_id: paymentID
+            })
+            .then( sucInfo => {
+              res.json(sucInfo);
+            })
+            .catch(err => {console.log("HERE IS THE ERROR: "+ err)})
+          })
+ }
 
 } // end module export
 //=========================================================
-
-// userShowAllItemsAdded: function(req, res, next){
-//   UserSession.findById({_id: req.query._id})
-//    .then(data=>{
-//      User.findById({_id: data.userId, root: User})
-//        .populate({
-//          path: 'productsInCart', populate: {
-//            path: 'itemID'}
-//        })
-//        .then( productinfo => {
-//          return res.send(productinfo.productsInCart)
-//        })
-//    })
-// }

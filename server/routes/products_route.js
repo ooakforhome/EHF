@@ -38,7 +38,10 @@ router.route("/api/admin/product/:_id")
 
 // Order API routes
 router.route("/api/placeorder")
+  .get(placeOrder.findOrder)
   .post(placeOrder.createOrder)
+
+router.route("/api/updateorder")
   .put(placeOrder.updateOrder);
 
 

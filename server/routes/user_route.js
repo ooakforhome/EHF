@@ -49,4 +49,7 @@ router.route(`/api/user/userremoveitem`)
 router.route(`/api/user/emptyusercart/`)
   .post(userCtrl.emptyUserCart);
 
+router.route(`/api/user/paymentsuccessful/`)
+  .put(userCtrl.userPaymentSuccessful);
+
 module.exports = router;

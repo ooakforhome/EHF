@@ -1,5 +1,5 @@
 import axios from 'axios';
-    const userToken = JSON.parse(localStorage.getItem('the_main_app')).token;
+
 const cart = {
   userId(cb) {
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
@@ -12,11 +12,13 @@ const cart = {
       .then(cb)
   },
   getUserAddress(cb){
-    axios.get(`/api/user/findidbytoken?_id=${userToken}`)
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    axios.get(`/api/user/findidbytoken?_id=${token}`)
       .then(newID => {
         axios.get(`/api/user/finduseraddress?userID=${newID.data}`)
           .then(cb)
       })
+      .catch(err => console.log(err))
   },
   updateCart(id, num){
     axios.put(`/api/cart/updateqtyincart?_id=${id}`, {quantity: num})

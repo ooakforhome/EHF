@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const CartItemSchema = new mongoose.Schema({
   product: {type: mongoose.Schema.ObjectId, ref: 'Product'},
   quantity: Number,
+  ship_tracking: {type: String},
   status: {type: String,
     default: 'Not processed',
     enum: ['Not processed' , 'Processing', 'Shipped', 'Delivered', 'Cancelled']}

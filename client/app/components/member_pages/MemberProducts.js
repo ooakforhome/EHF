@@ -107,7 +107,7 @@ class MemberProducts extends Component {
 // MemberHeader component
   showProfileBlock(){
   document.querySelector(".memberProfileBlock").classList.toggle("hide")
-}
+  }
   onclick_logout(e){
   e.preventDefault();
   const token = JSON.parse(localStorage.getItem('the_main_app')).token

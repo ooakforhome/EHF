@@ -15,17 +15,25 @@ const ProductsBox = (props) => {
     return name
   }
 
-  const assignedClasses = [];
-
-  if(props.cart.includes(props._id)){
-    assignedClasses.push("item_inner_body", "innerBody", "bk-yes")
-  } else {
-    assignedClasses.push("item_inner_body", "innerBody")
-  }
-
+  // const assignedClasses = [];
+  //
+  // if(props.cart.includes(props._id)){
+  //   assignedClasses.push("item_inner_body", "innerBody", "bk-yes")
+  // } else {
+  //   assignedClasses.push("item_inner_body", "innerBody")
+  // }
+  // return(
+  // <div className={assignedClasses.join(' ')} data-item={props._id}>
+  // )
   return(
   <div className="item_container" >
-    <div className={assignedClasses.join(' ')} data-item={props._id}>
+    <div
+     className={
+      props.cart.includes(props._id)?
+       "item_inner_body innerBody bk-yes":
+       "item_inner_body innerBody"}
+       data-item={props._id}
+    >
       <div className="item_img">
         <div className="item_img_box">
 

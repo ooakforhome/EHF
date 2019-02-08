@@ -51,7 +51,7 @@ const ENV = process.env.NODE_ENV === 'production'
     if(!this.state.address){
       return "wait a min"
     }
-    console.log(this.state.products)
+    // console.log(this.state.products)
     let SubTotal = this.state.grandTotal;
 
     const Total = parseFloat((SubTotal*1.07).toFixed(2));
@@ -91,12 +91,18 @@ const ENV = process.env.NODE_ENV === 'production'
 
   // --> validation
     const onSuccess = (payment) => {
-        cart.userId( id => {
-          cart.emptyCart(id.data, (complete) => {
-            alert("your payment is successful");
-            window.location = `/receipt/${this.state.orderID}`
-          })
+      // console.log(payment)
+      cart.userId( id => {
+        axios.put("/api/user/paymentsuccessful/", {
+          _id: id.data,
+          orderid: this.state.orderID,
+          paymentid: payment.paymentID
         })
+        .then(info => {
+          alert("your payment is successful");
+          window.location = `/receipt/${this.state.orderID}`
+        })
+      })
     }
 
     const onError = (error) =>
