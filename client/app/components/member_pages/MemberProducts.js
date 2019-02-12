@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 
 import API from './api_helper';
 
@@ -14,7 +14,7 @@ import MemberHeader from './parts/MemberHeader';
 import MemberProfile from "./parts/MemberProfile";
 import ProductsBox from './parts/ProductsBox';
 
-import cart from '../cart/cart-helper';
+import cart from './cart/cart-helper';
 
 
 //SPD to Products
@@ -93,9 +93,9 @@ class MemberProducts extends Component {
           })
         }
       })
-          .then(()=>{
-            this.showAdded();
-          })
+          // .then(()=>{
+          //   this.showAdded();
+          // })
   }
   getInCartNumber() {
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
@@ -140,8 +140,8 @@ class MemberProducts extends Component {
   addToCart(e){
     e.preventDefault();
     const theId = e.target.value;
-
-    axios.get(`/api/member/product/${theId}`)
+    // axios.get(`/api/member/product/${theId}`)
+    API.findSingleProductById(theId)
       .then(item => {
         // console.log(item.data)
         // console.log("-------indexof-------")
@@ -150,7 +150,7 @@ class MemberProducts extends Component {
           alert("item already added")
         } else {
         // console.log(item)
-          axios.post(`/api/cart/addtocart`, {
+          API.addToCart({
             product_name: item.data.Product_Name,
             quantity: item.data.quantity,
             price: item.data.Retail,
@@ -210,16 +210,6 @@ class MemberProducts extends Component {
       offset: offset,
       Category_type: theName
     })
-  }
-  showAdded(){
-    // console.log(this.state.itemsInCart)
-    // if(this.state.itemsInCart.length > 0){
-    //   this.state.itemsInCart.forEach((_id)=>{
-    //     return document.querySelector(`[data-item='${_id}']`).classList.add('bk-yes');
-    //   })
-    // } else{
-    //   console.log("No Item")
-    // }
   }
 
   render() {

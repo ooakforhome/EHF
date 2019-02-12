@@ -5,35 +5,6 @@ const Cart = require('../models/Cart');
 const Order = require('../models/Order')
 
 module.exports = {
-  findAllUsers: function(req, res, next){
-    User.find()
-      .populate({path: 'Product', select: 'ObjectId'})
-      .then(data => {
-        console.log(res.json(data));
-      })
-  },
-
-  findSingleUser: function(req, res, next){
-    User.findById({_id: req.query._id, root: User})
-      .then(info => {
-        return res.json(info)
-      })
-        .catch(next)
-  },
-
-  findUserByEmail: function(req, res, next){
-    User.findOne({ email: req.query.email}, (err, data)=>{
-      if (err) {
-        return res.send({
-          success: false,
-          message: 'Error: Server error'
-        });
-      }
-        return res.json(data._id)
-    })
-      .catch(next)
-  },
-
   addUser: function(req, res, next){
     const { body } = req;
     const { password } = body;
@@ -209,6 +180,35 @@ module.exports = {
    })
  },
 
+ findAllUsers: function(req, res, next){
+   User.find()
+     .populate({path: 'Product', select: 'ObjectId'})
+     .then(data => {
+       console.log(res.json(data));
+     })
+ },
+
+ findSingleUser: function(req, res, next){
+   User.findById({_id: req.query._id, root: User})
+     .then(info => {
+       return res.json(info)
+     })
+       .catch(next)
+ },
+
+ findUserByEmail: function(req, res, next){
+   User.findOne({ email: req.query.email}, (err, data)=>{
+     if (err) {
+       return res.send({
+         success: false,
+         message: 'Error: Server error'
+       });
+     }
+       return res.json(data._id)
+   })
+     .catch(next)
+ },
+
  findUserIdByToken: function(req, res){
    UserSession.findById({_id: req.query._id})
     .then(data=>{
@@ -230,6 +230,19 @@ module.exports = {
         })
     })
     .catch(next)
+ },
+
+ userGetAddress: function(req, res, next){
+   const userID = req.query.userID;
+   User.findById({_id: userID, root: User})
+     .then(info => {
+       return res.send({
+         "address" : info.shipping_address,
+         "email" : info.email,
+         "username": info.username
+       })
+     })
+       .catch(next)
  },
 
  userShowAllItemsAdded: function(req, res, next){
@@ -273,19 +286,6 @@ module.exports = {
         return res.send({test: info.data})
       })
  },
-
-  userGetAddress: function(req, res, next){
-    const userID = req.query.userID;
-    User.findById({_id: userID, root: User})
-      .then(info => {
-        return res.send({
-          "address" : info.shipping_address,
-          "email" : info.email,
-          "username": info.username
-        })
-      })
-        .catch(next)
-  },
 
  userPaymentSuccessful: function(req, res, next){
    // const userID = req.body.userID;

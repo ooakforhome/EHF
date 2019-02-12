@@ -108,6 +108,13 @@ ul {
   float: left;
 }
 
+.the_category_nav{
+  position: absolute;
+  background: rgba(256,256,256, 0.8);
+  left: 10px;
+  margin:0;
+}
+
 .cat-nav {
   border-bottom: 3px black solid;
   display: inline-block;
@@ -203,10 +210,30 @@ ul {
   }
 }
 
-.purchaseHistoryUl {
-  background: rgba(256,256,256,.5);
-  width: 500px;
-  height: 500px;
+/* -----MemberProfile----- */
+.orderHistoryBlock {
+  background: rgba(255,223,0,.5);
+  margin-left: 20px;
+  div, p, ul, li {
+    margin: 0px;
+  }
+}
+
+.dottedBorder {
+  border-top: 2px dotted black;
+}
+
+.floatleftblock {
+  float: left;
+  width: 100%;
+  button, p {
+    float: left;
+    width: 100px;
+  }
+}
+
+.purchaseHisotryDivHide {
+  display:none;
 }
 
 /* -----NewProduct----- */

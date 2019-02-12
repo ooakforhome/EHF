@@ -6,7 +6,7 @@ import { setInStorage, getFromStorage } from '../utils/storage';
 // Page and parts import
 import { fetchOneMember } from '../../actions/member-action';
 import { MemberDetailBox } from './parts/MemberDetailBox';
-import cart from '../cart/cart-helper';
+import cart from './cart/cart-helper';
 
 // Begin Component
 class MemberProduct extends Component {

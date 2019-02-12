@@ -14,14 +14,8 @@ router.route(`/api/user/findoneuser`)
 router.route(`/api/user/findbyemail`)
   .get(userCtrl.findUserByEmail);
 
-router.route(`/api/user/signup`)
-  .post(userCtrl.addUser);
-
-router.route(`/api/user/userupdate`)
-  .post(userCtrl.updateUser)
-
-router.route(`/api/user/signin`)
-  .post(userCtrl.userLogin);
+router.route(`/api/user/userlimitedinfo`)
+  .get(userCtrl.userLimitedInfo);
 
 router.route(`/api/user/logout`)
   .get(userCtrl.userLogOut);
@@ -38,10 +32,17 @@ router.route(`/api/user/findbytoken`)
 router.route(`/api/user/finduseraddress`)
   .get(userCtrl.userGetAddress);
 
-// router.route(`/api/user/finduserpopulate`)
-//   .get(userCtrl.userShowAllItemsAdded);
 router.route(`/api/user/useraddtocart`)
   .get(userCtrl.userShowAllItemsAdded);
+
+router.route(`/api/user/signup`)
+  .post(userCtrl.addUser);
+
+router.route(`/api/user/userupdate`)
+  .post(userCtrl.updateUser)
+
+router.route(`/api/user/signin`)
+  .post(userCtrl.userLogin);
 
 router.route(`/api/user/userremoveitem`)
   .delete(userCtrl.userRemoveACartItem);
@@ -52,7 +53,6 @@ router.route(`/api/user/emptyusercart/`)
 router.route(`/api/user/paymentsuccessful/`)
   .put(userCtrl.userPaymentSuccessful);
 
-router.route(`/api/user/userlimitedinfo`)
-  .get(userCtrl.userLimitedInfo);
+
 
 module.exports = router;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import API from '../api_helper';
 
 import UpdateUserInfoBox from './MemberProfileParts/UpdateUserInfoBox';
+import OrderHistory from './MemberProfileParts/OrderHistory';
 // import OrderHistory from './MemberProfileParts/OrderHistory';
 
 class MemeberProfile extends Component{
@@ -12,9 +13,10 @@ class MemeberProfile extends Component{
       memberAddress: {},
       purchases: [],
       infoPage: true,
+      orderHistory:false,
       updatePage: false
     }
-    this.showPurchaseDetail = this.showPurchaseDetail.bind(this)
+
   }
 
   componentWillMount(){
@@ -96,37 +98,29 @@ class MemeberProfile extends Component{
     })
   }
 
-  closeProfileUpdateBox(){
-    document.querySelector(".memberProfileBlock").classList.toggle("hide")
+  openOrderHistory(){
+    this.setState({
+      infoPage: !this.state.infoPage ,
+      orderHistory: !this.state.orderHistory
+    })
   }
 
-  showPurchaseDetail(a){
-    console.log(a)
+  goBackToMemberProfile(){
+    this.setState({
+      infoPage: true,
+      orderHistory: false,
+      updatePage: false
+    })
+  }
+
+  closeProfileUpdateBox(){
+    document.querySelector(".memberProfileBlock").classList.toggle("hide")
   }
 
   render(){
     if(!this.state.memberInfo && !this.state.purchases){
       console.log("wait")
     }
-
-    console.log(this.state.memberInfo)
-
-    const PurchaseHistory = ({purchases}) => (
-      <ul className="purchaseHistoryUl">
-      { purchases.map((purchase, i) => {
-          let date = purchase.created.split('').slice(0,10).join('');
-          console.log(purchase)
-          return (
-            <li
-             key={i}
-             onClick={()=> this.showPurchaseDetail(i)}>
-              Purchase date : {date}
-            </li>
-        )}
-      )}
-      </ul>
-    )
-
 
     const {recipient_name, address1, address2, city, state, zipcode, country, phone} = this.state.memberAddress;
 
@@ -155,6 +149,7 @@ class MemeberProfile extends Component{
           <p>state: {state}</p>
           <p>zipcode: {zipcode}</p>
           <button onClick={this.openUpdateUserInfoBox.bind(this)}>UPDATE</button>
+          <button onClick={this.openOrderHistory.bind(this)}>Order History</button>
         </div>
         <div className={
           (this.state.updatePage === true)?
@@ -164,12 +159,19 @@ class MemeberProfile extends Component{
           <UpdateUserInfoBox
             memberAddressChange = {this.memberAddressChange.bind(this)}
             updateSubmit = {this.updateSubmit.bind(this)}
+            goBackToMemberProfile = {this.goBackToMemberProfile.bind(this)}
             />
         </div>
 
-        <div>
-          {(this.state.purchases)?
-            <PurchaseHistory purchases={this.state.purchases}/>:""}
+        <div className={
+          (this.state.orderHistory === true)?
+            "orderHistoryBox":
+            "orderHistory hide"
+        }>
+          <OrderHistory
+            purchases = {this.state.purchases}
+            goBackToMemberProfile = {this.goBackToMemberProfile.bind(this)}
+            />
         </div>
       </div>
     )

@@ -118,6 +118,7 @@ findUserinfo(){
           </div>
           <button className="change_address_btnk" type="submit">SUBMIT</button>
         </form>
+        <button onClick={this.props.goBackToMemberProfile}>Back</button>
       </>
     )
   }
