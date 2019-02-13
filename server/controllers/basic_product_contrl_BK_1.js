@@ -3,23 +3,23 @@ const Product = require ('../models/Product_model');
 module.exports = {
   getProductsBasic: function(req, res){
     let category_type = req.query.category_type;
-    // let offset = parseInt(req.query.offset);
-    // let limit = parseInt(req.query.limit);
+    let offset = parseInt(req.query.offset);
+    let limit = parseInt(req.query.limit);
 
     const query = Product
       .find({Category_type: category_type})
       .select('-UPC -Zone_8 -wholesale_price -Retail')
       .sort({ Category_type:1 })
-      // .limit(limit)
-      // .skip(offset*limit);
+      .limit(limit)
+      .skip(offset*limit);
 
     return Promise.all([query, Product.find({Category_type: category_type}).countDocuments()])
     .then((results) => {
       return res.json({
        all: results[0],
        count: results[1],
-       // offset: offset,
-       // limit: limit
+       offset: offset,
+       limit: limit
       });
     });
   },
@@ -33,8 +33,8 @@ module.exports = {
   },
 
   searchProduct: function(req, res){
-    // let offset = parseInt(req.query.offset);
-    // let limit = parseInt(req.query.limit);
+    let offset = parseInt(req.query.offset);
+    let limit = parseInt(req.query.limit);
     let search = { $regex: req.query.search, $options: 'i' }
     // User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}
     const query = Product
@@ -47,8 +47,8 @@ module.exports = {
          ]
         })
       .select('-UPC -Zone_8 -wholesale_price')
-      // .limit(limit)
-      // .skip(offset*limit);
+      .limit(limit)
+      .skip(offset*limit);
 
     return Promise.all([query, Product.find({
       $or:[
@@ -62,8 +62,8 @@ module.exports = {
       return res.json({
        all: results[0],
        count: results[1],
-       // offset: offset,
-       // limit: limit
+       offset: offset,
+       limit: limit
       });
     });
   },

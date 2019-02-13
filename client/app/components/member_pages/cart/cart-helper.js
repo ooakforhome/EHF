@@ -6,11 +6,14 @@ const cart = {
     axios.get(`/api/user/findidbytoken?_id=${token}`)
       .then(cb)
   },
+
   getCart(cb) {
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
     axios.get(`/api/user/useraddtocart?_id=${token}`)
       .then(cb)
   },
+
+
   getUserAddress(cb){
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
     axios.get(`/api/user/findidbytoken?_id=${token}`)
@@ -20,9 +23,20 @@ const cart = {
       })
       .catch(err => console.log(err))
   },
+
+  modifyUserInfoForCart(datainfo){
+    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    axios.get(`/api/user/findidbytoken?_id=${token}`)
+      .then(newID =>{
+        axios.post(`/api/user/userupdate?_id=${newID.data}`, datainfo)
+      })
+      .catch(err=> console.log("User info modify error"))
+  },
+
   updateCart(id, num){
     axios.put(`/api/cart/updateqtyincart?_id=${id}`, {quantity: num})
   },
+
   calculateCartTotal(cb){
     const token = JSON.parse(localStorage.getItem('the_main_app')).token;
     let gTotal = 0;
@@ -42,6 +56,7 @@ const cart = {
         })
         .then(cb)
   },
+
   removeItem(itemIndex) {
     // console.log("itemIndex: "+itemIndex)
     axios.delete(`/api/cart/removeacartitem`, {data: {cartID: itemIndex}})
@@ -54,6 +69,7 @@ const cart = {
         // }
       })
   },
+
   emptyCart(_id, cb) {
     axios.post(`/api/user/emptyusercart/?_id=${_id}`)
       .then(cb)
@@ -66,8 +82,9 @@ const cart = {
       // })
   },
 
+
   memberPlaceOrder(id, paymet){
-    axios.put(`/api/placeorder`, id,payment)
+    axios.put(`/api/placeorder`, id, payment)
   }
 
 

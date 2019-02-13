@@ -29,9 +29,9 @@ import './styles/styles.scss';
   import MemberProductsAll from './components/member_pages/MemberProducts';
   import MemberProduct from './components/member_pages/MemberProduct';
 
-  import CartPage from './components/cart/cartPage';
-  import Checkout from './components/cart/paypal/PaypalCheckout';
-  import Receipt from './components/cart/purchaseReceipt'
+  import CartPage from './components/member_pages/cart/cartPage';
+  import Checkout from './components/member_pages/cart/paypal/PaypalCheckout';
+  import Receipt from './components/member_pages/cart/purchaseReceipt'
   // import Addaddress from './components/cart/addAddress'
   // import Checkout from './components/cart/checkout.js'
 

@@ -35,6 +35,28 @@ findUserinfo(){
 }
 
   render(){
+
+    const AllStates = () =>{
+      const states = [' ','AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY', 'AE', 'AA', 'AP'];
+
+      return(
+        <select
+          id="state"
+          name="state"
+          value={this.props.state}
+          placeholder={this.props.state}
+          onChange={this.props.memberAddressChange}>
+            {
+              states.map((state,i) => {
+                return(
+                  <option key={i} value={state}>{state}</option>
+                )
+              })
+            }
+          </select>
+        )
+      }
+
     return(
       <>
         <div className="update_address_containerk">
@@ -90,13 +112,8 @@ findUserinfo(){
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
-            <label htmlFor="state"><i className="">STATE</i></label>
-            <input
-              placeholder={this.state.state}
-              type="text"
-              id="state"
-              name="state"
-              onChange={this.props.memberAddressChange}/>
+          <label htmlFor="state"><i className="">STATE</i></label>
+            <AllStates />
           </div>
           <div>
             <label htmlFor="zip"><i className="">ZIP CODE</i></label>

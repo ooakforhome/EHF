@@ -16,9 +16,8 @@ class BasicProductsAll extends Component {
       totalPage: 0,
       count: 0,
       token:'',
-      Category_type: "Bathroom Furnitures",
+      Category_type: "Accent Furnitures",
       products: [],
-      limitProducts: [],
     };
   }
 
@@ -29,21 +28,17 @@ class BasicProductsAll extends Component {
 
   loadDatas(){
     const {limit, offset, Category_type} = this.state;
-    let startDisplay = (offset === 0? 0: offset*limit );
-    let endDisplay = (offset+1) * limit;
-
-    API.loadProducts({category_type: Category_type})
+    API.loadProducts({category_type: Category_type, limit: limit, offset:offset})
     .then(info => {
       this.setState({
         products: info.data.all,
-        count: info.data.count,
-        limitProducts: info.data.all.slice(startDisplay, endDisplay)
+        count: info.data.count
       })
     })
   }
 
   // Categories link
-  handleClickthenav(e){
+    handleClickthenav(e){
       e.preventDefault();
       const theName = e.target.id; // query need + in between space
       API.loadProducts({category_type: theName, limit: 10, offset: 0})
@@ -51,7 +46,6 @@ class BasicProductsAll extends Component {
         this.setState({
           products: info.data.all,
           count: info.data.count,
-          limitProducts: info.data.all.slice(0, 10),
           Category_type: theName,
           limit: 10,
           offset: 0
@@ -71,37 +65,39 @@ class BasicProductsAll extends Component {
   }
 
   nexthandleChange(){
-    const {limit, offset, products} = this.state;
-    const lastPage = Math.floor(products.length/limit)
-    const lastPageNumBeg = (lastPage)*limit;
-    const lastPageNumEnd = products.length;
-    const lastPageProducts = products.slice(lastPageNumBeg, lastPageNumEnd)
-    let startDisplay = ( offset+1 ) * limit;
-    let endDisplay = (startDisplay) + limit;
-    let limitProducts = products.slice(startDisplay, endDisplay)
+      const totalOffset = Math.floor(this.state.count/this.state.limit);
+      const nextOffset = this.state.offset + 1
+      const {limit, offset, Category_type} = this.state;
 
-    if(offset === lastPage){
-      this.setState({
-        limitProducts: lastPageProducts
-      })
-    } else {
-      this.setState({
-        offset: offset+1,
-        limitProducts: products.slice(startDisplay, endDisplay),
-      })
-    }
-  }
+      if(this.state.offset >= totalOffset){
+        API.loadProducts({category_type: Category_type, limit: limit, offset:totalOffset})
+        .then(info => {
+          this.setState({
+            offset: totalOffset,
+            products: info.data.all,
+            count: info.data.count
+          })
+        })
+      } else {
+        API.loadProducts({category_type: Category_type, limit: limit, offset:nextOffset})
+        .then(info => {
+          this.setState({
+            offset: nextOffset,
+            products: info.data.all,
+            count: info.data.count
+          })
+        })
+      }
+  };
+
 
   prevhandleChange(e){
     e.preventDefault();
-    const {limit, offset, products, limitProducts} = this.state;
-
-      if(this.state.offset === 0){
-        this.setState({
-          limitProducts
-        })
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
       } else {
       this.setState({
+        limit: 10,
         offset: this.state.offset-=1
       })
     }
@@ -112,23 +108,16 @@ class BasicProductsAll extends Component {
     e.preventDefault();
     const searchValue = e.target.value;
     const {offset, limit} = this.state;
-    let startDisplay = (offset === 0? 0: offset*limit );
-    let endDisplay = (offset+1) * limit;
 
     API.searchBox({
-      searchValue
+      searchValue, offset, limit
     })
     .then(info => {
       this.setState({
         products: info.data.all,
-        limitProducts: info.data.all.slice(startDisplay, endDisplay),
         count: info.data.count
       })
     })
-  }
-
-  testclick(id){
-    console.log(id)
   }
 
   render(){
@@ -138,15 +127,12 @@ class BasicProductsAll extends Component {
 
     const ProductList = ({products}) => (
       <div>
-        { products.map((product, i) => {
-          return(
-            <ProductsBox
-                  key={i}
+        {products.map((product, i) =>
+          <ProductsBox key={i}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
-                  testclick={this.testclick.bind(this, product._id)}
+                  handleDelete={this.handleDelete.bind(this)}
                   />
-            )}
         )}
       </div>
     )
@@ -182,7 +168,7 @@ class BasicProductsAll extends Component {
           <h1>{this.state.Category_type}</h1>
           <PageBtn />
           <div>
-          <ProductList products = {this.state.limitProducts}/>
+          <ProductList products = {this.state.products}/>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import AddProduct from './parts/add_product';
 import cart from './cart-helper';
 import { Redirect } from 'react-router-dom';
 import axios from "axios";
-import { setInStorage, getFromStorage } from '../utils/storage';
+import { setInStorage, getFromStorage } from '../../utils/storage';
 
 // import parts
 import Show_Address from './show_address';
@@ -18,16 +18,19 @@ class CartPage extends Component{
       grandTotal: 0,
       username: "",
       email: "",
-      recipient_name: "",
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      zipcode: "",
-      country: "",
-      phone: "",
+      showTaggle: true,
+      updateAddress: false,
     }
   }
+
+  // recipient_name: "",
+  // address1: "",
+  // address2: "",
+  // city: "",
+  // state: "",
+  // zipcode: "",
+  // country: "",
+  // phone: "",
 
   componentWillMount() {
     this.checkValidation();
@@ -106,33 +109,33 @@ class CartPage extends Component{
   }
 
   getUserAddress(){
-    cart.userId( id => {
-      axios.get(`/api/user/finduseraddress?userID=${id.data}`)
-        .then( getAddress =>{
-          const gA = getAddress.data;
-          this.setState({
-            username: gA.username,
-            email: gA.email,
+    cart.getUserAddress(
+      getAddress => {
+        const gA = getAddress.data;
+        this.setState({
+          username: gA.username,
+          email: gA.email,
+          recipient_name: gA.address.recipient_name,
+          address1: gA.address.address1,
+          address2: gA.address.address2,
+          city: gA.address.city,
+          state: gA.address.state,
+          zipcode: gA.address.zipcode,
+          phone: gA.address.phone,
+          address: {
             recipient_name: gA.address.recipient_name,
             address1: gA.address.address1,
             address2: gA.address.address2,
             city: gA.address.city,
             state: gA.address.state,
             zipcode: gA.address.zipcode,
+            country: "USA",
             phone: gA.address.phone,
-            address: {
-              recipient_name: gA.address.recipient_name,
-              address1: gA.address.address1,
-              address2: gA.address.address2,
-              city: gA.address.city,
-              state: gA.address.state,
-              zipcode: gA.address.zipcode,
-              country: "USA",
-              phone: gA.address.phone,
-            }
-          })
+          }
         })
-    })
+          this.validateFormInput();
+      }
+    )
   }
 
   addressChange(e){
@@ -140,6 +143,7 @@ class CartPage extends Component{
       [e.target.name]: e.target.value.trim()
     })
   }
+
 
   formSubmit(e){
     e.preventDefault();
@@ -192,7 +196,6 @@ class CartPage extends Component{
       .then((info, err)=>{
         if(err){console.log(err)}
         else{
-          // console.log(info)
           this.getUserAddress();
           this.triggerUpdate();
         }
@@ -200,11 +203,27 @@ class CartPage extends Component{
     })
   }
 
+  validateFormInput(){
+    console.log(this.state.recipient_name)
+    console.log(this.state.address1)
+    console.log(this.state.address2)
+    console.log(this.state.zipcode)
+    console.log(this.state.phone)
+    const validate = [
+      (/(\w{3,}(\s)?(\w{1,}))/gi).test(this.state.recipient_name),
+      (/^\d+\s.*\s(st|dr|blvd)$/gi).test(this.state.address1),
+      (/(apt|#|po)([\d\s])(\.{1,5})?/gi).test(this.state.address2),
+      (/(\d{5}(\-)?(\d{4})?)/gi).test(this.state.zipcode),
+      (/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g).test(this.state.phone)
+    ]
+    console.log(validate)
+    if(validate.includes(false)){
+      this.setState({updateAddress: true, showTaggle: !this.state.showTaggle})
+    }
+  }
+
   triggerUpdate(){
-    document.querySelector('.show_address_container').classList.toggle("hide");
-    document.querySelector('.update_address_btn').classList.toggle("hide");
-    document.querySelector('.update_address_box').classList.toggle("hide");
-    document.querySelector('.change_address_btn').classList.toggle("hide");
+    this.setState({showTaggle: !this.state.showTaggle})
   }
 
   confirmSubmit(e){
@@ -231,31 +250,9 @@ class CartPage extends Component{
       .then(orderData => {
       window.location=`/checkout/${orderData.data._id}`
       })
-      .catch(err => {console.log("confirmSubmit error")})
+      .catch(err => {alert("PLEASE MAKE CORRECTION TO ADDRESS FORM")})
     })
   }
-
-  // confirmSubmit(e){
-  //   e.preventDefault();
-  //   // optimize localhost data into database format
-  //     // Set token variable
-  // const tk = JSON.parse(localStorage.the_main_app).token;
-  //
-  //     //--> Upload data into database
-  // axios.get(`/api/user/findidbytoken?_id=${tk}`)
-  //   .then(tkid => {
-  //     axios.post('/api/placeorder', {
-  //       products: this.state.products,
-  //       customer_name: this.state.username,
-  //       customer_email: this.state.email,
-  //       shipping_address: this.state.address,
-  //       user: tkid.data
-  //       })
-  //         .then(orderData => {
-  //         window.location=`/checkout/${orderData.data._id}`
-  //         })
-  //     })
-  // }
 
   render(){
     // if(!this.state.address[0]){
@@ -263,6 +260,7 @@ class CartPage extends Component{
     //   // this.props.history.push("/")
     //   window.location = "/";
     // }
+    // console.log(this.state.username)
     const ShowInCart = ({items}) => (
       <div>
         {items.map((item, i)=>
@@ -279,7 +277,7 @@ class CartPage extends Component{
     )
 
     const GrandTotal = 0;
-
+console.log(this.state.updateAddress)
     return(
       <>
         <div className="col-12">
@@ -299,20 +297,24 @@ class CartPage extends Component{
         <div className="s-iCol-12 col-12">
         <Show_Address
           {...this.state.address}
+          showTaggle = {this.state.showTaggle}
           user = {this.state.username}
           email = {this.state.email}
         />
-        <div className="update_address_box hide">
+        <div className={(!this.state.showTaggle)? "update_address_box": "update_address_box hide"}>
           <Update_Address
+            state = {this.state.address.state}
+            showTaggle = {this.state.showTaggle}
             formUpdate = {this.formUpdate.bind(this)}
             addressUpdateChange = {this.addressUpdateChange.bind(this)}
           />
         </div>
         <button
-          className="update_address_btn" onClick={this.triggerUpdate.bind(this)}>UPDATE</button>
+          className={(this.state.showTaggle)? "update_address_btn":"update_address_btn hide"}
+          onClick={this.triggerUpdate.bind(this)}>UPDATE</button>
         </div>
         <br />
-        <button onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
+        <button disabled={(this.state.showTaggle)? "" : true} onClick={this.confirmSubmit.bind(this)}>CHECKOUT</button>
       </>
     )
   }

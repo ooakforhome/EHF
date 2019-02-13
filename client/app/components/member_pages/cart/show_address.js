@@ -4,7 +4,7 @@ import Update_Address from './update_address';
 const Show_Address = (props) => {
   return(
   <div className="address_container">
-    <div className="show_address_container">
+    <div className={(props.showTaggle)?"show_address_container": "show_address_container hide"}>
       <h2>SHIPPING INFO</h2>
       <div><b>Customer Name: </b>{ props.user }</div>
       <div><b>Customer E-Mail: </b>{ props.email }</div>

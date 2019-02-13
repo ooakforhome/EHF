@@ -21,26 +21,47 @@ class Update_Address extends Component {
   }
 
   getUserAddress(){
-    cart.userId(newid => {
-      // console.log(newid.data)
-      axios.get(`/api/user/finduseraddress?userID=${newid.data}`)
-        .then((nAddress, err) => {
-          if(err){console.log("err : " + err)}
-          // console.log(nAddress.data)
-          this.setState({
-            recipient_name: nAddress.data.address.recipient_name,
-            address1: nAddress.data.address.address1,
-            address2: nAddress.data.address.address2,
-            city: nAddress.data.address.city,
-            state: nAddress.data.address.state,
-            zipcode: nAddress.data.address.zipcode,
-            phone: nAddress.data.address.phone
-          })
+    cart.getUserAddress((nAddress, err) => {
+        if(err){console.log("err : " + err)}
+        // console.log(nAddress.data)
+        this.setState({
+          recipient_name: nAddress.data.address.recipient_name,
+          address1: nAddress.data.address.address1,
+          address2: nAddress.data.address.address2,
+          city: nAddress.data.address.city,
+          state: nAddress.data.address.state,
+          zipcode: nAddress.data.address.zipcode,
+          phone: nAddress.data.address.phone
+        })
       })
-    })
   }
 
+
   render(){
+
+
+
+  const AllStates = () =>{
+    const states = [' ','AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY', 'AE', 'AA', 'AP'];
+
+    return(
+      <select
+        id="state"
+        name="state"
+        value={this.props.state}
+        placeholder={this.state.state}
+        onChange={this.props.addressUpdateChange}>
+          {
+            states.map((state,i) => {
+              return(
+                <option key={i} value={state}>{state}</option>
+              )
+            })
+          }
+        </select>
+      )
+    }
+
     return(
       <>
         <div className="update_address_container">
@@ -85,12 +106,7 @@ class Update_Address extends Component {
           </div>
           <div>
             <label htmlFor="state"><i className="">STATE</i></label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              placeholder={this.state.state}
-              onChange={this.props.addressUpdateChange}/>
+              <AllStates />
           </div>
           <div>
             <label htmlFor="zip"><i className="">ZIP CODE</i></label>
@@ -110,7 +126,7 @@ class Update_Address extends Component {
               placeholder={this.state.phone}
               onChange={this.props.addressUpdateChange}/>
           </div>
-          <button className="change_address_btn hide" type="submit">SUBMIT</button>
+          <button className={(!this.props.showTaggle)?"change_address_btn":"change_address_btn hide"} type="submit">SUBMIT</button>
         </form>
       </>
     )

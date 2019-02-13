@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import cart from '../cart-helper';
+import cart from './cart-helper';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
