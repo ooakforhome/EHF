@@ -16,7 +16,7 @@ const shortName=(name, limit=25)=>{
 
 export const ProductsBox = ( props ) => (
 
-  <div className="item_container">
+  <div className="item_container" key={props._id}>
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">

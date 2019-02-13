@@ -44,20 +44,20 @@ class BasicProductsAll extends Component {
 
   // Categories link
   handleClickthenav(e){
-      e.preventDefault();
-      const theName = e.target.id; // query need + in between space
-      API.loadProducts({category_type: theName, limit: 10, offset: 0})
-      .then(info => {
-        this.setState({
-          products: info.data.all,
-          count: info.data.count,
-          limitProducts: info.data.all.slice(0, 10),
-          Category_type: theName,
-          limit: 10,
-          offset: 0
-        })
+    e.preventDefault();
+    const theName = e.target.id; // query need + in between space
+    API.loadProducts({category_type: theName})
+    .then(info => {
+      this.setState({
+        products: info.data.all,
+        count: info.data.count,
+        limitProducts: info.data.all.slice(0, 10),
+        Category_type: theName,
+        limit: 10,
+        offset: 0
       })
-    };
+    })
+  };
 
   handleClick(e){
       e.preventDefault();
@@ -141,7 +141,7 @@ class BasicProductsAll extends Component {
         { products.map((product, i) => {
           return(
             <ProductsBox
-                  key={i}
+                  key={product._id}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
                   testclick={this.testclick.bind(this, product._id)}
@@ -151,17 +151,19 @@ class BasicProductsAll extends Component {
       </div>
     )
 
+    const PageBtn=()=>{
+      const TotalPages = Math.ceil(this.state.count/this.state.limit);
+      const CurrentPage = this.state.offset + 1;
 
-    const TotalPages = Math.ceil(this.state.count/this.state.limit);
-    const CurrentPage = this.state.offset + 1;
-    const PageBtn=()=>(
+      return(
       <div className ="floatleftblock">
         <button onClick={this.prevhandleChange.bind(this)} name="prev" value="1" >Prev</button>
         <p>Page: { CurrentPage } of { TotalPages }</p>
         <p>Total: {this.state.count}</p>
         <button onClick={this.nexthandleChange.bind(this)} name="next" value="1" >next</button>
       </div>
-    )
+      )
+    }
 
     return(
       <div>
