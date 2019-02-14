@@ -4,8 +4,8 @@ import axios from 'axios';
 export default {
 
   //----begin---------- new memberProducts api -----------------
-  getAllProducts: function(limit, offset, Category_type){
-    return axios.get(`/api/member/products?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
+  getAllProducts: function(token, limit, offset, Category_type){
+    return axios.get(`/api/member/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
   },
 
   findSingleProductById: function(productID){

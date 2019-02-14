@@ -31,7 +31,7 @@ class UserLogin extends Component {
                 token,
                 isLoading: false
               });
-              window.location =`/auth/products/`;
+              window.location =`/auth/products`;
             } else {
               this.setState({
                 isLoading: false,

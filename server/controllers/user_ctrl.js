@@ -180,6 +180,28 @@ module.exports = {
    })
  },
 
+ userVerifyAPI: function(req, res, next){
+   const token = req.query.token;
+
+   UserSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
+     if (err) {
+       console.log(err);
+       return res.send({
+         success: false,
+         message: 'Error: Server error'
+       });
+     }
+     if (sessions.length != 1) {
+       return res.send({
+         success: false,
+         message: 'Error: Invalid'
+       });
+     } else {
+       next()
+       };
+   })
+ },
+
  findAllUsers: function(req, res, next){
    User.find()
      .populate({path: 'Product', select: 'ObjectId'})

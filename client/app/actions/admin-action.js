@@ -1,9 +1,9 @@
-import { RENDER_ADMIN, FETCH_ONE_ADMIN, NEW_PRODUCT_ADMIN } from './types';
+import { RENDER_ADMIN, FETCH_ONE_ADMIN, NEW_PRODUCT_ADMIN, SEARCH_PRODUCTS_ADMIN } from './types';
 import axios from 'axios';
 import _ from 'lodash';
 
-  export const renderAdmin = ({limit, offset, Category_type}) => dispatch => {
-    axios.get(`/api/admin/products?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
+  export const renderAdmin = ({token, limit, offset, Category_type}) => dispatch => {
+    axios.get(`/api/admin/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
     .then( res => res.data )
     .then( products =>
       dispatch({
@@ -13,8 +13,8 @@ import _ from 'lodash';
     );
   };
 
-  export const fetchOneAdmin = id => dispatch => {
-    axios.get(`/api/admin/product/`+id)
+  export const fetchOneAdmin = ({token, id}) => dispatch => {
+    axios.get(`/api/admin/product/${id}?token=${token}`)
     .then( res => res.data )
     .then( product =>
       dispatch({
@@ -34,4 +34,14 @@ import _ from 'lodash';
             payload: product
           })
         )
+  };
+
+  export const searchBoxAdmin = ({token, searchValue}) => dispatch => {
+    axios.get(`/api/admin/products/search?search=${searchValue}&token=${token}`)
+      .then( res => res.data )
+        .then( products => dispatch({
+          type: SEARCH_PRODUCTS_ADMIN,
+          payload: products
+        })
+      );
   };

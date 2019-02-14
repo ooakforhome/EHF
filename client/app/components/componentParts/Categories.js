@@ -3,20 +3,20 @@ import React, { Component } from 'react';
 class Categories extends Component {
   constructor(props){
     super(props);
-    this.state={
-      menuActive: false,
-    }
+    // this.state={
+    //   menuActive: false,
+    // }
   }
 
-categorybutton(){
-  this.setState({
-    menuActive: !this.state.menuActive
-  })
-}
+// categorybutton(){
+//   this.setState({
+//     menuActive: !this.state.menuActive
+//   })
+// }
 
   render(){
     const ListMaps = () => {
-      const navLists = ["Accent Furnitures", "Bookcases", "Bathroom Furnitures", "Bath Accessories", "Hooks and Rods", "Bath Hardwares", "Over The Doors", "Window Hardwares", "Window Panels", "Shower Curtains", "Beauty Devices", "Gardens", "LED", "Pets"];
+      const navLists = ["Accent Furnitures", "Bookcases", "Bathroom Furnitures", "Bath Accessories", "Hooks and Rods", "Bath Hardwares", "Over The Doors", "Window Hardwares", "Window Panels", "Shower Curtains", "Soft Storage",  "Pets", "Beauty Devices", "LED", "Gardens"];
 
       return(
         <ul className="the_category_nav">
@@ -24,6 +24,7 @@ categorybutton(){
             navLists.map(navList =>{
               return(
                 <li
+                  key={navList}
                   id={navList}
                   onClick={this.props.clickthenav}
                   className="navlist"
@@ -37,13 +38,13 @@ categorybutton(){
       )
     }
 
-    const menuToggle = (this.state.menuActive === true)? <ListMaps /> : "";
+    const menuToggle = (this.props.menuActive === true)? <ListMaps /> : "";
 
     return(
       <div>
         <span>
-        <button onClick={this.categorybutton.bind(this)}>
-          {(`${this.state.menuActive}` === "false")? "+ Show Categories": "- Show Categories"}
+        <button onClick={this.props.categorybutton}>
+          {(`${this.props.menuActive}` === "false")? "+ Show Categories": "- Show Categories"}
         </button>
         </span>
         <span>

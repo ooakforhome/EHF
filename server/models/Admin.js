@@ -22,8 +22,7 @@ const AdminSchema = new mongoose.Schema({
   signUpDate: {
     type: Date,
     default: Date.now()
-  },
-  allProducts: [{type: mongoose.Schema.Types.ObjectId, ref: Product}]
+  }
 });
 
 AdminSchema.methods.generateHash = function(password) {

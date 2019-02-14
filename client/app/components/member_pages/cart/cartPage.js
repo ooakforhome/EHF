@@ -204,19 +204,12 @@ class CartPage extends Component{
   }
 
   validateFormInput(){
-    console.log(this.state.recipient_name)
-    console.log(this.state.address1)
-    console.log(this.state.address2)
-    console.log(this.state.zipcode)
-    console.log(this.state.phone)
     const validate = [
-      (/(\w{3,}(\s)?(\w{1,}))/gi).test(this.state.recipient_name),
       (/^\d+\s.*\s(st|dr|blvd)$/gi).test(this.state.address1),
       (/(apt|#|po)([\d\s])(\.{1,5})?/gi).test(this.state.address2),
       (/(\d{5}(\-)?(\d{4})?)/gi).test(this.state.zipcode),
       (/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g).test(this.state.phone)
     ]
-    console.log(validate)
     if(validate.includes(false)){
       this.setState({updateAddress: true, showTaggle: !this.state.showTaggle})
     }

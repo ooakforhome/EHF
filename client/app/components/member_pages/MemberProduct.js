@@ -15,18 +15,20 @@ class MemberProduct extends Component {
         this.state = {
         product: [],
         images: '',
-        token:'',
+        token:JSON.parse(localStorage.getItem('the_main_app')).token,
         redirect: false
       }
  }
 
  componentWillMount() {
-   this.props.fetchOneMember(this.props.match.params.id);
+   const { token } = this.state
+   this.props.fetchOneMember({id: this.props.match.params.id, token});
    this.checkValidation();
  }
 
  componentDidMount(){
-   this.props.fetchOneMember(this.props.match.params.id)
+   const { token } = this.state
+   this.props.fetchOneMember({id: this.props.match.params.id, token});
  }
 
   checkValidation() {

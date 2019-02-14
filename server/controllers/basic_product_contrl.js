@@ -46,7 +46,7 @@ module.exports = {
           {'Product_Name': search}
          ]
         })
-      .select('-UPC -Zone_8 -wholesale_price')
+      .select('-UPC -Zone_8 -wholesale_price -Retail')
       // .limit(limit)
       // .skip(offset*limit);
 

@@ -27,8 +27,8 @@ class MemberProducts extends Component {
       limit: 10,
       offset: 0,
       count: 0,
-      token:'',
-      Category_type: "Accent Furnitures"
+      token:JSON.parse(localStorage.getItem('the_main_app')).token,
+      Category_type: "Accent Furnitures",
     }
   }
 
@@ -66,7 +66,9 @@ class MemberProducts extends Component {
   getUserId(){
     API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
         .then(id => {
-          this.setState({cID: id.data})
+          this.setState({
+            cID: id.data,
+          })
         })
   }
   getItemInCart(){
@@ -126,11 +128,12 @@ class MemberProducts extends Component {
     e.preventDefault();
     const theName = e.target.id.split(' ').join('+'); // query need + in between space
     this.setState({
+      menuActive: !this.state.menuActive,
       limit: 10,
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderMember({limit: 10, offset: 0, Category_type:theName})
+    this.props.renderMember({token:this.state.token, limit: 10, offset: 0, Category_type:theName})
   };
 // ProductList Component
   handleClick(e){
@@ -168,7 +171,8 @@ class MemberProducts extends Component {
 // Search Input
   searchBoxValue(e){
     e.preventDefault();
-    this.props.searchBoxMember(e.target.value)
+    const { token } = this.state;
+    this.props.searchBoxMember({searchValue: e.target.value, token})
     // this.setState({
     //   searchBox: e.target.value
     // })
@@ -176,15 +180,14 @@ class MemberProducts extends Component {
 // PageBtn Component
   nexthandleChange(){
     const totalOffset = Math.floor(this.props.newproducts.count/10);
-    const {limit, offset} = this.state;
+    const {limit, offset, token} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
 
-
     if(this.state.offset >= totalOffset){
-      this.props.renderMember({limit: limit, offset: offset, Category_type:theName})
+      this.props.renderMember({token, limit, offset, Category_type:theName})
       this.setState({ offset: totalOffset })
     } else {
-      this.props.renderMember({limit: limit, offset: offset+1, Category_type:theName})
+      this.props.renderMember({token , limit, offset: offset+1, Category_type:theName})
       this.setState({ offset: this.state.offset+=1 })
     }
   };
@@ -201,13 +204,20 @@ class MemberProducts extends Component {
     this.loadDatas();
   };
 
+  categorybutton(){
+    this.setState({
+      menuActive: !this.state.menuActive
+    })
+  }
+
 // helpers
   loadDatas(){
-    const {limit, offset} = this.state;
+    const {limit, token, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+');
     this.props.renderMember({
-      limit: limit,
-      offset: offset,
+      token,
+      limit,
+      offset,
       Category_type: theName
     })
   }
@@ -253,7 +263,11 @@ class MemberProducts extends Component {
           />
         </div>
         <div className="category_nav col-12 inline_block">
-          < Categories clickthenav = { this.handleClickthenav.bind(this) } />
+          < Categories
+            clickthenav = { this.handleClickthenav.bind(this) }
+            categorybutton = { this.categorybutton.bind(this) }
+            menuActive = {this.state.menuActive}
+            />
         </div>
         <div>
           <input

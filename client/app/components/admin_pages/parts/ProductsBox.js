@@ -14,37 +14,39 @@ const shortName=(name, limit=25)=>{
   return name
 }
 
-export const ProductsBox = ({
-  _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleDelete
-  }) => (
+// {
+//   _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, handleDelete
+//   }
+
+export const ProductsBox = (props) => (
 
   <div className="item_container" >
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
           {
-            (`${images}` === "null") ? "":
-              (`${images}` === "undefined") ? "":
-                (`${images}` === "") ? "":
-                  <img src={`/api/imagesm/${images}`} alt={Product_Name}/>
+            (`${props.images}` === "null") ? "":
+              (`${props.images}` === "undefined") ? "":
+                (`${props.images}` === "") ? "":
+                  <img src={`/api/imagesm/${props.images}`} alt={props.Product_Name}/>
           }
         </div>
         </div>
-      <div><p>Category: <strong>{Category_type}</strong></p></div>
+      <div><p>Category: <strong>{props.Category_type}</strong></p></div>
       <div className="item_info_box">
-        <p className="item_name">Product Name: {shortName(Product_Name)}</p>
-        <p className="item_sku"> SKU#: {SKU} </p>
-        <p className="item_color"> Color: {Color}</p>
-        <p className="item_weight"> Shipping Weight: {Product_Shipping_Weight} </p>
-        <p className="item_weight"> Product Weight: {Product_Weight} </p>
-        <p className="item_size"> Package Dimensions: {Packing_Carton_Width}W x {Packing_Carton_Height}H x {Packing_Carton_Depth}D </p>
-        <p className="item_size"> Actural Dimensions: {Actual_Product_Width}W x {Actual_Product_Height}H x {Actual_Product_Length}D </p>
+        <p className="item_name">Product Name: {shortName(props.Product_Name)}</p>
+        <p className="item_sku"> SKU#: {props.SKU} </p>
+        <p className="item_color"> Color: {props.Color}</p>
+        <p className="item_weight"> Shipping Weight: {props.Product_Shipping_Weight} </p>
+        <p className="item_weight"> Product Weight: {props.Product_Weight} </p>
+        <p className="item_size"> Package Dimensions: {props.Packing_Carton_Width}W x {props.Packing_Carton_Height}H x {props.Packing_Carton_Depth}D </p>
+        <p className="item_size"> Actural Dimensions: {props.Actual_Product_Width}W x {props.Actual_Product_Height}H x {props.Actual_Product_Length}D </p>
       </div>
       <div className="edit_box">
-        <button value={_id} className="item_edit_button" onClick={handleClick}>
+        <button value={props._id} className="item_edit_button" onClick={props.handleClick}>
           Detail
         </button>
-        <button value={_id} className="item_dele_button" onClick={handleDelete}>
+        <button value={props._id} className="item_dele_button" onClick={props.handleDelete}>
           Delete
         </button>
       </div>

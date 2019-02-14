@@ -47,5 +47,9 @@ export default {
     // Admin Logout
       adminLogout: function(token){
         return axios(`/api/admin/logout?token=${token}`)
+      },
+      adminSearchProduct: function(search){
+        return axios.get(`/api/admin/products/search?search=${search}`)
       }
+
 };

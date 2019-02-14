@@ -11,12 +11,12 @@ module.exports = {
       })
   },
 
-  findSingleAdmin: function(req, res, next){
+  findSingleAdmin: function(req, res){
     Admin.findById({_id: req.query._id, root: Admin})
       .then(data => {
         console.log(res.json(data));
       })
-      .next(err)
+      .catch(err)
   },
 
   findByEmail: function(req, res){
@@ -182,7 +182,61 @@ module.exports = {
        });
      }
    })
-  }
+ },
 
+ adminVerifyAPI: function(req, res, next){
+   const token = req.query.token;
+
+   AdminSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
+     if (err) {
+       console.log(err);
+       return res.send({
+         success: false,
+         message: 'Error: Server error'
+       });
+     }
+     if (sessions.length != 1) {
+       return res.send({
+         success: false,
+         message: 'Error: Invalid'
+       });
+     } else {
+       next()
+     }
+   })
+ }
 } // end module export
 //=========================================================
+
+  // searchProductFromAdmin: function(req, res){
+  //   let offset = parseInt(req.query.offset);
+  //   let limit = parseInt(req.query.limit);
+  //   let search = { $regex: req.query.search, $options: 'i' }
+  //   // User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}
+  //   const query = Product
+  //     .find({
+  //       $or:[
+  //         {'SKU': search },
+  //         {'Category_type': search },
+  //         {'Color': search },
+  //         {'Product_Name': search}
+  //        ]
+  //       })
+  //     .limit(limit)
+  //     .skip(offset*limit);
+  //
+  //   return Promise.all([query, Product.find({
+  //     $or:[
+  //       {'SKU': req.query.search},
+  //       {'Category_type': req.query.search},
+  //       {'Color': req.query.search}]
+  //     }).countDocuments()])
+  //   .then((results) => {
+  //     return res.json({
+  //      all: results[0],
+  //      count: results[1],
+  //      offset: offset,
+  //      limit: limit
+  //     });
+  //   });
+  // }

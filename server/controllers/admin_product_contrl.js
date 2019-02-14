@@ -48,6 +48,38 @@ module.exports = {
         .findOneAndDelete({ _id: req.params._id })
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
+  },
+  searchProductFromAdmin: function(req, res){
+    let offset = parseInt(req.query.offset);
+    let limit = parseInt(req.query.limit);
+    let search = { $regex: req.query.search, $options: 'i' }
+    // User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}
+    const query = Product
+      .find({
+        $or:[
+          {'SKU': search },
+          {'Category_type': search },
+          {'Color': search },
+          {'Product_Name': search}
+         ]
+        })
+      .limit(limit)
+      .skip(offset*limit);
+
+    return Promise.all([query, Product.find({
+      $or:[
+        {'SKU': req.query.search},
+        {'Category_type': req.query.search},
+        {'Color': req.query.search}]
+      }).countDocuments()])
+    .then((results) => {
+      return res.json({
+       all: results[0],
+       count: results[1],
+       offset: offset,
+       limit: limit
+      });
+    });
   }
 
 };

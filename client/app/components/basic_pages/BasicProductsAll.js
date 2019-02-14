@@ -16,9 +16,10 @@ class BasicProductsAll extends Component {
       totalPage: 0,
       count: 0,
       token:'',
-      Category_type: "Bathroom Furnitures",
+      Category_type: "Accent Furnitures",
       products: [],
       limitProducts: [],
+      menuActive: false
     };
   }
 
@@ -49,6 +50,7 @@ class BasicProductsAll extends Component {
     API.loadProducts({category_type: theName})
     .then(info => {
       this.setState({
+        menuActive: !this.state.menuActive,
         products: info.data.all,
         count: info.data.count,
         limitProducts: info.data.all.slice(0, 10),
@@ -122,13 +124,20 @@ class BasicProductsAll extends Component {
       this.setState({
         products: info.data.all,
         limitProducts: info.data.all.slice(startDisplay, endDisplay),
-        count: info.data.count
+        count: info.data.count,
+        offset: 0,
       })
     })
   }
 
   testclick(id){
     console.log(id)
+  }
+
+  categorybutton(){
+    this.setState({
+      menuActive: !this.state.menuActive
+    })
   }
 
   render(){
@@ -169,7 +178,11 @@ class BasicProductsAll extends Component {
       <div>
         <Header />
         <div className="category_nav">
-          <Categories clickthenav = { this.handleClickthenav.bind(this) } />
+          <Categories
+            clickthenav = { this.handleClickthenav.bind(this) }
+            categorybutton = { this.categorybutton.bind(this) }
+            menuActive = {this.state.menuActive}
+            />
         </div>
         <div>
           <input

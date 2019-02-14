@@ -1,31 +1,25 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-import API from './api-product';
-
-import { renderAdmin, searchBoxAdmin } from '../../actions/admin-action';
-import Categories from '../componentParts/Categories';
-
-import { setInStorage, getFromStorage } from '../utils/storage';
+import { renderAdmin } from '../../actions/admin-action';
 import { ProductsBox } from './parts/ProductsBox';
+import Categories from '../componentParts/Categories';
+import API from './api-product';
+import { Link } from 'react-router-dom';
 import Logout from './parts/Logout';
-
+import { setInStorage, getFromStorage } from '../utils/storage';
+import pagination from '../componentParts/pagination';
 
 //SPD to Products
 class AdminProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amountInCart: 0,
-      itemsInCart: [],
       limit: 10,
       offset: 0,
       count: 0,
-      token:JSON.parse(localStorage.getItem('the_main_app')).token,
-      Category_type: "Accent Furnitures",
-      menuActive: false
-    }
+      token:'',
+      Category_type: "Accent Furnitures"
+    };
   }
 
 // mount Redux data info.
@@ -59,12 +53,11 @@ class AdminProducts extends Component {
 
 
   loadDatas(){
-    const {limit, token, offset} = this.state;
+    const {limit, offset} = this.state;
     const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
     this.props.renderAdmin({
-      token,
-      limit,
-      offset,
+      limit: limit,
+      offset: offset,
       Category_type: theName
     });
   }
@@ -85,26 +78,25 @@ class AdminProducts extends Component {
     e.preventDefault();
     const theName = e.target.id.split(' ').join('+'); // query need + in between space
     this.setState({
-      menuActive: !this.state.menuActive,
       limit: 10,
       offset: 0,
       Category_type: e.target.id
     })
-    this.props.renderAdmin({token:this.state.token, limit: 10, offset: 0, Category_type:theName})
+    this.props.renderAdmin({limit: 10, offset: 0, Category_type:theName})
   };
 
 
 nexthandleChange(){
     const totalOffset = Math.floor(this.props.adminproducts.count/10);
-    const {limit, offset, token} = this.state;
+    const {limit, offset} = this.state;
     let theName = this.state.Category_type.split(' ').join('+');
 
     if(this.state.offset >= totalOffset){
-      this.props.renderAdmin({token, limit, offset, Category_type:theName})
+      this.props.renderAdmin({limit: limit, offset: offset, Category_type:theName})
         this.setState({offset: totalOffset})
     } else {
-      this.props.renderAdmin({token , limit, offset: offset+1, Category_type:theName})
-        this.setState({offset: this.state.offset+=1})
+      this.props.renderAdmin({limit: limit, offset: offset+1, Category_type:theName})
+        this.setState({offset: this.state.offset+1})
     }
 };
 
@@ -119,7 +111,13 @@ nexthandleChange(){
         offset: this.state.offset-=1
       })
     }
-    this.loadDatas();
+    this.updates();
+  };
+
+// refrash products data
+  updates(){
+    const theName = this.state.Category_type.split(' ').join('+'); // query need + in between space
+    this.props.renderAdmin({Category_type: theName, limit: this.state.limit, offset: this.state.offset});
   };
 
 // Logout Admin
@@ -140,21 +138,6 @@ nexthandleChange(){
     e.preventDefault();
     window.location=`/newproduct/${this.state.token}`
   }
-
-  categorybutton(){
-    this.setState({
-      menuActive: !this.state.menuActive
-    })
-  }
-  // Search Input
-    searchBoxValue(e){
-      e.preventDefault();
-      const { token } = this.state;
-      this.props.searchBoxAdmin({searchValue: e.target.value, token})
-      // this.setState({
-      //   searchBox: e.target.value
-      // })
-    }
 
   render() {
     // console.log(this.props.adminproducts.all);
@@ -192,20 +175,7 @@ nexthandleChange(){
           <button onClick={this.addNewProduct.bind(this)}>ADD NEW PRODUCT</button>
         </div>
         <div className="category_nav">
-          < Categories
-            clickthenav = { this.handleClickthenav.bind(this) }
-            categorybutton = { this.categorybutton.bind(this) }
-            menuActive = {this.state.menuActive}
-            />
-        </div>
-        <div>
-          <input
-            className="col-6 input-space"
-            type="search"
-            name="searchBox"
-            placeholder="What do you want to search?"
-            onChange = {this.searchBoxValue.bind(this)}
-             />
+          < Categories clickthenav = { this.handleClickthenav.bind(this) } />
         </div>
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
@@ -225,4 +195,4 @@ const mapStateToProps = state => ({
   adminproducts: state.adminproducts.products
 });
 
-export default connect(mapStateToProps, { renderAdmin, searchBoxAdmin })(AdminProducts);
+export default connect(mapStateToProps, { renderAdmin })(AdminProducts);
