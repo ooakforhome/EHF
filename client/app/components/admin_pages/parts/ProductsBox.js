@@ -24,12 +24,12 @@ export const ProductsBox = (props) => (
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
-          {
-            (`${props.images}` === "null") ? "":
-              (`${props.images}` === "undefined") ? "":
-                (`${props.images}` === "") ? "":
-                  <img src={`/api/imagesm/${props.images}`} alt={props.Product_Name}/>
-          }
+        {
+          (`${props.images}` === "null") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
+            (`${props.images}` === "undefined") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
+              (`${props.images}` === "") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
+                <img src={`/api/imagesm/${props.images}`} alt={props.Product_Name}/>
+        }
         </div>
         </div>
       <div><p>Category: <strong>{props.Category_type}</strong></p></div>
