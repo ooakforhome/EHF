@@ -1,9 +1,6 @@
 #!/bin/sh
 
 ssh -t -t ubuntu@ip-172-31-47-130 <<EOF
-    mongo
-    use ehf
-    exit
     cd ~/EHF
     git pull origin master
     npm install

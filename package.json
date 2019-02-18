@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack -p --progress --profile --colors && node server",
     "dev": "node server",
-    "test": "mocha"
+    "test": "nodemon --exec \"mocha -R min\""
   },
   "engines": {
     "node": ">=6"
