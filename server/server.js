@@ -25,7 +25,12 @@ const cartRoutes = require('./routes/cart_route');
 
 // Set up Mongoose
 mongoose.connect(isDev ? config.db_dev : config.db);
+// mongoose.connect(config.db, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

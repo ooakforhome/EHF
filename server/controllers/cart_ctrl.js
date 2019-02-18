@@ -40,7 +40,7 @@ module.exports = {
         if(!err){
           // return res.send({succssful : "true"})
           User
-            .update({ productsInCart: cartID },
+            .updateOne({ productsInCart: cartID },
             { $pull : { productsInCart : cartID }}, (err)=>{
               if(err) throw err;
               return res.send({succssful : "true"})

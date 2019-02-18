@@ -1,6 +1,5 @@
 import { RENDER_ADMIN, FETCH_ONE_ADMIN, NEW_PRODUCT_ADMIN, SEARCH_PRODUCTS_ADMIN } from './types';
 import axios from 'axios';
-import _ from 'lodash';
 
   export const renderAdmin = ({token, limit, offset, Category_type}) => dispatch => {
     axios.get(`/api/admin/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)

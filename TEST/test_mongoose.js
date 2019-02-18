@@ -18,10 +18,7 @@ describe("Database test", ()=>{
   });
 
   describe('Test Database now', ()=>{
-    it('add name', (done)=>{
-      const newAdmin = Admin({email:"apple@jelly.com"});
-      newAdmin.save(done);
-    });
+
     it('Dont save incorrect format', (done)=>{
       const wrongAdmin = Admin({noname: 'nothing'});
       wrongAdmin.save(err => {

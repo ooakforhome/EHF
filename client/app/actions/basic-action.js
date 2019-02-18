@@ -1,6 +1,6 @@
 import { RENDER_BASIC, FETCH_ONE_BASIC } from './types';
 import axios from 'axios';
-import _ from 'lodash';
+
 
   export const renderBasic = ({limit, offset, Category_type}) => dispatch => {
     axios.get(`/api/basic/products?limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
