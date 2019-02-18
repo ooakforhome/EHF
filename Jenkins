@@ -1,7 +1,5 @@
 #!/bin/sh
 
-./node_modules/.bin/mocha ./test/test.js
-
 ssh ubuntu@ip-172-31-47-130 <<EOF
     echo "move to EHF file"
     cd ~/EHF
@@ -9,5 +7,7 @@ ssh ubuntu@ip-172-31-47-130 <<EOF
     git pull origin master
     echo "install package.json"
     npm install
+    echo "test files"
+    npm test
     exit
 EOF
