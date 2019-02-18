@@ -66,6 +66,7 @@
     "chai": "^4.2.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "mocha": "^5.2.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "supertest": "^3.4.2"
   }
 }

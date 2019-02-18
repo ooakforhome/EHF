@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"EHF.uploads.files"},{"v":2,"key":{"filename":1,"uploadDate":1},"name":"filename_1_uploadDate_1","ns":"EHF.uploads.files","background":false}],"uuid":"440a2a250e9c49a7a6d145abbf934013"}

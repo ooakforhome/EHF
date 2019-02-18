@@ -27,7 +27,7 @@ module.exports = {
   getProductByIdBasic: function(req, res){
     Product
       .findById(req.params._id)
-      .select('-UPC -Zone_8 -wholesale_price -Retail -Product_Shipping_Method -SKU -Cubic_Feet -Packing_Carton_Width -Packing_Carton_Depth -Packing_Carton_Height')
+      .select('-UPC -Zone_8 -wholesale_price -Retail -Product_Shipping_Method -Cubic_Feet')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

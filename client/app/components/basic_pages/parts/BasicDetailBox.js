@@ -7,14 +7,28 @@ export const BasicDetailBox = ({item}) => (
       </div>
       <div className="detail_item_info_box detail_box">
         <div>
-          {(item.Product_Name === "")? "" :<h1>{item.Product_Name}</h1>}
+          {(item.Product_Name === "")?
+            "" :
+            <h1>{item.Product_Name}</h1>}
           <p><b>Category</b> : {item.Category_type}</p>
-          {(item.Color === "")? "" : <p><b>Color</b> : {item.Color} </p>}
-          {(item.Materials === "")? "" : <p><b>Materials</b> : {item.Materials} </p>}
-          {(item.Product_Weight === "")? "" : <p><b>Product Weight</b> : {item.Product_Weight}LB </p>}
-          <p><b>Product Size</b>: {item.Actual_Product_Width} W x {item.Actual_Product_Length} L x {item.Actual_Product_Height} H</p>
-          {(item.Product_Shipping_Weight === "")? "" : <p><b>Carton Shipping Weight</b> : {item.Product_Shipping_Weight} LB</p>}
-          <p><b>Carton Width</b> : {item.Packing_Carton_Width} W x {item.Packing_Carton_Depth}L x {item.Packing_Carton_Height} H</p>
+          {(item.Color === "")?
+            "" :
+            <p><b>Color</b> : {item.Color} </p>}
+          {(item.Materials === "")?
+            "" :
+            <p><b>Materials</b> : {item.Materials} </p>}
+          {(item.Product_Weight === "")? "" :
+            <p><b>Product Weight</b> : {item.Product_Weight}LB </p>}
+          <p><b>Product Size</b>:
+            {item.Actual_Product_Width} W x
+            {item.Actual_Product_Length} L x
+            {item.Actual_Product_Height} H</p>
+          {(item.Product_Shipping_Weight === "")? "" :
+            <p><b>Carton Shipping Weight</b> : {item.Product_Shipping_Weight} LB</p>}
+          <p><b>Carton Size</b> :
+            {item.Packing_Carton_Width} W x
+            {item.Packing_Carton_Depth}L x
+            {item.Packing_Carton_Height} H</p>
         </div>
         <div className="detail_descriptions">
           {(item.Feature_1 === "")? "" : <p><b>Feature 1</b> : {item.Feature_1} </p>}

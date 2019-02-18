@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import '../style.css';
 
 const shortName=(name, limit=25)=>{
   let newName = [];

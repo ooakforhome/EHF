@@ -62,7 +62,7 @@ var productSchema = new Schema({
   Product_Diameter: { type: Number},
   Retail: { type: Number },
   addDate: {type: Date, default: Date.now()},
-  images: {type: String, default: "1d919e518209e5cbfedd0713f2a75c5e.jpg" },
+  images: {type: String, default: "" },
   active: {type: String, default: "true"}
 })
 
