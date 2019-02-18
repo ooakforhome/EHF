@@ -8,7 +8,7 @@ const Admin = require('../server/models/Admin');
 
 describe("Database test", ()=>{
   before((done)=>{
-    mongoose.connect('mongodb://localhost:27017/EHF_test', { useNewUrlParser: true });
+    mongoose.connect('mongodb://ehfadmin:ehf1234@localhost:27017/ehf', { useNewUrlParser: true });
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error'));
     db.once('open', function(){
@@ -47,3 +47,13 @@ describe("Database test", ()=>{
   });
 
 });
+
+
+echo "move to EHF file"
+cd ~/EHF
+ehco "update current file"
+git pull origin master
+echo "install package.json"
+npm install
+echo "test files"
+npm test
