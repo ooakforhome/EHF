@@ -1,6 +1,7 @@
 import { RENDER_MEMBER, FETCH_ONE_MEMBER, SEARCH_PRODUCTS_MEMBER } from './types';
 import axios from 'axios';
 
+
   export const renderMember = ({token, limit, offset, Category_type}) => dispatch => {
     axios.get(`/api/member/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
     .then( res => res.data )

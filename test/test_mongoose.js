@@ -47,13 +47,3 @@ describe("Database test", ()=>{
   });
 
 });
-
-
-echo "move to EHF file"
-cd ~/EHF
-ehco "update current file"
-git pull origin master
-echo "install package.json"
-npm install
-echo "test files"
-npm test
