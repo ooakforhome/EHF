@@ -2,5 +2,8 @@
 
 ssh ubuntu@ip-172-31-47-130 <<EOF
 
+    cd ~/EHF
+
+    git pull origin master
     exit
 EOF
