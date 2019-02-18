@@ -1,13 +1,6 @@
 #!/bin/sh
 
 ssh ubuntu@ip-172-31-47-130 <<EOF
-    echo "move to EHF file"
-    cd ~/EHF
-    ehco "update current file"
-    git pull origin master
-    echo "install package.json"
-    npm install
-    echo "test files"
-    npm test
+
     exit
 EOF
