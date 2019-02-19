@@ -5,7 +5,8 @@ const Admin = require('../server/models/Admin');
 const User = require('../server/models/User')
 
 // https://medium.com/nongaap/beginners-guide-to-writing-mongodb-mongoose-unit-tests-using-mocha-chai-ab5bdf3d3b1d
-
+// mongoose.connect('mongodb://ehfadmin:ehf1234@localhost:27017/ehf', {
+// mongoose.connect('mongodb://@localhost:27017/EHF_test', {
 describe("Database test", ()=>{
   before((done)=>{
     mongoose.connect('mongodb://ehfadmin:ehf1234@localhost:27017/ehf', { useNewUrlParser: true });
@@ -26,7 +27,7 @@ describe("Database test", ()=>{
         throw new Error('Should generate error!');
       });
     });
-    it('let\'s save a user account', (done)=>{
+    it('let\'s save a user to the account', (done)=>{
       const newUser = new User();
       newUser.email= "abc@abc.com"
       newUser.password = "abc"
@@ -36,7 +37,7 @@ describe("Database test", ()=>{
       })
     });
     it('Should retrieve data from test database', (done)=>{
-      Admin.find({email: "aaa@aaa.com"}, (err, name)=>{
+      User.find({email: "abc@abc.com"}, (err, name)=>{
         if(err){throw err;}
         if(name.length === 0) {throw new Error('No data!');}
         done();
@@ -50,7 +51,7 @@ describe("Database test", ()=>{
     it('Make sure data name is removed', (done)=>{
       User.find({email: "abc@abc.com"}, (err, name)=>{
         if(err){throw err;}
-        if(!name){ return done()}
+        done();
       });
     });
   });
