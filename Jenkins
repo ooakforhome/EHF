@@ -1,8 +1,11 @@
 #!/bin/sh
 
 ssh -t -t ubuntu@ip-172-31-47-130 <<EOF
+    echo "Let's change to repo EHF"
     cd ~/EHF
+    echo "Let's pull the newest update from master branch"
     git pull origin master
+    echo "Install and Test"
     npm install
     npm test
     exit
