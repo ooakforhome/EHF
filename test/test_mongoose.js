@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const chai = require('chai');
 const expect = chai.expect;
 const Admin = require('../server/models/Admin');
-
+const User = require('../server/models/User')
 
 // https://medium.com/nongaap/beginners-guide-to-writing-mongodb-mongoose-unit-tests-using-mocha-chai-ab5bdf3d3b1d
 
@@ -26,13 +26,23 @@ describe("Database test", ()=>{
         throw new Error('Should generate error!');
       });
     });
+    it('let\'s save a admin user', (done)=>{
+      const newUser = new User();
+      newUser.email= "abc@abc.com"
+      newUser.password = "abc"
+      newUser.save((err, user) => {
+        if(err){ throw err }
+        return done()
+      })
+    });
     it('Should retrieve data from test database', (done)=>{
-      Admin.find({email: "bbb@bbb.com"}, (err, name)=>{
+      Admin.find({email: "aaa@aaa.com"}, (err, name)=>{
         if(err){throw err;}
         if(name.length === 0) {throw new Error('No data!');}
         done();
       });
     });
+
     // it('Remove a data name', (done)=>{
     //   Admin.remove({email:"apple@jelly.com"});
     //   done();
