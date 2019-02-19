@@ -3,10 +3,21 @@
 ssh -t -t ubuntu@ip-172-31-47-130 <<EOF
     echo "Let's change to repo EHF"
     cd ~/EHF
-    echo "Let's pull the newest update from master branch"
-    git pull origin master
-    echo "Install and Test"
-    npm install
-    npm test
+    pipeline {
+        agent 'Node 11' 
+        stages {
+            stage('Build') {
+                steps {
+                    sh 'git pull origin master'
+                    sh 'npm install'
+                }
+            }
+            stage('Test'){
+                steps {
+                    sh 'npm test'
+                }
+            }
+        }
+    }
     exit
 EOF
