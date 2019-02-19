@@ -43,17 +43,17 @@ describe("Database test", ()=>{
       });
     });
 
-    // it('Remove a data name', (done)=>{
-    //   Admin.remove({email:"apple@jelly.com"});
-    //   done();
-    // });
-    // it('Make sure data name is removed', (done)=>{
-    //   Admin.find({email: "apple@jelly.com"}, (err, name)=>{
-    //     if(err){throw new Error("didnt delete");}
-    //     if(name.length === 0){ return "detelete"}
-    //     done();
-    //   });
-    // });
+    it('Remove a data name', (done)=>{
+      Admin.remove({email:"abc@abc.com"});
+      done();
+    });
+    it('Make sure data name is removed', (done)=>{
+      Admin.find({email: "abc@abc.com"}, (err, name)=>{
+        if(err){throw new Error("didnt delete");}
+        if(name.length === 0){ return "detelete"}
+        done();
+      });
+    });
   });
 
 });
