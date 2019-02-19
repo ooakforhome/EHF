@@ -8,5 +8,6 @@ ssh -t -t ubuntu@ip-172-31-47-130 <<EOF
     echo "Install and Test"
     npm install
     npm test
+    0
     exit
 EOF
