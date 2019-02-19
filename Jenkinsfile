@@ -1,7 +1,7 @@
 #!groovy
 
-node('node 11') {
-
+pipeline {
+    agent any
     stage('Build') {
         steps {
             echo 'Building..'
