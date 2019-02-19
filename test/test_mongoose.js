@@ -26,7 +26,7 @@ describe("Database test", ()=>{
         throw new Error('Should generate error!');
       });
     });
-    it('let\'s save a admin user', (done)=>{
+    it('let\'s save a user account', (done)=>{
       const newUser = new User();
       newUser.email= "abc@abc.com"
       newUser.password = "abc"
@@ -49,8 +49,8 @@ describe("Database test", ()=>{
     });
     it('Make sure data name is removed', (done)=>{
       User.find({email: "abc@abc.com"}, (err, name)=>{
-        if(err){throw new Error("didnt delete");}
-        if(name.length === 0){ return done()}
+        if(err){throw err;}
+        if(!name){ return done()}
       });
     });
   });
