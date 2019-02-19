@@ -1,18 +1,17 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-                git 'pull origin master'
-                npm 'install'
+                echo 'Building..',
+                 script: 'git pull origin master',
+                 script: 'npm install'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
-                npm 'test'
+                echo 'Testing..',
+                 script: 'npm test'
             }
         }
     }
