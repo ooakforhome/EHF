@@ -19,6 +19,7 @@ import './styles/styles.scss';
 // Basic Pages
   import BasicProductsAll from './components/basic_pages/BasicProductsAll';
   import BasicProduct from './components/basic_pages/BasicProduct';
+  import BasicCartPage from './components/basic_pages/cart/basicCartPage';
 
 // Admin Pages
   import AdminProductsAll from './components/admin_pages/AdminProducts';
@@ -45,6 +46,7 @@ const App = () =>
 
         <Route exact path="/products" component = { BasicProductsAll } />
         <Route exact path="/product/:id" component = { BasicProduct } />
+
 
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />
