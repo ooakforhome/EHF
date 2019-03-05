@@ -43,6 +43,7 @@ findUserinfo(){
         <select
           id="state"
           name="state"
+          defaultValue="GA"
           value={this.props.state}
           placeholder={this.props.state}
           onChange={this.props.memberAddressChange}>

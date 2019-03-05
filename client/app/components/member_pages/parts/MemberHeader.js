@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import addCartImg from "../../../styles/image/add-shopping-cart.png"
 
 const MemberHeader =({showProfileBlock, onclick_logout, amountInCart})=>(
   <div className="col-12 inline_block">
@@ -15,7 +16,7 @@ const MemberHeader =({showProfileBlock, onclick_logout, amountInCart})=>(
     </div>
     <div className="fLeft cart-container">
       <Link to="/cart">
-        <img className="imgforcart" src="https://img.icons8.com/windows/1600/add-shopping-cart.png" />
+        <img className="imgforcart" src={addCartImg} />
         <p className="showLocalAmount"><b>{amountInCart}</b></p>
       </Link>
     </div>

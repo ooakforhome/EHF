@@ -1,7 +1,7 @@
 import React, { Component}  from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from './Header';
-// import './core.css';
+import './core.scss';
 
 import axios from 'axios';
 // import Signup from '../passport/login-form';

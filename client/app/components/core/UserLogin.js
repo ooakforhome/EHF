@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import { setInStorage, getFromStorage } from '../utils/storage';
+import './core.scss'
 
 class UserLogin extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class UserLogin extends Component {
       signInPassword: '',
       signUpEmail: '',
       signUpPassword: '',
+      signupActive: false
     };
   }
 
@@ -89,7 +91,8 @@ class UserLogin extends Component {
           email: signUpEmail,
           password: signUpPassword,
         }),
-      }).then(res => res.json())
+      })
+      .then(res => res.json())
       .then(json => {
         if (json.success) {
           this.setState({
@@ -100,7 +103,6 @@ class UserLogin extends Component {
           });
         } else {
           this.setState({
-            signUpError: json.message,
             isLoading: false,
           });
         }
@@ -141,7 +143,6 @@ class UserLogin extends Component {
             window.location =`/auth/products/`;
           } else {
             this.setState({
-              signInError: json.message,
               isLoading: false,
             });
           }
@@ -179,53 +180,56 @@ class UserLogin extends Component {
 
   showSignup(e){
     e.preventDefault();
-    const toggleshow = document.querySelector('.sign_up_container');
-    toggleshow.classList.toggle('toggleContainer');
+      this.setState({signupActive: !this.state.signupActive})
   }
 
       render() {
         const { isLoading, token, signInError, signInEmail, signInPassword, signUpEmail, signUpPassword, signUpError } = this.state;
-        if (isLoading) {
-          return (<div><p>Loading...</p></div>);
-        }
         if (!token) {
           return (
             <div className="login_page_container">
-
-
-              <div className="sign_In_Box box_shadow">
+              <form onSubmit={this.onSignIn.bind(this)} autoComplete="off">
+              <div className="sign_In_Box">
                 {
                   (signInError) ? (
                     <p>{signInError}</p>
                   ) : (null)
                 }
-                <p className="text-center">Sign In</p>
+                <p className="text-center"><b>Sign In</b></p>
+                <div className="inputBox">
                 <input
-                  className="col-11 input-space"
+                  className="input-value"
                   type="email"
+                  autoComplete="off"
                   placeholder="Email"
                   value={signInEmail}
                   onChange={this.onTextboxChangeSignInEmail.bind(this)}
                 />
+                </div>
                 <br />
+                <div className="inputBox">
                 <input
-                  className="col-11 input-space"
+                  className="input-value"
                   type="password"
+                  autoComplete="off"
                   placeholder="Password"
                   value={signInPassword}
                   onChange={this.onTextboxChangeSignInPassword.bind(this)}
                 />
+                </div>
                 <br />
-                <button onClick={this.onSignIn.bind(this)}>Sign In</button>
+                <button className="sign-in-btn" type="submit">Sign In</button>
               </div>
-
+              </form>
 
               <br />
               <br />
               <p>dont have a account?</p>
               <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
 
-              <div className="sign_up_container toggleContainer box_shadow">
+              {/*<div className="sign_up_container toggleContainer box_shadow">*/}
+              <form onSubmit={this.onSignUp.bind(this)} autoComplete="off">
+              <div className={(this.state.signupActive)?"sign_up_container box_shadow": "sign_up_container box_shadow hide"}>
                 {
                   (signUpError) ? (
                     <p>{signUpError}</p>
@@ -235,6 +239,7 @@ class UserLogin extends Component {
                 <input
                   className="col-11 input-space"
                   type="email"
+                  autoComplete="off"
                   placeholder="Email"
                   value={signUpEmail}
                   onChange={this.onTextboxChangeSignUpEmail.bind(this)}
@@ -243,14 +248,15 @@ class UserLogin extends Component {
                 <input
                   className="col-11 input-space"
                   type="password"
+                  autoComplete="off"
                   placeholder="Password"
                   value={signUpPassword}
                   onChange={this.onTextboxChangeSignUpPassword.bind(this)}
                 />
                 <br />
-                <button onClick={this.onSignUp.bind(this)}>Sign Up</button>
+                <button type="submit">Sign Up</button>
               </div>
-
+              </form>
            </div>
           );
         }

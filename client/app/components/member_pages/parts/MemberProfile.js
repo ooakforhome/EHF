@@ -20,30 +20,27 @@ class MemeberProfile extends Component{
   }
 
   componentWillMount(){
-    console.log("render componentWillMount")
     this.loadMemberInfo()
   }
 
-  componentDidMount(){
-    console.log("render componentDidMount")
-  }
-
   loadMemberInfo(){
+    const { shipping_address, username, recipient_name, address1, address2, city, state, zipcode, country, phone } = member.data.shipping_address;
+
     API.userLimitedInfo(JSON.parse(localStorage.the_main_app).token)
       .then( member => {
         this.setState({
           purchases: member.data.order_history,
           memberInfo: member.data,
           memberAddress: member.data.shipping_address,
-          username: member.data.shipping_address.username,
-          recipient_name: member.data.shipping_address.recipient_name,
-          address1: member.data.shipping_address.address1,
-          address2: member.data.shipping_address.address2,
-          city: member.data.shipping_address.city,
-          state: member.data.shipping_address.state,
-          zipcode: member.data.shipping_address.zipcode,
-          country: member.data.shipping_address.country,
-          phone: member.data.shipping_address.phone,
+          username,
+          recipient_name,
+          address1,
+          address2,
+          city,
+          state,
+          zipcode,
+          country,
+          phone,
         })
       })
   }

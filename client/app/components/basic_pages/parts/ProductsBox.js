@@ -1,5 +1,7 @@
 import React from 'react';
 import '../style.css';
+import Blank from '../../../styles/blank.jpg';
+
 
 const shortName=(name, limit=25)=>{
   let newName = [];
@@ -21,11 +23,11 @@ export const ProductsBox = ( props ) => (
     <div className="innerBody">
       <div className="item_img">
         <div className="item_img_box">
+
         {
-          (`${props.images}` === "null") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
-            (`${props.images}` === "undefined") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
-              (`${props.images}` === "") ? <img src={`/api/imagesm/53ac2b249f75065fee4e03c999957d8a.jpg`} alt={props.Product_Name}/>:
-                <img src={`/api/imagesm/${props.images}`} alt={props.Product_Name}/>
+          (!props.images)?
+            <img src={Blank}/>:
+            <img src={`/api/imagesm/${props.images}`} alt={props.Product_Name}/>
         }
         </div>
         </div>
@@ -43,13 +45,12 @@ export const ProductsBox = ( props ) => (
         <button value={props._id} className="item_edit_button" onClick={props.handleClick}>
           Detail
         </button>
-        <button onClick={props.testclick}>TEST Click</button>
+        <button onClick={props.toBuy} value={props._id}>
+          Buy
+        </button>
       </div>
     </div>
   </div>
 )
 
 export default ProductsBox;
-
-// export const ProductsBox = ({
-//   _id, Product_Name, SKU, Category_type, images, Color, Product_Shipping_Weight, Product_Weight, Packing_Carton_Width, Packing_Carton_Height, Packing_Carton_Depth, Actual_Product_Width, Actual_Product_Height, Actual_Product_Length, handleClick, testclick }) => (

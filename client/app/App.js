@@ -59,3 +59,4 @@ const App = () =>
   </Router>;
 
 export default App;
+        // <Route exact path="/products" component = { BasicProductsAll } />

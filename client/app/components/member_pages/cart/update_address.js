@@ -106,7 +106,7 @@ class Update_Address extends Component {
           </div>
           <div>
             <label htmlFor="state"><i className="">STATE</i></label>
-              <AllStates />
+              <AllStates defaultValue="GA"/>
           </div>
           <div>
             <label htmlFor="zip"><i className="">ZIP CODE</i></label>

@@ -99,7 +99,6 @@ module.exports = {
    email = email.trim();
    Admin.find({ email: email }, (err, admins) => {
      if (err) {
-       console.log('err 2:', err);
        return res.send({
          success: false,
          message: 'Error: server error'
@@ -108,14 +107,14 @@ module.exports = {
      if (admins.length != 1) {
        return res.send({
          success: false,
-         message: 'Error: Invalid'
+         message: 'Error: User E-mail Incorrect'
        });
      }
      const admin = admins[0];
      if (!admin.validPassword(password)) {
        return res.send({
          success: false,
-         message: 'Error: Invalid'
+         message: 'Error: Password Incorrect'
        });
      }
      // Otherwise correct admin
@@ -123,7 +122,6 @@ module.exports = {
      adminSession.adminId = admin._id;
      adminSession.save((err, doc) => {
        if (err) {
-         console.log(err);
          return res.send({
            success: false,
            message: 'Error: server error'
@@ -164,7 +162,6 @@ module.exports = {
 
    AdminSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
      if (err) {
-       console.log(err);
        return res.send({
          success: false,
          message: 'Error: Server error'
@@ -189,20 +186,19 @@ module.exports = {
 
    AdminSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
      if (err) {
-       console.log(err);
        return res.send({
          success: false,
-         message: 'Error: Server error'
+         message: 'Error: Session Server error'
        });
      }
      if (sessions.length != 1) {
        return res.send({
          success: false,
-         message: 'Error: Invalid'
+         message: 'Error: session no log Invalid'
        });
      } else {
        next()
-     }
+     };
    })
  }
 } // end module export

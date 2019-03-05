@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import { setInStorage, getFromStorage } from '../utils/storage';
+import './core.scss'
 
 class AdminLogin extends Component {
   constructor(props) {
@@ -187,7 +188,7 @@ class AdminLogin extends Component {
           return (
             <div className="login_page_container">
 
-
+              <form onSubmit={this.onSignIn.bind(this)} autoComplete="off">
               <div className="sign_In_Box box_shadow">
                 {
                   (signInError) ? (
@@ -195,31 +196,35 @@ class AdminLogin extends Component {
                   ) : (null)
                 }
                 <p className="text-center">Sign In</p>
-                <input
-                  className="col-11 input-space"
-                  type="email"
-                  placeholder="Email"
-                  value={signInEmail}
-                  onChange={this.onTextboxChangeSignInEmail.bind(this)}
-                />
+                <div className="inputBox">
+                  <input
+                    className="input-value"
+                    type="email"
+                    autoComplete="off"
+                    placeholder="Email"
+                    value={signInEmail}
+                    onChange={this.onTextboxChangeSignInEmail.bind(this)}
+                  />
+                </div>
                 <br />
-                <input
-                  className="col-11 input-space"
-                  type="password"
-                  placeholder="Password"
-                  value={signInPassword}
-                  onChange={this.onTextboxChangeSignInPassword.bind(this)}
-                />
+                <div className="inputBox">
+                  <input
+                    className="input-value"
+                    type="password"
+                    autoComplete="off"
+                    placeholder="Password"
+                    value={signInPassword}
+                    onChange={this.onTextboxChangeSignInPassword.bind(this)}
+                  />
+                </div>
                 <br />
-                <button onClick={this.onSignIn.bind(this)}>Sign In</button>
+                <button type="submit">Sign In</button>
               </div>
-
-
-              <br />
-              <br />
+              </form>
+              {/*---------------------Create Admin-------------------------*/}
               <p>dont have a account?</p>
               <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
-              
+              <form onSubmit={this.onSignUp.bind(this)}>
               <div className="sign_up_container toggleContainer box_shadow">
                 {
                   (signUpError) ? (
@@ -227,10 +232,10 @@ class AdminLogin extends Component {
                   ) : (null)
                 }
                 <p className="text-center">Sign Up</p>
-                <p>{signUpEmail}</p>
                 <input
                   className="col-11 input-space"
                   type="email"
+                  autoComplete="off"
                   placeholder="Email"
                   value={signUpEmail}
                   onChange={this.onTextboxChangeSignUpEmail.bind(this)}
@@ -239,14 +244,16 @@ class AdminLogin extends Component {
                 <input
                   className="col-11 input-space"
                   type="password"
+                  autoComplete="off"
                   placeholder="Password"
                   value={signUpPassword}
                   onChange={this.onTextboxChangeSignUpPassword.bind(this)}
                 />
                 <br />
-                <button onClick={this.onSignUp.bind(this)}>Sign Up</button>
+                <button type="submit">Sign Up</button>
               </div>
-
+              </form>
+              {/*-------------e-----------Create Admin------------e-------------*/}
            </div>
           );
         }
@@ -261,3 +268,36 @@ class AdminLogin extends Component {
 } // end HOME
 
 export default AdminLogin;
+// <br />
+// <br />
+// <p>dont have a account?</p>
+// <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
+// <form autoComplete="off">
+// <div className="sign_up_container toggleContainer box_shadow">
+//   {
+//     (signUpError) ? (
+//       <p>{signUpError}</p>
+//     ) : (null)
+//   }
+//   <p className="text-center">Sign Up</p>
+//   <input
+//     className="col-11 input-space"
+//     type="email"
+//     autoComplete="off"
+//     placeholder="Email"
+//     value={signUpEmail}
+//     onChange={this.onTextboxChangeSignUpEmail.bind(this)}
+//   />
+//   <br />
+//   <input
+//     className="col-11 input-space"
+//     type="password"
+//     autoComplete="off"
+//     placeholder="Password"
+//     value={signUpPassword}
+//     onChange={this.onTextboxChangeSignUpPassword.bind(this)}
+//   />
+//   <br />
+//   <button onClick={this.onSignUp.bind(this)}>Sign Up</button>
+// </div>
+// </form>

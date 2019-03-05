@@ -32,7 +32,7 @@ module.exports = {
     rules: [
       // JS files
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         include: helpers.root('client'),
         loader: 'babel-loader'
       },
@@ -65,6 +65,13 @@ module.exports = {
             'sass-loader'
           ]
         })
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'file-loader',
+        query: {
+            name: '[name].[ext]?[hash]'
+        }
       }
     ]
   },

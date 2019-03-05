@@ -16,19 +16,19 @@ class AdminProduct extends Component {
         this.state = {
         product: [],
         images: '',
-        token:'',
+        token:JSON.parse(localStorage.getItem('the_main_app')).token,
       }
  }
 
  componentWillMount() {
-   this.props.fetchOneAdmin(this.props.match.params.id);
+   const { token } = this.state
+   this.props.fetchOneAdmin({id: this.props.match.params.id, token});
    this.checkValidation();
  }
 
  componentDidMount(){
-   this.setState({
-     product: this.props.fetchOneAdmin(this.props.match.params.id)
-   })
+   const { token } = this.state
+   this.props.fetchOneAdmin({id: this.props.match.params.id, token})
  }
 
  checkValidation(){
@@ -126,7 +126,8 @@ loadImage(){
  }
 
   render(){
-
+    console.log("this is the toke: "+ this.state.token)
+    console.log(this.props.adminproduct)
     return (
       <div className="detailPage">
         <div className="item_container" style={{visibility: 'visible'}}>

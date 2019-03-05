@@ -9,7 +9,7 @@ const User = require('../server/models/User')
 // mongoose.connect('mongodb://@localhost:27017/EHF_test', {
 describe("Database test", ()=>{
   before((done)=>{
-    mongoose.connect('mongodb://ehfadmin:ehf1234@localhost:27017/ehf', { useNewUrlParser: true });
+    mongoose.connect('mongodb://@localhost:27017/EHF_test', { useNewUrlParser: true });
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error'));
     db.once('open', function(){
@@ -45,9 +45,11 @@ describe("Database test", ()=>{
     });
 
     it('Remove a data name', (done)=>{
-      User.remove({email:"abc@abc.com"});
-      done();
+      User.remove({email:"abc@abc.com"}, ()=>{
+          done();
+      });
     });
+
     it('Make sure data name is removed', (done)=>{
       User.find({email: "abc@abc.com"}, (err, name)=>{
         if(err){throw err;}

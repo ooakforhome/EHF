@@ -1,9 +1,16 @@
 import React from 'react';
+// import Blank from '../../../styles/blank.jpg'
+
+const image ="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png";
 
 export const BasicDetailBox = ({item}) => (
   <div className="detail_container">
       <div className="detail_item_image_box detail_box">
-        <img src={`/api/image/${item.images}`} alt={item.Product_Name} className="detail_image"/>
+        {(!item.images)?
+          <img src={image} alt={item.Product_Name} className="detail_image"/>
+          :
+          <img src={`/api/image/${item.images}`} alt={item.Product_Name} className="detail_image"/>
+        }
       </div>
       <div className="detail_item_info_box detail_box">
         <div>

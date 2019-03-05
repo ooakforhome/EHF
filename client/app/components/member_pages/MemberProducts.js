@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 // import axios from 'axios';
 
 import API from './api_helper';
-
-import { renderMember, searchBoxMember } from '../../actions/member-action';
 import Categories from '../componentParts/Categories';
 
+import { renderMember, searchBoxMember } from '../../actions/member-action';
 import { setInStorage, getFromStorage } from '../utils/storage';
 
 import MemberHeader from './parts/MemberHeader';
@@ -63,6 +62,12 @@ class MemberProducts extends Component {
         window.location =`/`;
     }
   }
+
+  addnumber(a,b){
+    c = a + b;
+    return c;
+  }
+
   getUserId(){
     API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
         .then(id => {

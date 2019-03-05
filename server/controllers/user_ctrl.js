@@ -368,7 +368,7 @@ module.exports = {
           return res.send(productinfo)
         })
     })
- },
+ }
 
 } // end module export
 //=========================================================

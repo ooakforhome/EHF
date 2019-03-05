@@ -1,0 +1,126 @@
+input {
+  padding: 0 5px;
+}
+
+.home_icon{
+  width: 50px;
+}
+
+.fp_container {
+  width: 100%;
+  height: 100vh;
+  background-image: url('https://images.unsplash.com/photo-1527234483219-b7c1f7ab74df?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=58ecaa188401cf354a5b1baee8bfe16c&auto=format&fit=crop&w=3045&q=80');
+  background-position:center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login_block {
+  width: 300px;
+  margin: auto;
+  padding-top: 100px;
+}
+
+@keyframes home-login-block {
+  0%   {background-color: rgba(256,256,256,.2);}
+  25%  {background-color: rgba(256,256,256,.3);}
+  50%  {background-color: rgba(256,256,256,.5);}
+  70%  {background-color: rgba(256,256,256,.6);}
+  100% {background-color: rgba(256,256,256,.7); border-radius: 25px; width: 300px;}
+}
+
+.front_button {
+  // width: 300px;
+  // background-color: rgba(256,256,256,.7);
+  // border-radius: 25px;
+  float:left;
+  margin: 2px;
+  animation-name: home-login-block;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+
+.front_button img{
+  width: 100%;
+}
+
+.front_button button{
+  margin-left: 100px;
+}
+
+.fp_form {
+  width: 350px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, .2)
+}
+
+.fp_title {
+  font-weight: 600;
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.fp_input {
+  float: left;
+  width: 240px;
+  margin: 5px 55px;
+  padding: 5px;
+}
+
+.fp_submit {
+  float: right;
+  margin: 20px;
+}
+
+.admin_login_container, .user_login_container {
+  width: 500px;
+  float: left;
+}
+
+/* -----sign in page----- */
+.login_page_container{
+  width:300px;
+  height: 100%;
+  margin:auto;
+  margin-top: 250px;
+}
+
+.input-space{
+  margin: 0 0 10px 0;
+}
+
+.input-value {
+  margin-left: 5px;
+  animation-name: input-box;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+
+.sign-in-btn{
+  margin:5px;
+}
+.sign-in-btn:hover{
+  background-color: rgba(236, 236, 236,0.7);
+}
+
+.text-center{
+  font-family:'Open Sans', sans-serif;
+}
+
+.sign_In_Box {
+  box-shadow: 0px 5px 10px grey;
+  animation-name:flyUp;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes input-box {
+  from { width: 60%;}
+  to { width:90%; }
+}
+@keyframes flyUp {
+  from {transform: translateY(-200px);}
+  to {transform: translateY(0)}
+}
+/*-------------------------*/

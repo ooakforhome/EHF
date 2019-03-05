@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { Header } from '../core/Header';
 import { ProductsBox } from './parts/ProductsBox';
 import Categories from '../componentParts/Categories';
-import API from './api-basic';
-
-
+import API from './api-basic'
+import Cart from './cart/cart-helper';
+import { Route } from 'react-router-dom';
+import axios from 'axios';
+import addCartImg from "../../styles/image/add-shopping-cart.png"
 
 class BasicProductsAll extends Component {
   constructor(props) {
@@ -19,6 +21,8 @@ class BasicProductsAll extends Component {
       Category_type: "Accent Furnitures",
       products: [],
       limitProducts: [],
+      itemsInCart:[],
+      inCart: 0,
       menuActive: false
     };
   }
@@ -32,10 +36,12 @@ class BasicProductsAll extends Component {
     const {limit, offset, Category_type} = this.state;
     let startDisplay = (offset === 0? 0: offset*limit );
     let endDisplay = (offset+1) * limit;
+    let incart = (JSON.parse(localStorage.getItem('cart')))? JSON.parse(localStorage.getItem('cart')).length: 0;
 
     API.loadProducts({category_type: Category_type})
     .then(info => {
       this.setState({
+        inCart: incart,
         products: info.data.all,
         count: info.data.count,
         limitProducts: info.data.all.slice(startDisplay, endDisplay)
@@ -55,6 +61,7 @@ class BasicProductsAll extends Component {
         count: info.data.count,
         limitProducts: info.data.all.slice(0, 10),
         Category_type: theName,
+        inCart: 0,
         limit: 10,
         offset: 0
       })
@@ -63,7 +70,8 @@ class BasicProductsAll extends Component {
 
   handleClick(e){
       e.preventDefault();
-        window.location =`/product/${e.target.value}`;
+        this.props.history.push(`/product/${e.target.value}`)
+        // window.location =`/product/${e.target.value}`;
   }
 
   handleDelete(e){
@@ -130,8 +138,28 @@ class BasicProductsAll extends Component {
     })
   }
 
-  testclick(id){
-    console.log(id)
+  showinfo(){
+    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+    this.setState({
+      inCart: inLocal
+    })
+  }
+
+  toBuy(e){
+    e.preventDefault();
+    const theId = e.target.value;
+    // axios.get(`/api/member/product/${theId}`)
+    axios.get(`/api/basic/product/${theId}`)
+      .then((item, err) => {
+        const itemID = item.data._id;
+        if(localStorage.cart && localStorage.cart.includes(itemID)){
+          alert("item already added")
+        } else {
+          Cart.addItem(item.data, ()=>{
+            this.showinfo();
+          })
+        }
+      })
   }
 
   categorybutton(){
@@ -153,7 +181,7 @@ class BasicProductsAll extends Component {
                   key={product._id}
                   {...product}
                   handleClick={this.handleClick.bind(this)}
-                  testclick={this.testclick.bind(this, product._id)}
+                  toBuy = {this.toBuy.bind(this)}
                   />
             )}
         )}
@@ -177,6 +205,12 @@ class BasicProductsAll extends Component {
     return(
       <div>
         <Header />
+        <div className="cartContainer">
+          <Link to="/cart">
+            <img src={addCartImg} style={{width: "50px", height: "50px"}}/>
+            <p className="amountInCart"><b>{this.state.inCart}</b></p>
+          </Link>
+        </div>
         <div className="category_nav">
           <Categories
             clickthenav = { this.handleClickthenav.bind(this) }
@@ -184,6 +218,7 @@ class BasicProductsAll extends Component {
             menuActive = {this.state.menuActive}
             />
         </div>
+
         <div>
           <input
             className="col-6 input-space"
@@ -193,6 +228,7 @@ class BasicProductsAll extends Component {
             onChange = {this.searchBoxValue.bind(this)}
              />
         </div>
+
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
           <PageBtn />

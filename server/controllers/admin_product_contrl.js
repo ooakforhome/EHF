@@ -26,7 +26,7 @@ module.exports = {
     Product
       .findById(req.params._id)
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json({"error": err}));
   },
 
   // add
