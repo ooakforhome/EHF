@@ -33,7 +33,7 @@ const cart = {
       localStorage.setItem('cart', JSON.stringify(cart))
     }
   },
-  getCart() {
+  getCartItems() {
     if (typeof window !== "undefined") {
       if (localStorage.getItem('cart')) {
         return JSON.parse(localStorage.getItem('cart'))

@@ -20,6 +20,7 @@ import './styles/styles.scss';
   import BasicProductsAll from './components/basic_pages/BasicProductsAll';
   import BasicProduct from './components/basic_pages/BasicProduct';
   import BasicCartPage from './components/basic_pages/cart/basicCartPage';
+  import BasicCheckout from './components/basic_pages/cart/paypal/BasicPaypalCheckout';
 
 // Admin Pages
   import AdminProductsAll from './components/admin_pages/AdminProducts';
@@ -35,7 +36,7 @@ import './styles/styles.scss';
   import Receipt from './components/member_pages/cart/purchaseReceipt'
   // import Addaddress from './components/cart/addAddress'
   // import Checkout from './components/cart/checkout.js'
-
+        // <Route exact path="/base/cart" component = { BasicCartPage } />
 
 const App = () =>
   <Router>
@@ -46,7 +47,8 @@ const App = () =>
 
         <Route exact path="/products" component = { BasicProductsAll } />
         <Route exact path="/product/:id" component = { BasicProduct } />
-
+        <Route exact path="/base/cart" component = { BasicCartPage } />
+        <Route exact path="/base/cart/checkout/:id" component = { BasicCheckout } />
 
         <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/product/:id" component = { AdminProduct } />

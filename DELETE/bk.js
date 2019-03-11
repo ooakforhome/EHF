@@ -1,3 +1,32 @@
+componentDidMount() {
+  const obj = (!localStorage.getItem('the_main_app'))?JSON.parse(localStorage.getItem('the_main_app')):'';
+    if (obj && obj.token) {
+      const { token } = obj;
+      // Verify token
+      fetch('/api/user/verify?token=' + token)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            this.setState({
+              token,
+              isLoading: false
+            });
+            window.location =`/auth/products`;
+          } else {
+            this.setState({
+              isLoading: false,
+            });
+          }
+        });
+    } else {
+      this.setState({
+        isLoading: false,
+      });
+    }
+  }
+
+
+
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -46,7 +75,6 @@ class MemberProducts extends Component {
     axios.get(`/api/user/verify?token=${token}`)
       .then(res =>{
         if(res.status === 200){
-          this.props.renderMember({token:this.state.token, limit: 10, offset: 0, Category_type:this.state.Category_type})
           // this.loadDatas()
           // this.setState({
           //   isLoading: false
@@ -138,8 +166,7 @@ class MemberProducts extends Component {
       if(respond.data.success === false){
         alert("logout unsuccessful");
       } else {
-        localStorage.removeItem('the_main_app');
-        this.props.history.push('/');
+        window.location = '/';
       }
     })
 }
@@ -162,22 +189,20 @@ class MemberProducts extends Component {
   }
   addToCart(e){
     e.preventDefault();
-    const {token} = this.state;
     const theId = e.target.value;
-    // console.log("theID: "+ theId)
     // axios.get(`/api/member/product/${theId}`)
-    API.findSingleProductById(token,theId)
+    API.findSingleProductById(theId)
       .then(item => {
-        // console.log(item)
+        // console.log(item.data)
         // console.log("-------indexof-------")
         // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
-        if(this.state.itemsInCart.includes(item.data._id)){
+        if(this.state.itemsInCart.indexOf(item.data._id) >= 0){
           alert("item already added")
         } else {
         // console.log(item)
           API.addToCart({
             product_name: item.data.Product_Name,
-            quantity: 1,
+            quantity: item.data.quantity,
             price: item.data.Retail,
             image: item.data.images,
             itemID: item.data._id,
@@ -245,8 +270,6 @@ class MemberProducts extends Component {
   }
 
   render() {
-    // console.log(this.state.itemsInCart+ "-->")
-    // console.log(this.props.newproduct.all)
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
@@ -302,7 +325,7 @@ class MemberProducts extends Component {
             onChange = {this.searchBoxValue.bind(this)}
              />
         </div>
-        <div className="memberProfileBlock hide"><MemberProfile /></div>
+
         <div className="products_box">
           <h1>{this.state.Category_type}</h1>
             <PageBtn />

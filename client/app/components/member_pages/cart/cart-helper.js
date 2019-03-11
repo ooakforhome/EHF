@@ -2,35 +2,43 @@ import axios from 'axios';
 
 const cart = {
   userId(cb) {
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    axios.get(`/api/user/findidbytoken?_id=${token}`)
-      .then(cb)
+    if(localStorage.getItem('the_main_app')){
+      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      axios.get(`/api/user/findidbytoken?_id=${token}`)
+        .then(cb)
+    }
   },
 
   getCart(cb) {
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    axios.get(`/api/user/useraddtocart?_id=${token}`)
-      .then(cb)
+    if(localStorage.getItem('the_main_app')){
+      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      axios.get(`/api/user/useraddtocart?_id=${token}`)
+        .then(cb)
+    }
   },
 
 
   getUserAddress(cb){
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    axios.get(`/api/user/findidbytoken?_id=${token}`)
-      .then(newID => {
-        axios.get(`/api/user/finduseraddress?userID=${newID.data}`)
-          .then(cb)
-      })
-      .catch(err => console.log(err))
+    if(localStorage.getItem('the_main_app')){
+      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      axios.get(`/api/user/findidbytoken?_id=${token}`)
+        .then(newID => {
+          axios.get(`/api/user/finduseraddress?userID=${newID.data}`)
+            .then(cb)
+        })
+        .catch(err => console.log(err))
+    }
   },
 
   modifyUserInfoForCart(datainfo){
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    axios.get(`/api/user/findidbytoken?_id=${token}`)
-      .then(newID =>{
-        axios.post(`/api/user/userupdate?_id=${newID.data}`, datainfo)
-      })
-      .catch(err=> console.log("User info modify error"))
+    if(localStorage.getItem('the_main_app')){
+      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      axios.get(`/api/user/findidbytoken?_id=${token}`)
+        .then(newID =>{
+          axios.post(`/api/user/userupdate?_id=${newID.data}`, datainfo)
+        })
+        .catch(err=> console.log("User info modify error"))
+    }
   },
 
   updateCart(id, num){
@@ -38,23 +46,25 @@ const cart = {
   },
 
   calculateCartTotal(cb){
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
-    let gTotal = 0;
-    axios.get(`/api/user/useraddtocart?_id=${token}`)
-      .then(items => {
-        if(items.data.length){
-          const subTotal = [];
-          items.data.forEach(function(item){
-            const newTotal = item.purchase_price * item.quantity;
-            subTotal.push(newTotal)
-            })
-            gTotal = subTotal.reduce((a,b)=>{
-              return a + b
-            })
-            return gTotal
-          }
-        })
-        .then(cb)
+    if(localStorage.getItem('the_main_app')){
+      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      let gTotal = 0;
+      axios.get(`/api/user/useraddtocart?_id=${token}`)
+        .then(items => {
+          if(items.data.length){
+            const subTotal = [];
+            items.data.forEach(function(item){
+              const newTotal = item.purchase_price * item.quantity;
+              subTotal.push(newTotal)
+              })
+              gTotal = subTotal.reduce((a,b)=>{
+                return a + b
+              })
+              return gTotal
+            }
+          })
+          .then(cb)
+    }
   },
 
   removeItem(itemIndex) {

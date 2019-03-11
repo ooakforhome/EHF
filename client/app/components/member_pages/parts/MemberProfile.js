@@ -14,7 +14,8 @@ class MemeberProfile extends Component{
       purchases: [],
       infoPage: true,
       orderHistory:false,
-      updatePage: false
+      updatePage: false,
+      token: JSON.parse(localStorage.the_main_app).token
     }
 
   }
@@ -24,23 +25,24 @@ class MemeberProfile extends Component{
   }
 
   loadMemberInfo(){
-    const { shipping_address, username, recipient_name, address1, address2, city, state, zipcode, country, phone } = member.data.shipping_address;
+    // const { shipping_address, username, recipient_name, address1, address2, city, state, zipcode, country, phone } = member.data.shipping_address;
 
     API.userLimitedInfo(JSON.parse(localStorage.the_main_app).token)
       .then( member => {
+        console.log(member)
         this.setState({
           purchases: member.data.order_history,
           memberInfo: member.data,
           memberAddress: member.data.shipping_address,
-          username,
-          recipient_name,
-          address1,
-          address2,
-          city,
-          state,
-          zipcode,
-          country,
-          phone,
+          username: member.data.username,
+          recipient_name: member.data.recipient_name,
+          address1: member.data.address1,
+          address2: member.data.address2,
+          city: member.data.city,
+          state: member.data.state,
+          zipcode: member.data.zipcode,
+          country: member.data.country,
+          phone: member.data.phone
         })
       })
   }

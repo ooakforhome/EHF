@@ -20,15 +20,26 @@ class Home extends Component {
 
 
 	render(){
+		const bigToken =	(localStorage.the_main_app)?
+		 	 (JSON.parse(localStorage.the_main_app).token): "";
+			 console.log(bigToken)
+
   	return(
 			<div className='fp_container'>
 				<Header />
 				<div className='login_block'>
 					<div className="front_button">
+						{
+						(`${bigToken}`)?
+						<Link to="/auth/products/">
+							<img alt="front product" src={this.state.products} />
+							<button>PRODUCTS</button>
+						</Link>:
 						<Link to="/products">
 							<img alt="front product" src={this.state.products} />
 							<button>PRODUCTS</button>
 						</Link>
+						}
 					</div>
 				</div>
 

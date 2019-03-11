@@ -47,10 +47,12 @@ class CartPage extends Component{
             this.setState({
               token,
               isLoading: false
+            },()=>{
+              this.loadStorageinfo();
+              this.loadGrandTotal();
+              this.getUserAddress();
             });
-            this.loadStorageinfo();
-            this.loadGrandTotal();
-            this.getUserAddress();
+
           } else {
             window.location =`/`;
           }
@@ -206,7 +208,7 @@ class CartPage extends Component{
   validateFormInput(){
     const validate = [
       (/^\d+\s.*\s(st|dr|blvd)$/gi).test(this.state.address1),
-      (/(apt|#|po)([\d\s])(\.{1,5})?/gi).test(this.state.address2),
+      (/((apt|#|po)([\d\s])(\.{1,5}))?/gi).test(this.state.address2),
       (/(\d{5}(\-)?(\d{4})?)/gi).test(this.state.zipcode),
       (/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g).test(this.state.phone)
     ]
@@ -219,18 +221,18 @@ class CartPage extends Component{
     this.setState({showTaggle: !this.state.showTaggle})
   }
 
-  confirmSubmit(e){
-    e.preventDefault();
-    let productsInfo = [];
-    this.state.products.forEach(product => {
-      productsInfo.push(
-        {
-        product_id: product._id,
-        product_name: product.product_name,
-        purchase_price: product.purchase_price,
-        quantity: product.quantity}
-      )
-    })
+confirmSubmit(e){
+  e.preventDefault();
+  let productsInfo = [];
+  this.state.products.forEach(product => {
+    productsInfo.push(
+      {
+      product_id: product._id,
+      product_name: product.product_name,
+      purchase_price: product.purchase_price,
+      quantity: product.quantity}
+    )
+  })
 
     cart.userId(id => {
       axios.post('/api/placeorder', {
@@ -248,12 +250,6 @@ class CartPage extends Component{
   }
 
   render(){
-    // if(!this.state.address[0]){
-    //   alert("Your cart is empty!")
-    //   // this.props.history.push("/")
-    //   window.location = "/";
-    // }
-    // console.log(this.state.username)
     const ShowInCart = ({items}) => (
       <div>
         {items.map((item, i)=>
@@ -270,7 +266,7 @@ class CartPage extends Component{
     )
 
     const GrandTotal = 0;
-console.log(this.state.updateAddress)
+// console.log(this.state.updateAddress)
     return(
       <>
         <div className="col-12">

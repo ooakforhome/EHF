@@ -206,7 +206,7 @@ class BasicProductsAll extends Component {
       <div>
         <Header />
         <div className="cartContainer">
-          <Link to="/checkout/cart">
+          <Link to="/base/cart">
             <img src={addCartImg} style={{width: "50px", height: "50px"}}/>
             <p className="amountInCart"><b>{this.state.inCart}</b></p>
           </Link>

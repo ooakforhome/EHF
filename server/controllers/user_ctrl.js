@@ -157,7 +157,7 @@ module.exports = {
 
  userVerify: function(req, res, next){
    const token = req.query.token;
-
+   // console.log(token)
    UserSession.find({ _id: token, isDeleted: false }, (err, sessions) => {
      if (err) {
        console.log(err);

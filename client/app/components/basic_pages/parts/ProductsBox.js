@@ -48,6 +48,7 @@ export const ProductsBox = ( props ) => (
         <button onClick={props.toBuy} value={props._id}>
           Buy
         </button>
+        <p>{props.Retail}</p>
       </div>
     </div>
   </div>

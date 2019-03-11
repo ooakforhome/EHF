@@ -1,6 +1,6 @@
 // Find duplicate number:
   // find first duplicated Number ==> 12
-  // find all duplicated number ==>
+  // find all duplicated number ==> [12, 53, 89]
 const array = [53, 100, 89, 64, 57, 12, 26, 7, 33, 31, 17, 98, 12, 6, 53, 53, 89, 93];
 
 
@@ -21,7 +21,7 @@ function medium(arr){
   return arr
 }
 
-console.log( medium(array));
+console.log( medium(array) );
 
 
 // find the average of the total number and round it up
@@ -97,3 +97,8 @@ console.log(1settime())
   //   }
   //   return kstr
   // }
+
+// ====================================
+.search()
+.match()
+.test()

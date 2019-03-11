@@ -8,8 +8,8 @@ export default {
     return axios.get(`/api/member/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
   },
 
-  findSingleProductById: function(productID){
-    return axios.get(`/api/member/product/${productID}`)
+  findSingleProductById: function(token, productID){
+    return axios.get(`/api/member/product/${productID}?token=${token}`)
   },
   addToCart: function(product_Data){
     return axios.post(`/api/cart/addtocart`, product_Data)

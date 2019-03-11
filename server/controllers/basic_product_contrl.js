@@ -8,7 +8,7 @@ module.exports = {
 
     const query = Product
       .find({Category_type: category_type})
-      .select('-UPC -Zone_8 -wholesale_price -Retail')
+      .select('-UPC -Zone_8 -wholesale_price')
       .sort({ Category_type:1 })
       // .limit(limit)
       // .skip(offset*limit);
@@ -27,7 +27,7 @@ module.exports = {
   getProductByIdBasic: function(req, res){
     Product
       .findById(req.params._id)
-      .select('-UPC -Zone_8 -wholesale_price -Retail -Product_Shipping_Method -Cubic_Feet')
+      .select('-UPC -Zone_8 -wholesale_price -Product_Shipping_Method -Cubic_Feet')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -46,7 +46,7 @@ module.exports = {
           {'Product_Name': search}
          ]
         })
-      .select('-UPC -Zone_8 -wholesale_price -Retail')
+      .select('-UPC -Zone_8 -wholesale_price')
       // .limit(limit)
       // .skip(offset*limit);
 

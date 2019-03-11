@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import AddProduct from './parts/add_product';
 import cart from './cart-helper';
 import { Redirect } from 'react-router-dom';
 import axios from "axios";
 import { setInStorage, getFromStorage } from '../utils/storage';
+
+import AddProduct from './parts/add_product';
 
 // import parts
 import AddAddress from './addAddress';
@@ -11,9 +12,10 @@ import ShowAddress from './showAddress';
 
 class CartPage extends Component{
 
+
   componentWillMount() {
     this.checkValidation();
-    this.loadStorageinfo();
+    // this.loadStorageinfo();
   }
 
 checkValidation(){
@@ -26,6 +28,7 @@ checkValidation(){
         if (json.success) {
           this.setState({
             token,
+            products: cart.getCart(),
             isLoading: false
           });
 
@@ -39,11 +42,11 @@ checkValidation(){
 }
 
 
-loadStorageinfo(){
-  this.setState({
-    products: cart.getCart()
-  })
-}
+// loadStorageinfo(){
+//   this.setState({
+//     products: cart.getCart()
+//   })
+// }
 
 removeInCart(e){
   const theOne = e.target.name

@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import { setInStorage, getFromStorage } from '../utils/storage';
 import './core.scss'
+import axios from 'axios';
 
 class UserLogin extends Component {
   constructor(props) {
@@ -21,32 +22,18 @@ class UserLogin extends Component {
   }
 
   componentDidMount() {
-      const obj = getFromStorage('the_main_app');
-      if (obj && obj.token) {
-        const { token } = obj;
-        // Verify token
-        fetch('/api/user/verify?token=' + token)
-          .then(res => res.json())
-          .then(json => {
-            if (json.success) {
-              this.setState({
-                token,
-                isLoading: false
-              });
-              window.location =`/auth/products`;
-            } else {
-              this.setState({
-                isLoading: false,
-              });
-            }
-          });
-      } else {
-        this.setState({
-          isLoading: false,
-        });
-      }
+    const token = (localStorage.the_main_app)?
+      (JSON.parse(localStorage.getItem('the_main_app')).token):'';
+    if(token){
+      axios.get(`/api/user/verify?token=${token}`)
+        .then(res => {
+         return (res.data.success === true)?
+          this.props.history.push(`/auth/products/`):
+          "";
+        })
     }
 
+  } //end didMount
 
   onTextboxChangeSignInEmail(e){
     this.setState({
@@ -111,42 +98,50 @@ class UserLogin extends Component {
   }
 
   onSignIn() {
-      // Grab state
-      const {
-        signInEmail,
-        signInPassword,
-      } = this.state;
+    const { signInEmail, signInPassword } = this.state;
       this.setState({
         isLoading: true,
       });
-      // Post request to backend
-      fetch('/api/user/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: signInEmail,
-          password: signInPassword,
-        }),
-      }).then(res => res.json())
-        .then(json => {
-          if (json.success) {
-            setInStorage('the_main_app', { token: json.token });
-            this.setState({
-              signInError: json.message,
-              isLoading: false,
-              signInPassword: '',
-              signInEmail: '',
-              token: json.token,
-            })
-            window.location =`/auth/products/`;
-          } else {
-            this.setState({
-              isLoading: false,
-            });
-          }
-        });
+
+      axios.post('/api/user/signin', {
+        email: signInEmail,
+        password: signInPassword
+      })
+      .then(res => {
+        if (res.data.success) {
+             localStorage.setItem('the_main_app', JSON.stringify({ token: res.data.token }))
+             this.setState({
+               signInError: res.data.message,
+               isLoading: false,
+               signInPassword: '',
+               signInEmail: '',
+               token: res.data.token,
+             })
+             window.location =`/auth/products/`;
+           } else {
+             this.setState({
+               isLoading: false,
+             })
+           }
+      })
+      // .then(res => res.json())
+      //   .then(json => {
+      //     if (json.success) {
+      //       setInStorage('the_main_app', { token: json.token });
+      //       this.setState({
+      //         signInError: json.message,
+      //         isLoading: false,
+      //         signInPassword: '',
+      //         signInEmail: '',
+      //         token: json.token,
+      //       })
+      //       window.location =`/auth/products/`;
+      //     } else {
+      //       this.setState({
+      //         isLoading: false,
+      //       });
+      //     }
+      //   });
     }
 
     logout() {
@@ -188,7 +183,6 @@ class UserLogin extends Component {
         if (!token) {
           return (
             <div className="login_page_container">
-              <form onSubmit={this.onSignIn.bind(this)} autoComplete="off">
               <div className="sign_In_Box">
                 {
                   (signInError) ? (
@@ -218,9 +212,8 @@ class UserLogin extends Component {
                 />
                 </div>
                 <br />
-                <button className="sign-in-btn" type="submit">Sign In</button>
+                <button className="sign-in-btn" onClick={this.onSignIn.bind(this)}>Sign In</button>
               </div>
-              </form>
 
               <br />
               <br />
