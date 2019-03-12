@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import API from './api-product';
+import API from '../api-product';
 
-import { renderAdmin, searchBoxAdmin } from '../../actions/admin-action';
-import Categories from '../componentParts/Categories';
+import { renderAdmin, searchBoxAdmin } from '../../../actions/admin-action';
+import Categories from '../../componentParts/Categories';
 
-import { setInStorage, getFromStorage } from '../utils/storage';
-import { ProductsBox } from './parts/ProductsBox';
-import Logout from './parts/Logout';
+import { setInStorage, getFromStorage } from '../../utils/storage';
+import { ProductsBox } from '../parts/ProductsBox';
+import Logout from '../parts/Logout';
 
 
 //SPD to Products

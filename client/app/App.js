@@ -23,9 +23,11 @@ import './styles/styles.scss';
   import BasicCheckout from './components/basic_pages/cart/paypal/BasicPaypalCheckout';
 
 // Admin Pages
-  import AdminProductsAll from './components/admin_pages/AdminProducts';
-  import AdminProduct from './components/admin_pages/AdminProduct';
-  import NewProduct from './components/admin_pages/NewProduct';
+  import AdminHome from './components/admin_pages/AdminHome';
+  import AdminProductsAll from './components/admin_pages/admin_products/AdminProducts';
+  import AdminProduct from './components/admin_pages/admin_products/AdminProduct';
+  import NewProduct from './components/admin_pages/admin_products/NewProduct';
+
 
 // Member Pages
   import MemberProductsAll from './components/member_pages/MemberProducts';
@@ -50,9 +52,7 @@ const App = () =>
         <Route exact path="/base/cart" component = { BasicCartPage } />
         <Route exact path="/base/cart/checkout/:id" component = { BasicCheckout } />
 
-        <Route exact path="/admin/products" component = { AdminProductsAll } />
-        <Route exact path="/admin/product/:id" component = { AdminProduct } />
-        <Route exact path="/newproduct/:token" component = { NewProduct } />
+        <Route exact path="/adminhome/:id" component = { AdminHome } />
 
         <Route exact path="/auth/products/" component = { MemberProductsAll } />
         <Route exact path="/auth/product/:id" component = { MemberProduct } />
@@ -64,3 +64,7 @@ const App = () =>
 
 export default App;
         // <Route exact path="/products" component = { BasicProductsAll } />
+
+  // <Route exact path="/admin/products" component = { AdminProductsAll } />
+  // <Route exact path="/admin/product/:id" component = { AdminProduct } />
+  // <Route exact path="/newproduct/:token" component = { NewProduct } />

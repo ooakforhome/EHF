@@ -3,12 +3,13 @@ import { Redirect } from 'react-router-dom';
 import 'whatwg-fetch';
 import { setInStorage, getFromStorage } from '../utils/storage';
 import './core.scss'
+import axios from 'axios';
 
 class AdminLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       token: '',
       signUpError: '',
       signInError: '',
@@ -20,32 +21,18 @@ class AdminLogin extends Component {
   }
 
   componentDidMount() {
-      const obj = getFromStorage('the_main_app');
-      if (obj && obj.token) {
-        const { token } = obj;
-        // Verify token
-        fetch('/api/admin/verify?token=' + token)
-          .then(res => res.json())
-          .then(json => {
-            if (json.success) {
-              this.setState({
-                token,
-                isLoading: false
-              });
-              window.location =`/admin/products`;
-              // window.location =`/admin/products/${this.state.token}`;
-            } else {
-              this.setState({
-                isLoading: false,
-              });
-            }
-          });
-      } else {
-        this.setState({
-          isLoading: false,
-        });
-      }
+    const token = (localStorage.admin_token)?
+      (JSON.parse(localStorage.getItem('admin_token')).token):'';
+
+    if(token){
+      axios.get(`/api/admin/verify?token=${token}`)
+        .then(res => {
+         return (res.data.success === true)?
+          this.props.history.push(`/adminhome/${token}`):
+          "";
+        })
     }
+  } //end didMount
 
 
   onTextboxChangeSignInEmail(e){
@@ -76,64 +63,41 @@ class AdminLogin extends Component {
         isLoading: true,
       });
       // Post request to backend
-      fetch('/api/admin/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: signUpEmail,
-          password: signUpPassword,
-        }),
-      }).then(res => res.json())
-      .then(json => {
-        if (json.success) {
-          this.setState({
-            signUpError: json.message,
-            isLoading: false,
-            signUpEmail: '',
-            signUpPassword: '',
-          });
-        } else {
-          this.setState({
-            signUpError: json.message,
-            isLoading: false,
-          });
-        }
-      });
+      axios.post('/api/admin/signup', {
+        email: signUpEmail,
+        password: signUpPassword
+      })
+        .then(json => {
+          if (json.data.success) {
+            this.setState({
+              signUpError: json.message,
+              isLoading: false,
+              signUpEmail: '',
+              signUpPassword: '',
+            });
+          } else {
+            this.setState({
+              signUpError: json.message,
+              isLoading: false,
+            });
+          }
+        });
   }
 
   onSignIn() {
       // Grab state
-      const {
-        signInEmail,
-        signInPassword,
-      } = this.state;
-      this.setState({
-        isLoading: true,
-      });
+      const { signInEmail, signInPassword } = this.state;
+      this.setState({ isLoading: true });
       // Post request to backend
-      fetch('/api/admin/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: signInEmail,
-          password: signInPassword,
-        }),
-      }).then(res => res.json())
+      axios.post('/api/admin/signin', {
+        email: signInEmail,
+        password: signInPassword
+      })
         .then(json => {
-          if (json.success) {
-            setInStorage('the_main_app', { token: json.token });
-            this.setState({
-              signInError: json.message,
-              isLoading: false,
-              signInPassword: '',
-              signInEmail: '',
-              token: json.token,
-            })
-            window.location =`/admin/products`;
+          console.log(json)
+          if (json.data.success) {
+            setInStorage('admin_token', json.data.token);
+            this.props.history.push(`/adminhome/${json.data.token}`)
           } else {
             this.setState({
               signInError: json.message,
@@ -147,14 +111,13 @@ class AdminLogin extends Component {
         this.setState({
           isLoading: true,
         });
-        const obj = getFromStorage('the_main_app');
+        const obj = getFromStorage('admin_token');
         if (obj && obj.token) {
           const { token } = obj;
           // Verify token
-          fetch('/api/admin/logout?token=' + token)
-            .then(res => res.json())
+          axios(`/api/admin/logout?token=${token}`)
             .then(json => {
-              if (json.success) {
+              if (json.data.success) {
                 this.setState({
                   token: '',
                   isLoading: false
@@ -170,7 +133,7 @@ class AdminLogin extends Component {
             isLoading: false,
           });
         }
-      }
+    }//end logout
 
 
     showSignup(e){
@@ -181,9 +144,11 @@ class AdminLogin extends Component {
 
       render() {
         const { isLoading, token, signInError, signInEmail, signInPassword, signUpEmail, signUpPassword, signUpError } = this.state;
+
         if (isLoading) {
           return (<div><p>Loading...</p></div>);
         }
+
         if (!token) {
           return (
             <div className="login_page_container">
@@ -221,7 +186,7 @@ class AdminLogin extends Component {
                 <button type="submit">Sign In</button>
               </div>
               </form>
-              {/*---------------------Create Admin-------------------------*/}
+    {/*---------------------Create Admin-------------------------*/}
               <p>dont have a account?</p>
               <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
               <form onSubmit={this.onSignUp.bind(this)}>
@@ -253,7 +218,9 @@ class AdminLogin extends Component {
                 <button type="submit">Sign Up</button>
               </div>
               </form>
-              {/*-------------e-----------Create Admin------------e-------------*/}
+
+    {/*-------------e-----------Create Admin------------e-------------*/}
+
            </div>
           );
         }

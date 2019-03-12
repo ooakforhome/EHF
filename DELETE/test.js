@@ -64,10 +64,14 @@ console.log(compare("How are you today my friend do you like ChiCken", "HiCK"))
 
   //solution
   //   function compare(a,b){
-  //   const ra = a.toLowerCase().split(' ');
-  //   const rb = b.toLowerCase();
+  // let aa = a.toLowerCase().split(' ');
+  // let bb = b.toLowerCase();
   //
-  //   return (ra.includes(rb))? true: false;
+  // let matchword = []
+  // aa.map(word => {
+  //   return(word.match(bb))? matchword.push(word): '';
+  // })
+  // return matchword.join(' ')
   // }
   //
   // console.log(compare("How are you today my friend do you like ChiCken", "ChiCken"))
@@ -99,6 +103,6 @@ console.log(1settime())
   // }
 
 // ====================================
-.search()
-.match()
-.test()
+.search() - method executes a search for a match between a regular expression and this String object. `str.search(regexp)` ==> output indexOf()
+.match() - method retrieves the result of matching a string against a regular expression. "str.match(regexp)"
+.test() - return boolean

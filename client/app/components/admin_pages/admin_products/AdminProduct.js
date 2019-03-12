@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import API from './api-product';
+import API from '../api-product';
 
-import { setInStorage, getFromStorage } from '../utils/storage';
+import { setInStorage, getFromStorage } from '../../utils/storage';
 
 // Page and parts import
-import { fetchOneAdmin } from '../../actions/admin-action';
-import { AdminDetailBox } from './parts/AdminDetailBox';
-import EditProduct from './parts/EditProduct';
+import { fetchOneAdmin } from '../../../actions/admin-action';
+import { AdminDetailBox } from '../parts/AdminDetailBox';
+import EditProduct from '../parts/EditProduct';
 
 class AdminProduct extends Component {
   constructor(props){

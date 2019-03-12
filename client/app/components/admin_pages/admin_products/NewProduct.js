@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from "redux-form";
-import { ImageUpload } from './parts/ImageUpload';
-import API from "./api-product";
-import { createProduct } from '../../actions/admin-action';
+import { ImageUpload } from '../parts/ImageUpload';
+import API from "../api-product";
+import { createProduct } from '../../../actions/admin-action';
 // import { Link } from "react-router-dom";
-import { setInStorage, getFromStorage } from '../utils/storage';
+import { setInStorage, getFromStorage } from '../../utils/storage';
 
 
 class NewProduct extends Component {
