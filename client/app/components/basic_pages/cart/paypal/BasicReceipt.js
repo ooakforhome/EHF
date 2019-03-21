@@ -13,19 +13,22 @@ class PurchaseReceipt extends Component {
 
 
 endPurchase(){
-  cart.userId( id => {
-    cart.emptyCart(id.data, (info)=>{
-      window.location= `/auth/products`;
-    })
+  const local = ["cart", "paid", "shipping_address", "__paypal_storage__"]
+  local.forEach(storage => {
+    localStorage.removeItem(storage);
   })
+      window.location= `/`;
 }
 
 render(){
   const reqId = this.state.orderID;
   const reqPayStatus = "Successful";
   const reqPayID = JSON.parse(localStorage.paid).paymentID;
-  cart.memberPlaceOrder({_id: reqId},{ payment_status: reqPayStatus, payment_id: reqPayID })
-
+  axios.put(`/api/placeorder`, {_id: reqId},
+    {
+    payment_status: reqPayStatus,
+    payment_id: reqPayID
+  })
 
   return(
     <>

@@ -27,9 +27,8 @@ class MemeberProfile extends Component{
   loadMemberInfo(){
     // const { shipping_address, username, recipient_name, address1, address2, city, state, zipcode, country, phone } = member.data.shipping_address;
 
-    API.userLimitedInfo(JSON.parse(localStorage.the_main_app).token)
+    API.userLimitedInfo(this.state.token)
       .then( member => {
-        console.log(member)
         this.setState({
           purchases: member.data.order_history,
           memberInfo: member.data,
@@ -48,45 +47,50 @@ class MemeberProfile extends Component{
   }
 
   memberAddressChange(e){
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+    let key = e.target.getAttribute('data-name');
+    let keyvalue = e.target.value;
+    this.setState(prevState =>({
+      ...prevState,
+      memberAddress: {
+        ...prevState.memberAddress,
+        [key]: keyvalue
+      }
+    }))
   }
 
+
+// REDO THIS PART, add callback after setState
   updateSubmit(e){
     e.preventDefault();
-    const tkid = JSON.parse(localStorage.getItem("the_main_app")).token;
-    API.loadUserIdByToken(tkid)
+    API.loadUserIdByToken(this.state.token)
       .then(info => {
         API.updateUserInfo( info.data , {
-          username: this.state.username,
           shipping_address : {
-            recipient_name : this.state.recipient_name,
-            address1 : this.state.address1,
-            address2 : this.state.address2,
-            city : this.state.city,
-            state : this.state.state,
-            zipcode : this.state.zipcode,
+            recipient_name : this.state.memberAddress.recipient_name,
+            address1 : this.state.memberAddress.address1,
+            address2 : this.state.memberAddress.address2,
+            city : this.state.memberAddress.city,
+            state : this.state.memberAddress.state,
+            zipcode : this.state.memberAddress.zipcode,
             country : "USA",
-            phone : this.state.phone
+            phone : this.state.memberAddress.phone
             }
           })
-          .then( updatedAddress => {
-            this.setState({
-              memberInfo: updatedAddress.data,
-              memberAddress: updatedAddress.data.shipping_address,
-              username: updatedAddress.data.username,
-              recipient_name: updatedAddress.data.shipping_address.recipient_name,
-              address1: updatedAddress.data.shipping_address.address1,
-              address2: updatedAddress.data.shipping_address.address2,
-              city: updatedAddress.data.shipping_address.city,
-              state: updatedAddress.data.shipping_address.state,
-              zipcode: updatedAddress.data.shipping_address.zipcode,
-              phone: updatedAddress.data.shipping_address.phone,
-              infoPage: !this.state.infoPage ,
-              updatePage: !this.state.updatePage
-            })
-          })
+          // .then( updatedAddress => {
+          //   this.setState({
+          //     memberInfo: updatedAddress.data,
+          //     memberAddress: updatedAddress.data.shipping_address,
+          //     recipient_name: updatedAddress.data.shipping_address.recipient_name,
+          //     address1: updatedAddress.data.shipping_address.address1,
+          //     address2: updatedAddress.data.shipping_address.address2,
+          //     city: updatedAddress.data.shipping_address.city,
+          //     state: updatedAddress.data.shipping_address.state,
+          //     zipcode: updatedAddress.data.shipping_address.zipcode,
+          //     phone: updatedAddress.data.shipping_address.phone,
+          //     infoPage: !this.state.infoPage ,
+          //     updatePage: !this.state.updatePage
+          //   })
+          // })
       })
   }
 
@@ -117,9 +121,12 @@ class MemeberProfile extends Component{
   }
 
   render(){
-    if(!this.state.memberInfo && !this.state.purchases){
+    console.log(this.state.memberAddress)
+    if(!this.state.memberAddress && !this.state.purchases){
       console.log("wait")
     }
+    // console.log("------MemberProfile.js-----------")
+    // console.log(this.state.memberAddress)
 
     const {recipient_name, address1, address2, city, state, zipcode, country, phone} = this.state.memberAddress;
 
@@ -156,6 +163,8 @@ class MemeberProfile extends Component{
             "updateUserInfoBox hide"
         }>
           <UpdateUserInfoBox
+            {...this.state.memberAddress}
+            username = {this.state.memberInfo.username}
             memberAddressChange = {this.memberAddressChange.bind(this)}
             updateSubmit = {this.updateSubmit.bind(this)}
             goBackToMemberProfile = {this.goBackToMemberProfile.bind(this)}

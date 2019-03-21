@@ -8,7 +8,7 @@ import axios from "axios";
 import GuessAddress from './guessAddress';
 // import ShowAddress from './showAddress';
 import AddedProductsContainer from './addedProductsContainer';
-import MemberSignUp from './MemberSignUp'
+import NewMemberSignUp from './newMemberSignUp'
 
 class CartPage extends Component{
   constructor(props){
@@ -82,7 +82,6 @@ confirmSubmit(e){
         phone: newAddress.phone,
       })
 
-      console.log(lsCart)
   // Upload data into database
   axios.post('/api/placeorder', {
       products: lsCart,
@@ -92,8 +91,7 @@ confirmSubmit(e){
       user: tkid.data
       })
         .then(orderData => {
-          console.log(orderData.data._id)
-        // window.location=`/checkout/${orderData.data._id}`
+        window.location=`/checkout/${orderData.data._id}`
         })
   } //end
 
@@ -251,7 +249,12 @@ confirmSubmit(e){
           <div>
             <button onClick={this.onBecomeAMember.bind(this)}><b>Become a Member</b></button>
             <span className={this.state.clickMember?"": "hide"}>
-              <MemberSignUp />
+              <NewMemberSignUp
+                signupActive = {this.state.signupActive}
+                onSignUp = {this.onSignUp.bind(this)}
+                onTextboxChangeSignUpEmail = {this.onTextboxChangeSignUpEmail.bind(this)}
+                onTextboxChangeSignUpPassword = {this.onTextboxChangeSignUpPassword.bind(this)}
+              />
             </span>
           </div>
           <div>

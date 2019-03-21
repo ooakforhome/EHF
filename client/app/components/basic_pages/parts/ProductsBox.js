@@ -20,7 +20,7 @@ const shortName=(name, limit=25)=>{
 export const ProductsBox = ( props ) => (
 
   <div className="item_container" key={props._id}>
-    <div className="innerBody">
+    <div className={props.innerClass}>
       <div className="item_img">
         <div className="item_img_box">
 
@@ -32,7 +32,7 @@ export const ProductsBox = ( props ) => (
         </div>
         </div>
       <div><p>Category: <strong>{props.Category_type}</strong></p></div>
-      <div className="item_info_box">
+      <div className="item_inf o_box">
         <p className="item_name">Product Name: {shortName(props.Product_Name)}</p>
         <p className="item_sku"> SKU#: {props.SKU} </p>
         <p className="item_color"> Color: {props.Color}</p>

@@ -21,7 +21,7 @@ class BasicProductsAll extends Component {
       Category_type: "Accent Furnitures",
       products: [],
       limitProducts: [],
-      itemsInCart:[],
+      itemsInCart:((localStorage.cart)?JSON.parse(localStorage.cart).map(obj => (obj._id)):[]),
       inCart: 0,
       menuActive: false
     };
@@ -140,23 +140,30 @@ class BasicProductsAll extends Component {
 
   showinfo(){
     let inLocal = JSON.parse(localStorage.getItem('cart')).length;
-    this.setState({
-      inCart: inLocal
-    })
+    this.setState(preveState=>({
+      ...preveState,
+      inCart: inLocal,
+    }))
   }
 
   toBuy(e){
     e.preventDefault();
     const theId = e.target.value;
+    const { itemsInCart } = this.state;
+    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
     // axios.get(`/api/member/product/${theId}`)
     axios.get(`/api/basic/product/${theId}`)
       .then((item, err) => {
-        const itemID = item.data._id;
-        if(localStorage.cart && localStorage.cart.includes(itemID)){
+        let itemID = item.data._id;
+        if(localStorage.cart && this.state.itemsInCart.indexOf(itemID) > -1){
           alert("item already added")
         } else {
           Cart.addItem(item.data, ()=>{
-            this.showinfo();
+            this.setState(preveState=>({
+              ...preveState,
+              inCart: inLocal+1,
+              itemsInCart: itemsInCart.concat(itemID)
+            }))
           })
         }
       })
@@ -180,6 +187,7 @@ class BasicProductsAll extends Component {
             <ProductsBox
                   key={product._id}
                   {...product}
+                  innerClass = {(this.state.itemsInCart.indexOf(product._id) > -1)? "innerBody bk-yes": "innerBody"}
                   handleClick={this.handleClick.bind(this)}
                   toBuy = {this.toBuy.bind(this)}
                   />
@@ -233,7 +241,7 @@ class BasicProductsAll extends Component {
           <h1>{this.state.Category_type}</h1>
           <PageBtn />
           <div>
-          <ProductList products = {this.state.limitProducts}/>
+            <ProductList products = {this.state.limitProducts}/>
           </div>
         </div>
       </div>

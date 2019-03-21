@@ -11,7 +11,7 @@ const cart = {
 
   getCart(cb) {
     if(localStorage.getItem('the_main_app')){
-      const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+      const token = JSON.parse(localStorage.the_main_app).token;
       axios.get(`/api/user/useraddtocart?_id=${token}`)
         .then(cb)
     }
@@ -93,7 +93,7 @@ const cart = {
   },
 
 
-  memberPlaceOrder(id, paymet){
+  memberPlaceOrder(id, payment){
     axios.put(`/api/placeorder`, id, payment)
   }
 

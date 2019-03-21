@@ -46,7 +46,7 @@ class MemberProducts extends Component {
     axios.get(`/api/user/verify?token=${token}`)
       .then(res =>{
         if(res.status === 200){
-          this.props.renderMember({token:this.state.token, limit: 10, offset: 0, Category_type:this.state.Category_type})
+          this.props.renderMember({token: token, limit: 10, offset: 0, Category_type:this.state.Category_type})
           // this.loadDatas()
           // this.setState({
           //   isLoading: false
@@ -83,7 +83,7 @@ class MemberProducts extends Component {
 
 
   getUserId(){
-    API.loadUserIdByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
+    API.loadUserIdByToken(this.state.token)
         .then(id => {
           this.setState({
             cID: id.data,
@@ -91,7 +91,7 @@ class MemberProducts extends Component {
         })
   }
   getItemInCart(){
-    API.loadUserByToken(JSON.parse(localStorage.getItem('the_main_app')).token)
+    API.loadUserByToken(this.state.token)
       .then(info => {
         if(info.data.items_in_cart){
           this.setState({
@@ -101,7 +101,7 @@ class MemberProducts extends Component {
       })
   }
   getCartItemIds(){
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    const { token } = this.state;
     const pID = [];
     API.showUserCart(token)
       .then(items => {
@@ -119,7 +119,7 @@ class MemberProducts extends Component {
           // })
   }
   getInCartNumber() {
-    const token = JSON.parse(localStorage.getItem('the_main_app')).token;
+    const { token } = this.state;;
     API.showUserCart(token)
       .then(inCart => {
         this.setState({amountInCart: inCart.data.length})
@@ -131,7 +131,7 @@ class MemberProducts extends Component {
   }
   onclick_logout(e){
   e.preventDefault();
-  const token = JSON.parse(localStorage.getItem('the_main_app')).token
+  const { token } = this.state; 
 
   API.memberLogout(token)
     .then( respond => {

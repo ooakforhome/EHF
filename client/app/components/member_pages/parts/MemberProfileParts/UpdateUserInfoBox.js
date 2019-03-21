@@ -6,7 +6,8 @@ class UpdateUserInfoBox extends Component {
   constructor(props){
     super(props);
       this.state={
-        memberData : {}
+        memberData : {},
+        s_address: this.props.s_address
       }
   }
 
@@ -21,7 +22,6 @@ findUserinfo(){
       API.findMemberInfo(info.data)
         .then(db => {
           this.setState({
-            username: db.data.username,
             recipient_name: db.data.shipping_address.recipient_name,
             address1: db.data.shipping_address.address1,
             address2: db.data.shipping_address.address2,
@@ -35,6 +35,12 @@ findUserinfo(){
 }
 
   render(){
+    // if(!this.state.shipping_address){
+    //   return "wait for shipping address"
+    // }
+    // console.log("UpdateUserInfoBox.js")
+    // console.log(this.state.s_address)
+
 
     const AllStates = () =>{
       const states = [' ','AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY', 'AE', 'AA', 'AP'];
@@ -42,7 +48,7 @@ findUserinfo(){
       return(
         <select
           id="state"
-          name="state"
+          data-name="state"
           defaultValue="GA"
           value={this.props.state}
           placeholder={this.props.state}
@@ -64,17 +70,7 @@ findUserinfo(){
           <h2>UPDATE ADDRESS</h2>
         </div>
 
-        <form onSubmit={this.props.updateSubmit}>
-          <div>
-            <label htmlFor="name"><i className="">NAME</i></label>
-            <input
-              placeholder={this.state.username}
-              type="text"
-              id="name"
-              name="username"
-              onChange={this.props.memberAddressChange}/>
-          </div>
-
+        <div>
           <p>ADDRESS</p>
           <div>
             <label htmlFor="street"><i className="">Recipient Name</i></label>
@@ -82,7 +78,7 @@ findUserinfo(){
               placeholder={this.state.recipient_name}
               type="text"
               id="street"
-              name="recipient_name"
+              data-name="recipient_name"
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
@@ -91,7 +87,7 @@ findUserinfo(){
               placeholder={this.state.address1}
               type="text"
               id="address_1"
-              name="address1"
+              data-name="address1"
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
@@ -100,7 +96,7 @@ findUserinfo(){
               placeholder={this.state.address2}
               type="text"
               id="address_2"
-              name="address2"
+              data-name="address2"
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
@@ -109,7 +105,7 @@ findUserinfo(){
               placeholder={this.state.city}
               type="text"
               id="city"
-              name="city"
+              data-name="city"
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
@@ -122,7 +118,7 @@ findUserinfo(){
               placeholder={this.state.zipcode}
               type="text"
               id="zip"
-              name="zipcode"
+              data-name="zipcode"
               onChange={this.props.memberAddressChange}/>
           </div>
           <div>
@@ -131,11 +127,11 @@ findUserinfo(){
               placeholder={this.state.phone}
               type="text"
               id="phone_number"
-              name="phone"
+              data-name="phone"
               onChange={this.props.memberAddressChange}/>
           </div>
-          <button className="change_address_btnk" type="submit">SUBMIT</button>
-        </form>
+          <button className="change_address_btnk"  onClick={this.props.updateSubmit}>SUBMIT</button>
+        </div>
         <button onClick={this.props.goBackToMemberProfile}>Back</button>
       </>
     )

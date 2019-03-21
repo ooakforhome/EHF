@@ -22,7 +22,6 @@ class Home extends Component {
 	render(){
 		const bigToken =	(localStorage.the_main_app)?
 		 	 (JSON.parse(localStorage.the_main_app).token): "";
-			 console.log(bigToken)
 
   	return(
 			<div className='fp_container'>

@@ -57,6 +57,8 @@ router.route("/api/placeorder")
 router.route("/api/updateorder")
   .put(placeOrder.updateOrder);
 
+router.route("/api/findallorders")
+  .get(placeOrder.showAllOrders);
 
 
 

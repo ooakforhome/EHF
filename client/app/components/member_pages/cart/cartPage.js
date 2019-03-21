@@ -23,15 +23,6 @@ class CartPage extends Component{
     }
   }
 
-  // recipient_name: "",
-  // address1: "",
-  // address2: "",
-  // city: "",
-  // state: "",
-  // zipcode: "",
-  // country: "",
-  // phone: "",
-
   componentWillMount() {
     this.checkValidation();
   }

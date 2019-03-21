@@ -12,35 +12,38 @@ const ENV = process.env.NODE_ENV === 'production'
   : 'sandbox';
 
 
-class PaypalCheckout extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      orderID: this.props.match.params.id,
-      token: JSON.parse(localStorage.the_main_app).token
-    }
-  }
+  class PaypalCheckout extends Component{
 
   componentWillMount(){
-    this.loadOrderById()
+    this.loadStorageinfo();
+    this.loadGrandTotal();
+    this.locadUserAddress();
+    this.setState({
+      orderID: this.props.match.params.id
+    })
   }
 
-  loadOrderById(){
-    const {orderID} = this.state;
+  loadStorageinfo(){
+    cart.getCart(items =>{
+      this.setState({
+        products: items.data
+      })
+    })
+  }
 
-    axios.get(`/api/placeorder?orderid=${orderID}`)
-      .then(res => {
+  loadGrandTotal(){
+    cart.calculateCartTotal( newTotal => {
+      this.setState({
+        grandTotal: newTotal
+      })
+    })
+  }
 
-        let grandTotal = 0;
-        res.data.products.forEach(product => {
-          return grandTotal += (product.purchase_price * product.quantity)
-        })
-
-        this.setState({
-          products: res.data.products,
-          grandTotal: grandTotal,
-          address: res.data.shipping_address
-        })
+  locadUserAddress(){
+    cart.getUserAddress( user => {
+      this.setState({
+        address: user.data.address
+      })
     })
   }
 
@@ -48,8 +51,9 @@ class PaypalCheckout extends Component{
     if(!this.state.address){
       return "wait a min"
     }
-    console.log(this.state.address)
+    // console.log(this.state.products)
     let SubTotal = this.state.grandTotal;
+
     const Total = parseFloat((SubTotal*1.07).toFixed(2));
     const tax = 0.07;
     let Items = [];
@@ -60,6 +64,7 @@ class PaypalCheckout extends Component{
         description: item.product_name,
         quantity: item.quantity,
         price: item.purchase_price,
+        sku: item.itemID,
         tax: parseFloat((item.purchase_price*tax).toFixed(2)),
         currency: "USD",
       })

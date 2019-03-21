@@ -35,8 +35,10 @@ router.route(`/api/user/finduseraddress`)
 router.route(`/api/user/useraddtocart`)
   .get(userCtrl.userShowAllItemsAdded);
 
-router.route(`/api/user/signup`)
-  .post(userCtrl.addUser);
+// router.route(`/api/user/signup`)
+//   .post(userCtrl.addUser);
+router.route(`/api/member/signup`)
+  .post(userCtrl.addMember);
 
 router.route(`/api/user/userupdate`)
   .post(userCtrl.updateUser)

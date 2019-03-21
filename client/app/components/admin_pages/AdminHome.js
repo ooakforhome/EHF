@@ -19,14 +19,25 @@ class AdminHome extends Component {
       if(respond.data.success === false){
         alert("logout unsuccessful");
       } else {
+        localStorage.removeItem('admin_token');
         this.props.history.push('/');
       }
     })
   };
 
+  loadAllOrders(){
+  // Make changes to following API and display Today's order only.
+    // User following URL to find ALL orders.
 
+    axios.get(`/api/findallorders`)
+      .then(orders => 
+        console.log(orders)
+      )
+  }
 
   render(){
+
+
     return(
     <>
       <h1>ADMIN HOME PAGE</h1>

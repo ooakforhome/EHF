@@ -18,7 +18,7 @@ module.exports = {
   },
 
   findOrder: function(req, res, next){
-    const orderID = req.body.orderid;
+    const orderID = req.query.orderid;
     Order
       .findById({_id: orderID, root: Order})
         .then(info => {
@@ -32,11 +32,18 @@ module.exports = {
       .findOneAndUpdate(
         { _id: req.body._id},
         {
-          $set: {payment_status: "Completed"},
+          $set: {payment_status: "Successful"},
           payment_id: req.body.payment_id
         })
         .then(payinfo => res.json(payinfo))
           .catch(err => res.status(422).json(err));
+  },
+
+  showAllOrders: function(req,res){
+    Order
+      .find()
+        .then(allData => res.json(allData))
+        .catch(err => res.status(422).json(err))
   }
 
 };
