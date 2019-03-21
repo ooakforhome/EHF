@@ -138,19 +138,19 @@ class BasicProductsAll extends Component {
     })
   }
 
-  showinfo(){
-    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
-    this.setState(preveState=>({
-      ...preveState,
-      inCart: inLocal,
-    }))
-  }
+  // showinfo(){
+  //   let inLocal = (localStorage.getItem('cart'))?JSON.parse(localStorage.getItem('cart')).length: 0;
+  //   this.setState(preveState=>({
+  //     ...preveState,
+  //     inCart: inLocal,
+  //   }))
+  // }
 
   toBuy(e){
     e.preventDefault();
     const theId = e.target.value;
     const { itemsInCart } = this.state;
-    let inLocal = JSON.parse(localStorage.getItem('cart')).length;
+    let inLocal = (localStorage.getItem('cart'))?JSON.parse(localStorage.getItem('cart')).length: 0;
     // axios.get(`/api/member/product/${theId}`)
     axios.get(`/api/basic/product/${theId}`)
       .then((item, err) => {

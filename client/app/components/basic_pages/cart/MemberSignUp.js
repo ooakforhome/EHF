@@ -305,7 +305,7 @@ class MemberSignUp extends Component {
     return(
       <>
         <div>
-            <h2 style={{textAlign: 'center'}}>SIGN UP</h2>
+            <h2 style={{textAlign: 'center'}}>NEW MEMBER SIGN UP</h2>
             {form}
         </div>
       </>

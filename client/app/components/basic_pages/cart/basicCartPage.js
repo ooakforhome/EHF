@@ -8,7 +8,8 @@ import axios from "axios";
 import GuessAddress from './guessAddress';
 // import ShowAddress from './showAddress';
 import AddedProductsContainer from './addedProductsContainer';
-import MemberSignUp from './MemberSignUp'
+import MemberSignUp from './MemberSignUp';
+import ShowAddress from './ShowAddress';
 
 class CartPage extends Component{
   constructor(props){
@@ -59,16 +60,16 @@ class CartPage extends Component{
 
 
 
-confirmSubmit(e){
-  e.preventDefault();
-    const lsCart = [];
-    JSON.parse(localStorage.cart).forEach(cartData=>{
-      lsCart.push({
-        product: cartData.product._id,
-        quantity: cartData.quantity,
-        retail: cartData.retail,
-      })
-    });
+  confirmSubmit(e){
+    e.preventDefault();
+      const lsCart = [];
+      JSON.parse(localStorage.cart).forEach(cartData=>{
+        lsCart.push({
+          product: cartData.product._id,
+          quantity: cartData.quantity,
+          retail: cartData.retail,
+        })
+      });
     const newAddress = JSON.parse(localStorage.shipping_address)[0];
     const lsShipAddress = [];
       lsShipAddress.push({
@@ -162,7 +163,6 @@ confirmSubmit(e){
 
   basicCheckOut(e){
     e.preventDefault();
-    console.log("checkout clicked")
 
     const lsCart = [];
     JSON.parse(localStorage.cart).forEach(cartData=>{
@@ -172,7 +172,9 @@ confirmSubmit(e){
         retail: cartData.retail,
       })
     });
-
+    if(!localStorage.shipping_address){
+      alert("Address is missing")
+    } else {
     const newAddress = JSON.parse(localStorage.shipping_address)[0];
     const lsShipAddress = [];
       lsShipAddress.push({
@@ -195,6 +197,8 @@ confirmSubmit(e){
           .then(orderData => {
                 this.props.history.push(`/base/cart/checkout/${orderData.data._id}`)
           })
+      }
+
   }
 
   onBecomeAMember(){
@@ -249,14 +253,19 @@ confirmSubmit(e){
 
         <div id="cart_container" className="s-iCol-12 col-6">
           <div>
-            <button onClick={this.onBecomeAMember.bind(this)}><b>Become a Member</b></button>
+            <button className={this.state.clickMember?"hide": ""} onClick={this.onBecomeAMember.bind(this)}><b>Become a Member</b></button>
             <span className={this.state.clickMember?"": "hide"}>
               <MemberSignUp />
             </span>
           </div>
           <div>
-            <button><b>Continue as Guess</b></button>
-            <GuessAddress />
+            <button className={this.state.clickMember?"": "hide"} onClick={this.onBecomeAMember.bind(this)}><b>Continue as Guess</b></button>
+            <span className={this.state.clickMember?"hide": ""}>
+              {(localStorage.shipping_address)?null:<GuessAddress />}
+            </span>
+          </div>
+          <div>
+            {(localStorage.shipping_address)?<ShowAddress />: null}
           </div>
         </div>
         <button

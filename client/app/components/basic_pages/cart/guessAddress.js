@@ -38,29 +38,8 @@ formSubmit(){
     return(
       <>
         <div>
-          <h2>ADD ADDRESS</h2>
+          <h2>GUESS ADDRESS</h2>
         </div>
-        <form onSubmit={this.formSubmit.bind(this)}>
-          <div>
-            <label htmlFor="name"><i className="">NAME</i></label>
-            <input
-              type="text"
-              id="name"
-              name="customer_name"
-              placeholder="exp. Don Jovi"
-              onChange={this.addressChange.bind(this)}/>
-          </div>
-          <div>
-            <label htmlFor="email"><i className="">Email</i></label>
-            <input
-              type="text"
-              id="email"
-              name="customer_email"
-              placeholder="john@example.com"
-              onChange={this.addressChange.bind(this)}/>
-          </div>
-
-          <p>ADDRESS</p>
           <div>
             <label htmlFor="street"><i className="">Recipient Name</i></label>
             <input
@@ -124,8 +103,7 @@ formSubmit(){
               placeholder="123-456-7890"
               onChange={this.addressChange.bind(this)}/>
           </div>
-          <button type="submit">SUBMIT</button>
-        </form>
+          <button onClick={this.formSubmit.bind(this)}>SUBMIT</button>
       </>
     )
   }

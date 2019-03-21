@@ -28,9 +28,8 @@ class AdminHome extends Component {
   loadAllOrders(){
   // Make changes to following API and display Today's order only.
     // User following URL to find ALL orders.
-
     axios.get(`/api/findallorders`)
-      .then(orders => 
+      .then(orders =>
         console.log(orders)
       )
   }
@@ -46,6 +45,7 @@ class AdminHome extends Component {
       />
       <div className="homeBody">
         <div className="links_to">
+        
         </div>
 
         <div className="today_order">
