@@ -40,6 +40,7 @@ const OrderSchema = new mongoose.Schema({
   },
   payment_id: {},
   payment_status: {type: String, default: "Not Successful"},
+  fullfill_status: {type: String, default: "Incomplete"},
   updated: Date,
   created: {
     type: Date,

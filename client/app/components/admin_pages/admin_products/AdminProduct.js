@@ -16,7 +16,7 @@ class AdminProduct extends Component {
         this.state = {
         product: [],
         images: '',
-        token:JSON.parse(localStorage.getItem('the_main_app')).token,
+        token:JSON.parse(localStorage.getItem('admin_token')),
       }
  }
 

@@ -44,8 +44,6 @@ class UserLoginForm extends Component{
     const key = e.target.getAttribute('data-name');
     const value = e.target.value;
     const root = e.target.id;
-    console.log(key)
-    console.log(value)
     this.setState(prevState => ({
       ...prevState,
       loginForm: {
@@ -60,7 +58,7 @@ class UserLoginForm extends Component{
 
   onSignIn(e){
     e.preventDefault();
-    
+
     const { email, password } = this.state.loginForm;
 
     axios.post('/api/user/signin', {

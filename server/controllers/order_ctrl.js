@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const CartItem = require('../models/Order');
 const User = require('../models/User');
 
 module.exports = {
@@ -42,39 +43,9 @@ module.exports = {
   showAllOrders: function(req,res){
     Order
       .find()
+        .populate({path: 'products.product_id'})
         .then(allData => res.json(allData))
         .catch(err => res.status(422).json(err))
   }
 
 };
-
-  // createOrder: function(req, res){
-  //   Order
-  //     .create(req.body)
-  //     .then(newOrder => {
-  //       User.
-  //        findOneAndUpdate(
-  //         {_id: newOrder.user},
-  //         { $push: {order_history: newOrder._id}
-  //       })
-  //         .then(orderInfo=>{
-  //           // res.json(orderInfo.order_history)
-  //         })
-  //       res.send({
-  //         products: newOrder.products,
-  //         shipping_address: newOrder.shipping_address,
-  //         payment_status: newOrder.payment_status
-  //       })
-  //     })
-  //     .catch(err => res.status(422).json(err));
-  // },
-
-  // updateOrder: function(req, res){
-  //   Order
-  //     .findOneAndUpdate(
-  //       { _id: req.query._id},
-  //       { payment_status: req.query.payment_status,
-  //         payment_id: req.query.payment_id})
-  //       .then(payinfo => res.json(payinfo))
-  //         .catch(err => res.status(422).json(err));
-  // }

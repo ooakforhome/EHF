@@ -48,7 +48,6 @@ class PaypalCheckout extends Component{
     if(!this.state.address){
       return "wait a min"
     }
-    console.log(this.state.address)
     let SubTotal = this.state.grandTotal;
     const Total = parseFloat((SubTotal*1.07).toFixed(2));
     const tax = 0.07;
@@ -86,7 +85,6 @@ class PaypalCheckout extends Component{
 
   // --> validation
     const onSuccess = (payment) => {
-      // console.log(payment)
       cart.userId( id => {
         axios.put("/api/user/paymentsuccessful/", {
           _id: id.data,

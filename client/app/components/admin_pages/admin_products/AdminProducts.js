@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 import API from '../api-product';
 
 import { renderAdmin, searchBoxAdmin } from '../../../actions/admin-action';
@@ -22,7 +22,7 @@ class AdminProducts extends Component {
       limit: 10,
       offset: 0,
       count: 0,
-      token:JSON.parse(localStorage.getItem('the_main_app')).token,
+      token:JSON.parse(localStorage.getItem('admin_token')),
       Category_type: "Accent Furnitures",
       menuActive: false
     }
@@ -35,27 +35,19 @@ class AdminProducts extends Component {
 
 
   checkValidation(){
-    const obj = getFromStorage('the_main_app');
-    if (obj && obj.token) {
-      const { token } = obj;
-      // Verify token
-      fetch('/api/admin/verify?token=' + token)
-        .then(res => res.json())
+    const { token } = this.state;
+    axios.get(`/api/admin/verify?token=${token}`)
         .then(json => {
-          if (json.success) {
+          if (json.data.success) {
             this.setState({
-              token,
               isLoading: false
             });
             this.loadDatas();
           } else {
-            window.location =`/`;
+            this.props.history.push('/')
           }
         });
-    } else {
-        window.location =`/`;
     }
-  }
 
 
   loadDatas(){
@@ -130,6 +122,7 @@ nexthandleChange(){
       if(respond.data.success === false){
         alert("logout unsuccessful");
       } else {
+        localStorage.clear('admin_token')
         window.location="/";
       }
     })
@@ -157,7 +150,6 @@ nexthandleChange(){
     }
 
   render() {
-    // console.log(this.props.adminproducts.all);
     if(!this.props.adminproducts.all){
       return "waiting for data";
     }

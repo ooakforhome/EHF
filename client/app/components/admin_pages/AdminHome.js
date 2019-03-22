@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
 
 import API from './api-product';
 import Logout from './parts/Logout';
@@ -45,7 +51,9 @@ class AdminHome extends Component {
       />
       <div className="homeBody">
         <div className="links_to">
-        
+          <Link to="/admin/orders"><button>Orders</button></Link>
+          <Link to="/admin/products"><button>Products</button></Link>
+          <Link to="/admin/members"><button>Members</button></Link>
         </div>
 
         <div className="today_order">

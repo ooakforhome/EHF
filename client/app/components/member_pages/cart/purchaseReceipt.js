@@ -6,7 +6,6 @@ class PurchaseReceipt extends Component {
   constructor(props){
     super(props);
     this.state = {
-      confirmNum: JSON.parse(localStorage.paid).paymentID,
       orderID: this.props.match.params.id
     }
   }
@@ -21,11 +20,6 @@ endPurchase(){
 }
 
 render(){
-  const reqId = this.state.orderID;
-  const reqPayStatus = "Successful";
-  const reqPayID = JSON.parse(localStorage.paid).paymentID;
-  cart.memberPlaceOrder({_id: reqId},{ payment_status: reqPayStatus, payment_id: reqPayID })
-
 
   return(
     <>
