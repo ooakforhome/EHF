@@ -3,18 +3,28 @@ const AdminSession = require('../models/AdminSession');
 const Product = require('../models/Product_model');
 
 module.exports = {
-  findAllAdmins: function(req, res, next){
+  findAllAdmins: function(req, res, err){
     Admin.find()
       .populate({path: 'Product', select: 'ObjectId'})
       .then(data => {
-        console.log(res.json(data));
+        // console.log(res.json(data));
+        return res.send({
+          successful_loaded: true,
+          message: "All Admins Information",
+          data: data
+        })
       })
+      .catch(err)
   },
 
-  findSingleAdmin: function(req, res){
-    Admin.findById({_id: req.query._id, root: Admin})
+  findSingleAdmin: function(req, res, err){
+    Admin.findById(req.query._id)
       .then(data => {
-        console.log(res.json(data));
+        return res.send({
+          successful_loaded: true,
+          message: "Admin Information",
+          data: data
+        })
       })
       .catch(err)
   },
@@ -139,18 +149,18 @@ module.exports = {
    // ?token=test
    // Verify the token is one of a kind and it's not deleted.
    AdminSession.findOneAndUpdate({ _id: token }, { $set: { isDeleted:true }}, null, (err, sessions) => {
-     if (err) {
-       console.log(err);
-       return res.send({
-         success: false,
-         message: 'Error: Server error'
-       });
-     }else {
-       return res.send({
-         success: true,
-         message: 'Log Out Admin Successfully'
-     })
-   }
+       if (err) {
+         console.log(err);
+         return res.send({
+           success: false,
+           message: 'Error: Server error'
+         });
+       }else {
+         return res.send({
+           success: true,
+           message: 'Log Out Admin Successfully'
+       })
+     }
    });
  },
 

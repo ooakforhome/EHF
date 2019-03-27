@@ -186,6 +186,10 @@ class AdminProducts extends Component {
     )
     return(
       <>
+        <button
+          onClick={()=> this.props.history.push(`/adminhome/${this.state.token}`)}>
+          back
+        </button>
         <div className="admin_products_container">
           <Logout
             onclick_logout = {this.onclick_logout.bind(this)}

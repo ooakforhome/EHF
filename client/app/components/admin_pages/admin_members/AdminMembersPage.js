@@ -5,6 +5,7 @@ class AdminMembersPage extends Component {
   constructor(props){
     super(props);
     this.state={
+      token: localStorage.getItem('admin_token'),
       allMembers: []
     }
   }
@@ -14,7 +15,7 @@ class AdminMembersPage extends Component {
       .then(res=>{
         if(res.status === 200){
           this.setState({
-            allMembers: res.data
+            allMembers: res.data.members_account
           })
         }
       })
@@ -44,6 +45,10 @@ class AdminMembersPage extends Component {
 
     return(
       <>
+        <button
+          onClick={()=> this.props.history.push(`/adminhome/${this.state.token}`)}>
+          back
+        </button>
         <p>Member page</p>
         {ShowMembers}
       </>

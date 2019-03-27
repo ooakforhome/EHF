@@ -79,31 +79,3 @@ class AdminOrdersPage extends Component {
 }
 
 export default AdminOrdersPage;
-
-
-// <table>
-// <tr className="col-12">
-//   <th className="">Order</th>
-//   <th className="">Date</th>
-//   <th className="">Customer</th>
-//   <th className="">Payment Status</th>
-//   <th className="">Fullfill Status</th>
-//   <th className="">Total</th>
-// </tr>
-// // {
-// //   orders.map(order =>{
-// //   let shortDate = order.created.split('').slice(0,11);
-// //     return
-// //     (
-// //       <tr>
-// //         <td className="">{order._id}</td>
-// //         <td className="">{shortDate}</td>
-// //         <td className="">{order.customer_name}</td>
-// //         <td className="">{order.payment_status}</td>
-// //         <td className="">Completed</td>
-// //         <td className="">52.55</td>
-// //       </tr>
-// //     )
-// //   })
-// // }
-// </table>

@@ -284,7 +284,10 @@ module.exports = {
    User.find()
      .populate({path: 'Product', select: 'ObjectId'})
      .then(data => {
-       console.log(res.json(data));
+       // console.log(res.json(data));
+       return res.send({
+          members_account: data
+       })
      })
  },
 
