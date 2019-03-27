@@ -33,6 +33,10 @@ $background-size: contain;
   .iCol-2 { width: percentage(2/12); margin: auto;}
   .iCol-1 { width: percentage(1/12); margin: auto;}
 
+p {
+  margin: 5px 0px
+}
+
 .text-center{
   text-align: center;
 }
@@ -249,7 +253,9 @@ ul {
   margin:auto;
   box-shadow: 3px 3px 3px 3px gray;
 }
-
+input.form-control {
+    width: 90%;
+}
 .img_div {
   width: 90%;
   padding: 10px;
@@ -261,12 +267,48 @@ ul {
   margin: 0 50%;
 }
 
-.input_box {
-  width:250px;
-  display: inline-block;
-  margin: 5px;
-  padding: 5px;
+
+// .input_box {
+//   width:250px;
+//   display: inline-block;
+//   margin: 5px;
+//   padding: 5px;
+// }
+.inputBlock {
+  display:flex;
+  padding: 0px 5px;
 }
+.inputBlockRoot{
+  display:flow-root;
+  padding: 0px 5px;
+}
+.input_box_3{
+  width: percentage(4/12); float: $left;
+  margin: 5px 5px 5px 0;
+  padding: 0px
+}
+.input_box_3_1{
+  width: 30%; float: $left;
+  margin: 5px 5px 5px 0;
+  padding: 0px
+}
+.input_box_5{
+  width: percentage(2/10); float: $left;
+  margin: 5px 5px 5px 0;
+  padding: 0px
+}
+.size_box {
+  width: 49%; float: $left;
+  margin: 5px 5px 5px 0;
+  padding: 0px
+}
+.input_box_1{
+  width: percentage(12/12); float: $left;
+  margin: 5px 5px 5px 0;
+  padding: 0px
+}
+
+
 .input_box_small {
   width: 100px;
   display: inline-block;
@@ -279,12 +321,12 @@ ul {
   margin: 5px;
   display:block;
 }
-.size_box {
-  width: 398px;
-  margin: auto;
-  float: left;
-  padding: 5px;
-}
+// .size_box {
+//   width: 398px;
+//   margin: auto;
+//   float: left;
+//   padding: 5px;
+// }
 .formHR {
   width: 90%;
   margin: auto;

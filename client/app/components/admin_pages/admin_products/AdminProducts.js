@@ -22,7 +22,7 @@ class AdminProducts extends Component {
       limit: 10,
       offset: 0,
       count: 0,
-      token:JSON.parse(localStorage.getItem('admin_token')),
+      token:localStorage.getItem('admin_token'),
       Category_type: "Accent Furnitures",
       menuActive: false
     }
@@ -33,22 +33,30 @@ class AdminProducts extends Component {
     this.checkValidation();
   }
 
-
   checkValidation(){
     const { token } = this.state;
     axios.get(`/api/admin/verify?token=${token}`)
-        .then(json => {
-          if (json.data.success) {
-            this.setState({
-              isLoading: false
-            });
-            this.loadDatas();
-          } else {
-            this.props.history.push('/')
-          }
-        });
-    }
+      .then(json => {
+        if (json.data.success) {
+          this.setState({
+            isLoading: false
+          });
+          this.loadDatas();
+        } else {
+          this.props.history.push('/')
+        }
+      });
+  }
 
+  loadDatasAxios(){
+    const {token, limit, offset, Category_type} = this.state;
+    axios.get(`/api/admin/products?token=${token}&limit=${limit}&offset=${offset}&Category_type=${Category_type}`)
+     .then(res => {
+       this.setState({
+         currentProducts: res.data.all
+       })
+     })
+  }
 
   loadDatas(){
     const {limit, token, offset} = this.state;
@@ -63,7 +71,7 @@ class AdminProducts extends Component {
 
   handleClick(e){
       e.preventDefault();
-        window.location =`/admin/product/${e.target.value}`;
+        this.props.history.push(`/admin/products/${e.target.value}`);
   }
 
   handleDelete(e){
@@ -86,20 +94,19 @@ class AdminProducts extends Component {
   };
 
 
-nexthandleChange(){
-    const totalOffset = Math.floor(this.props.adminproducts.count/10);
-    const {limit, offset, token} = this.state;
-    let theName = this.state.Category_type.split(' ').join('+');
+  nexthandleChange(){
+      const totalOffset = Math.floor(this.props.adminproducts.count/10);
+      const {limit, offset, token} = this.state;
+      let theName = this.state.Category_type.split(' ').join('+');
 
-    if(this.state.offset >= totalOffset){
-      this.props.renderAdmin({token, limit, offset, Category_type:theName})
-        this.setState({offset: totalOffset})
-    } else {
-      this.props.renderAdmin({token , limit, offset: offset+1, Category_type:theName})
-        this.setState({offset: this.state.offset+=1})
-    }
-};
-
+      if(this.state.offset >= totalOffset){
+        this.props.renderAdmin({token, limit, offset, Category_type:theName})
+          this.setState({offset: totalOffset})
+      } else {
+        this.props.renderAdmin({token , limit, offset: offset+1, Category_type:theName})
+          this.setState({offset: this.state.offset+=1})
+      }
+  };
 
   prevhandleChange(e){
     e.preventDefault();
@@ -131,7 +138,7 @@ nexthandleChange(){
 // add new product
   addNewProduct(e){
     e.preventDefault();
-    window.location=`/newproduct/${this.state.token}`
+    window.location=`/admin/newproduct`
   }
 
   categorybutton(){
@@ -150,11 +157,13 @@ nexthandleChange(){
     }
 
   render() {
+
     if(!this.props.adminproducts.all){
       return "waiting for data";
     }
 
-    const TotalPages = Math.ceil(this.props.adminproducts.count/10);
+
+    const TotalPages = Math.ceil(this.props .adminproducts.count/10);
     const CurrentPage = this.state.offset + 1;
     const ProductList = ({products}) => (
       <div>

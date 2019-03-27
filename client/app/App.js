@@ -24,14 +24,12 @@ import './styles/styles.scss';
 
 // Admin Pages
   import AdminHome from './components/admin_pages/AdminHome';
+  import AdminMembersPage from './components/admin_pages/admin_members/AdminMembersPage';
   import AdminOrders from './components/admin_pages/admin_orders/AdminOrdersPage';
   import AdminProductsAll from './components/admin_pages/admin_products/AdminProducts';
-  import AdminMembersPage from './components/admin_pages/admin_members/AdminMembersPage';
+  import AdminProduct from './components/admin_pages/admin_products/AdminProduct';
+  import NewProduct from './components/admin_pages/admin_products/NewProduct';
 
-
- // Current not active
-  // import AdminProduct from './components/admin_pages/admin_products/AdminProduct';
-  // import NewProduct from './components/admin_pages/admin_products/NewProduct';
 
 // Member Pages
   import MemberProductsAll from './components/member_pages/MemberProducts';
@@ -58,8 +56,11 @@ const App = () =>
 
         <Route exact path="/adminhome/:id" component = { AdminHome } />
         <Route exact path="/admin/orders" component = { AdminOrders } />
-        <Route exact path="/admin/products" component = { AdminProductsAll } />
         <Route exact path="/admin/members" component = { AdminMembersPage } />
+        <Route exact path="/admin/products" component = { AdminProductsAll } />
+        <Route exact path="/admin/products/:id" component = { AdminProduct } />
+        <Route exact path="/admin/newproduct" component = { NewProduct } />
+
 
 
 

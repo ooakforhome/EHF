@@ -45,9 +45,7 @@ module.exports = {
    }
    email = email.toLowerCase();
    email = email.trim();
-   // Steps:
-   // 1. Verify email doesn't exist
-   // 2. Save
+
    Admin.find({ email: email }, (err, previousAdmins) => {
      if (err) {
        return res.send({
@@ -140,7 +138,7 @@ module.exports = {
    const token = req.query.token;
    // ?token=test
    // Verify the token is one of a kind and it's not deleted.
-   AdminSession.findOneAndUpdate({ _id: token, isDeleted: false }, { $set: { isDeleted:true }}, null, (err, sessions) => {
+   AdminSession.findOneAndUpdate({ _id: token }, { $set: { isDeleted:true }}, null, (err, sessions) => {
      if (err) {
        console.log(err);
        return res.send({
@@ -202,37 +200,3 @@ module.exports = {
    })
  }
 } // end module export
-//=========================================================
-
-  // searchProductFromAdmin: function(req, res){
-  //   let offset = parseInt(req.query.offset);
-  //   let limit = parseInt(req.query.limit);
-  //   let search = { $regex: req.query.search, $options: 'i' }
-  //   // User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}
-  //   const query = Product
-  //     .find({
-  //       $or:[
-  //         {'SKU': search },
-  //         {'Category_type': search },
-  //         {'Color': search },
-  //         {'Product_Name': search}
-  //        ]
-  //       })
-  //     .limit(limit)
-  //     .skip(offset*limit);
-  //
-  //   return Promise.all([query, Product.find({
-  //     $or:[
-  //       {'SKU': req.query.search},
-  //       {'Category_type': req.query.search},
-  //       {'Color': req.query.search}]
-  //     }).countDocuments()])
-  //   .then((results) => {
-  //     return res.json({
-  //      all: results[0],
-  //      count: results[1],
-  //      offset: offset,
-  //      limit: limit
-  //     });
-  //   });
-  // }

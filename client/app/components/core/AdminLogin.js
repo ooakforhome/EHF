@@ -10,7 +10,7 @@ class AdminLogin extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      token: '',
+      token: localStorage.admin_token,
       signUpError: '',
       signInError: '',
       signInEmail: '',
@@ -22,7 +22,7 @@ class AdminLogin extends Component {
 
   componentDidMount() {
     const token = (localStorage.admin_token)?
-      (JSON.parse(localStorage.getItem('admin_token')).token):'';
+      (localStorage.getItem('admin_token')):'';
 
     if(token){
       axios.get(`/api/admin/verify?token=${token}`)
@@ -96,7 +96,7 @@ class AdminLogin extends Component {
         .then(json => {
           console.log(json)
           if (json.data.success) {
-            setInStorage('admin_token', json.data.token);
+            localStorage.setItem('admin_token', json.data.token);
             this.props.history.push(`/adminhome/${json.data.token}`)
           } else {
             this.setState({
@@ -107,33 +107,22 @@ class AdminLogin extends Component {
         });
     }
 
-    logout() {
-        this.setState({
-          isLoading: true,
-        });
-        const obj = getFromStorage('admin_token');
-        if (obj && obj.token) {
-          const { token } = obj;
-          // Verify token
-          axios(`/api/admin/logout?token=${token}`)
-            .then(json => {
-              if (json.data.success) {
-                this.setState({
-                  token: '',
-                  isLoading: false
-                });
-              } else {
-                this.setState({
-                  isLoading: false,
-                });
-              }
+  logout() {
+    if(this.state.token){
+      const { token } = this.state;
+    // Verify token
+    axios.get(`/api/admin/logout?token=${token}`)
+      .then(json => {
+          if (json.data.success) {
+            localStorage.clear('admin_token');
+          } else {
+            this.setState({
+              isLoading: false,
             });
-        } else {
-          this.setState({
-            isLoading: false,
-          });
-        }
-    }//end logout
+          }
+        });
+    }
+  }//end logout
 
 
     showSignup(e){
@@ -187,37 +176,7 @@ class AdminLogin extends Component {
               </div>
               </form>
     {/*---------------------Create Admin-------------------------*/}
-              <p>dont have a account?</p>
-              <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
-              <form onSubmit={this.onSignUp.bind(this)}>
-              <div className="sign_up_container toggleContainer box_shadow">
-                {
-                  (signUpError) ? (
-                    <p>{signUpError}</p>
-                  ) : (null)
-                }
-                <p className="text-center">Sign Up</p>
-                <input
-                  className="col-11 input-space"
-                  type="email"
-                  autoComplete="off"
-                  placeholder="Email"
-                  value={signUpEmail}
-                  onChange={this.onTextboxChangeSignUpEmail.bind(this)}
-                />
-                <br />
-                <input
-                  className="col-11 input-space"
-                  type="password"
-                  autoComplete="off"
-                  placeholder="Password"
-                  value={signUpPassword}
-                  onChange={this.onTextboxChangeSignUpPassword.bind(this)}
-                />
-                <br />
-                <button type="submit">Sign Up</button>
-              </div>
-              </form>
+
 
     {/*-------------e-----------Create Admin------------e-------------*/}
 
@@ -235,11 +194,9 @@ class AdminLogin extends Component {
 } // end HOME
 
 export default AdminLogin;
-// <br />
-// <br />
 // <p>dont have a account?</p>
 // <button className="sign_up_btn" onClick={this.showSignup.bind(this)}>create account</button>
-// <form autoComplete="off">
+// <form onSubmit={this.onSignUp.bind(this)}>
 // <div className="sign_up_container toggleContainer box_shadow">
 //   {
 //     (signUpError) ? (
@@ -265,6 +222,6 @@ export default AdminLogin;
 //     onChange={this.onTextboxChangeSignUpPassword.bind(this)}
 //   />
 //   <br />
-//   <button onClick={this.onSignUp.bind(this)}>Sign Up</button>
+//   <button type="submit">Sign Up</button>
 // </div>
 // </form>

@@ -40,6 +40,8 @@ class MemberProducts extends Component {
     this.getUserId();
   }
 
+
+
   checkValidation(){
     const { token } = this.state;
 
@@ -47,40 +49,11 @@ class MemberProducts extends Component {
       .then(res =>{
         if(res.status === 200){
           this.props.renderMember({token: token, limit: 10, offset: 0, Category_type:this.state.Category_type})
-          // this.loadDatas()
-          // this.setState({
-          //   isLoading: false
-          // })
         } else {
           window.location =`/`;
         }
       })
   }
-
-// Initial Load
-  // checkValidation(){
-  //   const obj = getFromStorage('the_main_app');
-  //   if (obj && obj.token) {
-  //     const { token } = obj;
-  //     fetch('/api/user/verify?token=' + token)
-  //       .then(res => res.json())
-  //       .then(json => {
-  //         if (json.success) {
-  //           this.setState({
-  //             token,
-  //             isLoading: false
-  //           });
-  //           this.loadDatas();
-  //         } else {
-  //           window.location =`/`;
-  //         }
-  //       });
-  //   } else {
-  //       window.location =`/`;
-  //   }
-  // }
-
-
 
   getUserId(){
     API.loadUserIdByToken(this.state.token)
@@ -114,9 +87,6 @@ class MemberProducts extends Component {
           })
         }
       })
-          // .then(()=>{
-          //   this.showAdded();
-          // })
   }
   getInCartNumber() {
     const { token } = this.state;;
@@ -131,7 +101,7 @@ class MemberProducts extends Component {
   }
   onclick_logout(e){
   e.preventDefault();
-  const { token } = this.state; 
+  const { token } = this.state;
 
   API.memberLogout(token)
     .then( respond => {
@@ -164,13 +134,8 @@ class MemberProducts extends Component {
     e.preventDefault();
     const {token} = this.state;
     const theId = e.target.value;
-    // console.log("theID: "+ theId)
-    // axios.get(`/api/member/product/${theId}`)
     API.findSingleProductById(token,theId)
       .then(item => {
-        // console.log(item)
-        // console.log("-------indexof-------")
-        // console.log((this.state.itemsInCart.indexOf(item.data._id) < 0) == true)
         if(this.state.itemsInCart.includes(item.data._id)){
           alert("item already added")
         } else {
@@ -245,13 +210,11 @@ class MemberProducts extends Component {
   }
 
   render() {
-    // console.log(this.state.itemsInCart+ "-->")
-    // console.log(this.props.newproduct.all)
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
-    // console.log(this.state.itemsInCart)
-    // console.log(this.props.newproducts.all)
+
+
 
     const TotalPages = Math.ceil(this.props.newproducts.count/10);
     const CurrentPage = this.state.offset + 1;

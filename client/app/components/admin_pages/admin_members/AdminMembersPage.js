@@ -13,9 +13,6 @@ class AdminMembersPage extends Component {
     axios.get(`/api/user/findall`)
       .then(res=>{
         if(res.status === 200){
-          console.log(res)
-        // }
-
           this.setState({
             allMembers: res.data
           })

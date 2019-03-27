@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import API from '../api-product';
+import axios from 'axios';
 
 import { setInStorage, getFromStorage } from '../../utils/storage';
 
@@ -16,7 +17,7 @@ class AdminProduct extends Component {
         this.state = {
         product: [],
         images: '',
-        token:JSON.parse(localStorage.getItem('admin_token')),
+        token:localStorage.getItem('admin_token')
       }
  }
 
@@ -26,36 +27,29 @@ class AdminProduct extends Component {
    this.checkValidation();
  }
 
- componentDidMount(){
-   const { token } = this.state
-   this.props.fetchOneAdmin({id: this.props.match.params.id, token})
- }
+ // componentDidMount(){
+ //   const { token } = this.state
+ //   this.props.fetchOneAdmin({id: this.props.match.params.id, token})
+ // }
 
  checkValidation(){
-   const obj = getFromStorage('the_main_app');
-   if (obj && obj.token) {
-     const { token } = obj;
-     // Verify token
-     fetch('/api/admin/verify?token=' + token)
-       .then(res => res.json())
+   const { token } = this.state;
+   axios.get(`/api/admin/verify?token=${token}`)
        .then(json => {
-         if (json.success) {
+         if (json.data.success) {
            this.setState({
-             token,
              isLoading: false
            });
          } else {
-           window.location =`/`;
+           this.props.history.push('/')
          }
        });
-   } else {
-     window.location =`/`;
    }
- }
 
 backToProductsPageOnClick(e){
   e.preventDefault();
-  window.location =`/admin/products`;
+  // window.location = `/admin/products`
+  this.props.history.push(`/admin/products`)
 }
 
 loadImage(){
@@ -126,8 +120,8 @@ loadImage(){
  }
 
   render(){
-    console.log("this is the toke: "+ this.state.token)
-    console.log(this.props.adminproduct)
+    // console.log("this is the toke: "+ this.state.token)
+    // console.log(this.props.adminproduct)
     return (
       <div className="detailPage">
         <div className="item_container" style={{visibility: 'visible'}}>

@@ -6,7 +6,7 @@ class AdminOrdersPage extends Component {
   constructor(props){
     super(props);
     this.state={
-      token: JSON.parse(localStorage.getItem('admin_token')),
+      token: localStorage.getItem('admin_token'),
       allOrders: []
     }
   }
