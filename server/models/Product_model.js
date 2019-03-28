@@ -63,7 +63,8 @@ var productSchema = new Schema({
   Retail: { type: Number },
   addDate: {type: Date, default: Date.now()},
   images: {type: String, default: "" },
-  active: {type: String, default: "true"}
+  active: {type: String, default: "true"},
+  Inventory: {type: Number}
 })
 
 module.exports = mongoose.model ('Product', productSchema);

@@ -26,7 +26,7 @@ import './styles/styles.scss';
   import AdminHome from './components/admin_pages/AdminHome';
   import AdminMembersPage from './components/admin_pages/admin_members/AdminMembersPage';
   import AdminOrders from './components/admin_pages/admin_orders/AdminOrdersPage';
-  import AdminProductsAll from './components/admin_pages/admin_products/AdminProducts';
+  import AdminProductsAll from './components/admin_pages/admin_products/AdminAllProducts';
   import AdminProduct from './components/admin_pages/admin_products/AdminProduct';
   import NewProduct from './components/admin_pages/admin_products/NewProduct';
 
