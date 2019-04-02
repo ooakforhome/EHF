@@ -78,6 +78,8 @@ router.route("/api/products/:Category_type")
 router.route("/api/allproducts/search")
   .get(productPag.renderPerPage);
 
+router.route(`/api/updatemanyproducts`)
+  .put(productCtrl.updateManyProducts)
 
 
 

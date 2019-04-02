@@ -61,14 +61,12 @@ const App = () =>
         <Route exact path="/admin/products/:id" component = { AdminProduct } />
         <Route exact path="/admin/newproduct" component = { NewProduct } />
 
-
-
-
         <Route exact path="/auth/products/" component = { MemberProductsAll } />
         <Route exact path="/auth/product/:id" component = { MemberProduct } />
         <Route exact path="/cart" component = { CartPage } />
         <Route exact path="/checkout/:id" component = { Checkout } />
         <Route exact path="/receipt/:id" component = { Receipt } />
+
     </div>
   </Router>;
 

@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import API from '../api-product';
 import Logout from '../parts/Logout';
 
+import '../style.scss'
+
 class AdminAllProducts extends Component{
   constructor(props) {
     super(props);
@@ -15,7 +17,8 @@ class AdminAllProducts extends Component{
       limit: 10,
       offset: 0,
       count: 0,
-      category_type: "Accent Furnitures"
+      category_type: "Accent Furnitures",
+      updateInventory: {}
     }
   }
 
@@ -48,12 +51,63 @@ class AdminAllProducts extends Component{
     })
   };
 
+
+// setState within array
+  // availableProductOnChange(e){
+  //   let select = e.target.getAttribute("data-position");
+  //   let key = e.target.getAttribute("data-name");
+  //   let value = e.target.value;
+  //
+  //   let newInvetory = this.state.products;
+  //   newInvetory.splice(select, 1,
+  //     this.state.products[select] = {
+  //       ...this.state.products[select],
+  //       Inventory: value
+  //     }
+  //   )
+  //
+  //   this.setState(prevState=>({
+  //     ...prevState,
+  //     products: [
+  //       ...newInvetory
+  //     ]
+  //   }))
+  // }
+
   availableProductOnChange(e){
-    // let position = e.target.getAttribute("data-position");
-    let key = e.target.getAttribute("data-name");
-    let value = e.target.value;
-    // console.log(position)
-    console.log(key +" : "+ value)
+      let select = e.target.getAttribute("data-id");
+      let key = e.target.getAttribute("data-name");
+      let value = e.target.value;
+
+      this.setState(prevState => ({
+        updateInventory: {
+          ...prevState.updateInventory,
+          [select] : {
+            ...prevState.updateInventory[select],
+            [key] : value
+          }
+        }
+      }))
+  }
+
+  updateAllInventory(e){
+    e.preventDefault();
+    const { updateInventory } = this.state;
+    axios.put(`/api/updatemanyproducts`, updateInventory)
+      .then(res => {
+        if(res.status === 200){
+          const { category_type } = this.state;
+          axios.get(`/api/products/${category_type}`)
+            .then(products => {
+              this.setState(prevState =>({
+                ...prevState,
+                products: products.data
+              }))
+            })
+        } else {
+          console.log("Update All Inventory error")
+        }
+      })
   }
 
   productEdit(id){
@@ -65,7 +119,7 @@ class AdminAllProducts extends Component{
     if(!this.state.products){
       console.log("loading")
     }
-    console.log(this.state.products)
+
 
     const AdminProductBox = (
       <table>
@@ -74,7 +128,11 @@ class AdminAllProducts extends Component{
             <th className="">image</th>
             <th className="">SKU</th>
             <th className="">Product Name</th>
-            <th className="">Available</th>
+            <th className="">Available
+                <button onClick={this.updateAllInventory.bind(this)}>
+                  Update All
+                </button>
+              </th>
             <th className="">Retail Price</th>
             <th className=""></th>
           </tr>
@@ -88,11 +146,12 @@ class AdminAllProducts extends Component{
                 <td className="">
                   <input
                     type="text"
-                    id = {i}
+                    data-id= {product._id}
+                    data-position = {i}
                     data-name="Inventory"
-                    // value = {this.state.value}
-                    onChange={this.availableProductOnChange.bind(this, i)}
+                    onChange={this.availableProductOnChange.bind(this)}
                     />
+                  <span>:Current Available <b>{(product.Inventory)? product.Inventory: 0}</b></span>
                 </td>
                 <td className="">{product.Retail}</td>
                 <td className=""><button onClick={this.productEdit.bind(this, product._id)}>Edit</button></td>
