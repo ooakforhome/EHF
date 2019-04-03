@@ -28,6 +28,18 @@ module.exports = {
         .catch(err => console.log(err))
   },
 
+  findSortOrder: function(req, res, next){
+    const began = req.query.began;
+    const end = req.query.end;
+    Order
+      .find({payment_status: "Successful"})
+        .sort({ created:1 })
+        .then(info => {
+          return res.json(info)
+        })
+        .catch(err => console.log(err))
+  },
+
   updateOrder: function(req, res){
     Order
       .findOneAndUpdate(

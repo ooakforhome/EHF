@@ -59,7 +59,8 @@ router.route("/api/updateorder")
 
 router.route("/api/findallorders")
   .get(placeOrder.showAllOrders);
-
+router.route("/api/findsortorders")
+  .get(placeOrder.findSortOrder);
 
 
 // API routes

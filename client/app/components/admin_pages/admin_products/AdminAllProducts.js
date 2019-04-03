@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import API from '../api-product';
 import Logout from '../parts/Logout';
+import Categories from '../../componentParts/Categories';
 
 import '../style.scss'
 
@@ -52,42 +53,20 @@ class AdminAllProducts extends Component{
   };
 
 
-// setState within array
-  // availableProductOnChange(e){
-  //   let select = e.target.getAttribute("data-position");
-  //   let key = e.target.getAttribute("data-name");
-  //   let value = e.target.value;
-  //
-  //   let newInvetory = this.state.products;
-  //   newInvetory.splice(select, 1,
-  //     this.state.products[select] = {
-  //       ...this.state.products[select],
-  //       Inventory: value
-  //     }
-  //   )
-  //
-  //   this.setState(prevState=>({
-  //     ...prevState,
-  //     products: [
-  //       ...newInvetory
-  //     ]
-  //   }))
-  // }
-
   availableProductOnChange(e){
-      let select = e.target.getAttribute("data-id");
-      let key = e.target.getAttribute("data-name");
-      let value = e.target.value;
+    let select = e.target.getAttribute("data-id");
+    let key = e.target.getAttribute("data-name");
+    let value = e.target.value;
 
-      this.setState(prevState => ({
-        updateInventory: {
-          ...prevState.updateInventory,
-          [select] : {
-            ...prevState.updateInventory[select],
-            [key] : value
-          }
+    this.setState(prevState => ({
+      updateInventory: {
+        ...prevState.updateInventory,
+        [select] : {
+          ...prevState.updateInventory[select],
+          [key] : value
         }
-      }))
+      }
+    }))
   }
 
   updateAllInventory(e){
@@ -114,6 +93,25 @@ class AdminAllProducts extends Component{
     this.props.history.push(`/admin/products/${id}`)
   }
 
+  // Categories Component
+    handleClickthenav(e){
+      e.preventDefault();
+      // console.log(e.target.id)
+      this.setState({
+        menuActive: !this.state.menuActive,
+        limit: 10,
+        offset: 0,
+        category_type: e.target.id
+      }, ()=>{
+        this.loadProducts()
+      })
+    };
+
+    categorybutton(){
+      this.setState({
+        menuActive: !this.state.menuActive
+      })
+    }
 
   render(){
     if(!this.state.products){
@@ -140,7 +138,11 @@ class AdminAllProducts extends Component{
           this.state.products.map((product, i) =>{
             return(
               <tr key={i}>
-                <td className=""><img style={{width: '50px', height: '50px'}} src={`/api/imagesm/${product.images}`} /></td>
+                <td className="">
+                  <img
+                    style={{width: '50px', height: '50px'}}
+                    src={`/api/imagesm/${product.images}`} />
+                </td>
                 <td className="">{product.SKU}</td>
                 <td className="">{product.Product_Name}</td>
                 <td className="">
@@ -165,7 +167,20 @@ class AdminAllProducts extends Component{
 
     return(
       <>
-        <Logout onclick_logout = {this.onclick_logout.bind(this)} />
+        <div>
+          <Logout onclick_logout = {this.onclick_logout.bind(this)} />
+          <button
+            onClick={()=> this.props.history.push(`/adminhome/${this.state.token}`)}>
+            back
+          </button>
+        </div>
+        <div>
+          <Categories
+            clickthenav = { this.handleClickthenav.bind(this) }
+            categorybutton = { this.categorybutton.bind(this) }
+            menuActive = {this.state.menuActive}
+          />
+        </div>
         <div>
           {AdminProductBox}
         </div>
