@@ -11,6 +11,8 @@ import axios from 'axios';
 import API from './api-product';
 import Logout from './parts/Logout';
 
+import {ShowIncompleteOrders} from './parts/ShowIncompleteOrders';
+
 class AdminHome extends Component {
   constructor(props){
     super(props);
@@ -44,34 +46,32 @@ class AdminHome extends Component {
           (order.fullfill_status === "Incomplete")? todayorders.push(order): "";
         })
       )
+      .then(()=>{
+        if(todayorders.length > 0){
+          this.setState({
+            ordersToBeFill: todayorders
+          })
+        } else {
+          this.setState({
+            ordersToBeFill: "NO NEW ORDER"
+          })
+        }
+      })
+  }
 
-      console.log(todayorders)
-
-    // if(todayorders.length > 0){
-    //   this.setState({
-    //     ordersToBeFill: todayorders
-    //   })
-    // } else {
-    //   this.setState({
-    //     ordersToBeFill: "NO NEW ORDER"
-    //   })
-    // }
+  viewOrderDetail(e){
+    e.preventDefault();
+    let id = e.target.getAttribute("data-id");
+    axios(`/api/placeorder?orderid=${id}`)
+      .then(order=>{
+        this.setState(prevState=>({
+          ...prevState,
+          productDetail: order.data
+        }))
+      })
   }
 
   render(){
-
-    const ShowIncompleteOrders = (orders) =>{
-        console.log("===========")
-        console.log(orders)
-        console.log("===========")
-      return(
-      <ul>
-        {
-          <li>{(orders.customer_name)?(orders.customer_name):this.state.ordersToBeFill}</li>
-        }
-      </ul>
-    )}
-
     return(
     <div style={{backgroundColor: "#a3d0ff"}}>
       <h1>ADMIN HOME PAGE</h1>
@@ -86,7 +86,11 @@ class AdminHome extends Component {
         </div>
 
         <div className="today_order">
-          <ShowIncompleteOrders orders={this.state.ordersToBeFill}/>
+          <ShowIncompleteOrders
+            orders={this.state.ordersToBeFill}
+            viewOrderDetail={this.viewOrderDetail.bind(this)}
+            purchaseDetail={(this.state.productDetail)? this.state.productDetail: {}}
+            />
         </div>
       </div>
     </div>

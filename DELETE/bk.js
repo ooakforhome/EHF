@@ -382,3 +382,40 @@ export default connect(mapStateToProps, { renderMember, searchBoxMember })(Membe
 //       <PageBtn />
 //   </div>
 // </div>
+
+
+const ShowIncompleteOrders = (orders) =>{
+  if(!this.state.ordersToBeFill){
+    return "wait"
+  }else{
+    console.log("=========order==========")
+    console.log(orders.orders)
+    console.log("=========this==========")
+    console.log(this.state.ordersToBeFill)
+    console.log("=========end==========")
+  }
+
+  if(!orders.orders){
+    return "wait"
+  }else{
+    // let orders = this.state.ordersToBeFill;
+    // console.log(orders)
+    return(
+      <ul>
+      {
+        orders.orders.map((obj,i) =>{
+          const date = obj.created.split("T")[0];
+          return(
+            <div key={i} >
+              <p data-id={obj._id} onClick={this.viewOrderDetail.bind(this)}>
+                {`Customer name: ${obj.customer_name}, Purchase date: ${date}`}
+              </p>
+            </div>
+          )
+        })
+      }
+      </ul>
+    )
+  }
+
+}

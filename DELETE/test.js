@@ -103,6 +103,7 @@ console.log(1settime())
   // }
 
 // ====================================
-.search() - method executes a search for a match between a regular expression and this String object. `str.search(regexp)` ==> output indexOf()
-.match() - method retrieves the result of matching a string against a regular expression. "str.match(regexp)"
-.test() - return boolean
+.search() - string - begin location, method executes a search for a match between a regular expression and this String object. `str.search(regexp)` ==> output indexOf()
+.match() - string - string, method retrieves the result of matching a string against a regular expression. "str.match(regexp)"
+.test() - string - boolean, return boolean
+.includes() = array - boolean,
