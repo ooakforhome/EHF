@@ -16,9 +16,6 @@ module.exports = {
         })
        .then( newProduct => {
          User.findOneAndUpdate({_id: newProduct.userID}, { $push: {productsInCart: newProduct._id }})
-          .then( userUpdate => {
-            // return res.json(userUpdate.productsInCart)
-          })
           res.json(newProduct.itemID)
        })
        .catch(err => res.status(422).json(err))

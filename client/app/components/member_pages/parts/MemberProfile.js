@@ -121,7 +121,7 @@ class MemeberProfile extends Component{
   }
 
   render(){
-    console.log(this.state.memberAddress)
+    
     if(!this.state.memberAddress && !this.state.purchases){
       console.log("wait")
     }

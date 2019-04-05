@@ -14,7 +14,7 @@ export const searchProduct = (Product_Name) => dispatch => {
 export const searchSku = (sku) => dispatch => {
   axios.get(`/api/products?SKU=${sku}`)
     .then( res=> res.data )
-    .then( products =>
+    .then( product =>
       dispatch({
         type: SEARCH_SKU,
         payload: product

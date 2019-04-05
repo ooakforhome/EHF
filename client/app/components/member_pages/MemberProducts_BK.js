@@ -171,19 +171,24 @@ class MemberProducts extends Component {
     let theName = this.state.Category_type.split(' ').join('+');
 
     if(this.state.offset >= totalOffset){
-      this.setState({ offset: totalOffset }, this.loadDatas())
+      this.props.renderMember({token, limit, offset, Category_type:theName})
+      this.setState({ offset: totalOffset })
     } else {
-      this.setState({ offset: this.state.offset+=1 }, this.loadDatas())
+      this.props.renderMember({token , limit, offset: offset+1, Category_type:theName})
+      this.setState({ offset: this.state.offset+=1 })
     }
   };
   prevhandleChange(e){
     e.preventDefault();
-      if(this.state.offset >= 0){
+      if(this.state.offset == 0){
+        this.setState({limit:10, offset: 0})
+      } else {
       this.setState({
         limit: 10,
         offset: this.state.offset-=1
-      }, this.loadDatas())
+      })
     }
+    this.loadDatas();
   };
 
   categorybutton(){
@@ -208,6 +213,8 @@ class MemberProducts extends Component {
     if(!this.props.newproducts.all){
       return "waiting for data";
     }
+
+    console.log(this.props.newproducts)
 
     const TotalPages = Math.ceil(this.props.newproducts.count/10);
     const CurrentPage = this.state.offset + 1;
@@ -285,4 +292,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MemberProducts);
+export default connect(mapStateToProps, { renderMember, searchBoxMember })(MemberProducts);

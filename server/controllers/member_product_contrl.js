@@ -26,7 +26,7 @@ module.exports = {
   searchProductFromMember: function(req, res){
     let offset = parseInt(req.query.offset);
     let limit = parseInt(req.query.limit);
-    let search = { $regex: req.query.search, $options: 'i' }
+    let search = { $regex: new RegExp(req.query.search, "i")}
     // User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}
     const query = Product
       .find({
@@ -45,7 +45,9 @@ module.exports = {
       $or:[
         {'SKU': req.query.search},
         {'Category_type': req.query.search},
-        {'Color': req.query.search}]
+        {'Color': req.query.search},
+        {'Product_Name': req.query.search}
+        ]
       }).countDocuments()])
     .then((results) => {
       return res.json({

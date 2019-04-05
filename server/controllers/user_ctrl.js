@@ -359,6 +359,17 @@ module.exports = {
     })
  },
 
+ userShowNumberItemsAdded: function(req, res, next){
+   UserSession.findById({_id: req.query._id})
+    .then(data=>{
+      User.findById({_id: data.userId, root: User})
+        .populate('productsInCart')
+        .then( productinfo => {
+          return res.send({"number_in_cart": productinfo.productsInCart.length})
+        })
+    })
+ },
+
  userRemoveACartItem: function(req, res, next){
    // const userID = req.body.userID;
    const cartID = req.body.cartID;
