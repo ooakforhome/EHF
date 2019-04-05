@@ -1,0 +1,2 @@
+- Microdata is a set of additional HTML tags for specifying the additional semantic information to help the search engines read your site properly.
+- css box model - structured way to space element in relationship to each other.
