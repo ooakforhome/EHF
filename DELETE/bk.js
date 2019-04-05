@@ -1,32 +1,3 @@
-componentDidMount() {
-  const obj = (!localStorage.getItem('the_main_app'))?JSON.parse(localStorage.getItem('the_main_app')):'';
-    if (obj && obj.token) {
-      const { token } = obj;
-      // Verify token
-      fetch('/api/user/verify?token=' + token)
-        .then(res => res.json())
-        .then(json => {
-          if (json.success) {
-            this.setState({
-              token,
-              isLoading: false
-            });
-            window.location =`/auth/products`;
-          } else {
-            this.setState({
-              isLoading: false,
-            });
-          }
-        });
-    } else {
-      this.setState({
-        isLoading: false,
-      });
-    }
-  }
-
-
-
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
